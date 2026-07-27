@@ -87,6 +87,15 @@ Create `days/<today>.html` as a **fully self-contained** page:
   sibling files. **All data lives inline in this file.**
 - Load dependencies from an allowed CDN only (cdnjs, unpkg, or jsDelivr):
   React, ReactDOM, Recharts, and Babel standalone for in-browser JSX.
+- Pin `@babel/standalone` to major version 7 (e.g. `@babel/standalone@7/babel.min.js`),
+  never unversioned — Babel 8 flips `preset-react`'s default JSX runtime to
+  `"automatic"`, which injects an `import` from `react/jsx-runtime` into the
+  transpiled output and crashes when Babel Standalone re-executes it as a
+  classic script. As a second safety net, put
+  `/** @jsx React.createElement */` and `/** @jsxFrag React.Fragment */` as
+  the first lines inside the `text/babel` script to force the classic runtime
+  regardless of preset defaults. Also pin the Recharts CDN path exactly to
+  `recharts@2/umd/Recharts.js` (there is no `Recharts.min.js`).
 - Render, in order: the German headline (`title`), a 1–2 sentence German lead,
   the Recharts chart, and a source line naming the source(s) with clickable
   links and today's date.
