@@ -1,0 +1,20 @@
+[
+  {
+    "date": "2026-07-27",
+    "title": "Die schnellste Tour aller Zeiten",
+    "lead": "Das Durchschnittstempo der Tour-de-France-Sieger ist von 25,7 km/h (1903) auf den Rekord von 43,2 km/h (2026) gestiegen. Die beiden Kriegspausen und die aberkannten Armstrong-Jahre sind markiert.",
+    "category": "Sport",
+    "keywords": [
+      "tour de france",
+      "radsport",
+      "siegertempo",
+      "pogacar"
+    ],
+    "chartType": "line",
+    "sourceUrls": [
+      "https://stats.areppim.com/stats/stats_tourdefrance_vitesse.htm",
+      "https://www.cyclingnews.com/pro-cycling/racing/tadej-pogacars-winning-time-sees-2026-tour-de-france-set-new-record-for-fastest-ever-edition/"
+    ],
+    "file": "days/2026-07-27.html"
+  }
+]

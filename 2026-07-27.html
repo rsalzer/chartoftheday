@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Die schnellste Tour aller Zeiten</title>
+<style>
+  :root {
+    --ink: #17160f; --muted: #6c6b63; --hair: #e3e1d7; --card: #ffffff;
+    --hist: #2a78d6; --record: #eb6834; --dope: rgba(210,59,59,0.14); --war: rgba(120,118,110,0.12);
+    --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #f0eee4; --muted: #9a988d; --hair: #2a2924; --card: #1b1b16;
+      --hist: #4a97ea; --record: #f0895f; --dope: rgba(224,116,92,0.20); --war: rgba(154,152,141,0.16);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .kpi { flex: 1 1 130px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 12px; color: var(--muted); }
+  .kpi .val { font-family: var(--serif); font-size: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 13px; color: var(--muted); font-family: var(--sans); font-weight: 400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 12px; color: var(--muted); margin: 2px 2px 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 14px; height: 3px; display: inline-block; }
+  .swatch.dot { width: 10px; height: 10px; border-radius: 2px; }
+  .swatch.box { width: 12px; height: 12px; border-radius: 2px; }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">Durchschnittstempo der Tour-de-France-Sieger, 1903 bis 2026: Anstieg von 25,7 km/h auf den Rekord von 43,2 km/h. Kriegspausen 1915–1918 und 1940–1946 sowie die aberkannten Armstrong-Jahre 1999–2005 sind markiert.</p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceArea, ResponsiveContainer } = Recharts;
+
+// Historical winner average speed (km/h) per edition. 1903–2016: official
+// "Le Tour de France" figures (via areppim). Nulls at 1916/1943 break the line
+// across the two world-war pauses. 2025/2026: official race timing (Tissot).
+const HIST = [
+  [1903,25.68,'Maurice Garin'],[1904,25.27,'Henri Cornet'],[1905,27.11,'Louis Trousselier'],[1906,24.46,'René Pottier'],
+  [1907,28.47,'Petit-Breton'],[1908,28.74,'Petit-Breton'],[1909,28.66,'François Faber'],[1910,29.10,'Octave Lapize'],
+  [1911,27.32,'Gustave Garrigou'],[1912,27.76,'Odile Defraye'],[1913,26.72,'Philippe Thys'],[1914,26.84,'Philippe Thys'],
+  [1916,null,''],
+  [1919,24.06,'Firmin Lambot'],[1920,24.07,'Philippe Thys'],[1921,24.72,'Léon Scieur'],[1922,24.20,'Firmin Lambot'],
+  [1923,24.23,'Henri Pélissier'],[1924,24.25,'Ottavio Bottecchia'],[1925,24.82,'Ottavio Bottecchia'],[1926,24.27,'Lucien Buysse'],
+  [1927,27.22,'Nicolas Frantz'],[1928,28.40,'Nicolas Frantz'],[1929,28.32,'Maurice De Waele'],[1930,28.00,'André Leducq'],
+  [1931,28.74,'Antonin Magne'],[1932,29.05,'André Leducq'],[1933,29.82,'Georges Speicher'],[1934,30.36,'Antonin Magne'],
+  [1935,30.65,'Romain Maes'],[1936,31.11,'Sylvère Maes'],[1937,31.77,'Roger Lapébie'],[1938,31.57,'Gino Bartali'],
+  [1939,31.99,'Sylvère Maes'],
+  [1943,null,''],
+  [1947,31.41,'Jean Robic'],[1948,33.44,'Gino Bartali'],[1949,32.12,'Fausto Coppi'],[1950,32.78,'Ferdi Kübler'],
+  [1951,32.95,'Hugo Koblet'],[1952,32.23,'Fausto Coppi'],[1953,34.59,'Louison Bobet'],[1954,33.23,'Louison Bobet'],
+  [1955,34.45,'Louison Bobet'],[1956,36.27,'Roger Walkowiak'],[1957,34.52,'Jacques Anquetil'],[1958,36.92,'Charly Gaul'],
+  [1959,35.47,'Federico Bahamontes'],[1960,37.21,'Gastone Nencini'],[1961,36.03,'Jacques Anquetil'],[1962,37.32,'Jacques Anquetil'],
+  [1963,37.09,'Jacques Anquetil'],[1964,35.42,'Jacques Anquetil'],[1965,35.89,'Felice Gimondi'],[1966,36.76,'Lucien Aimar'],
+  [1967,34.76,'Roger Pingeon'],[1968,33.56,'Jan Janssen'],[1969,35.41,'Eddy Merckx'],[1970,35.59,'Eddy Merckx'],
+  [1971,38.08,'Eddy Merckx'],[1972,35.51,'Eddy Merckx'],[1973,33.41,'Luis Ocaña'],[1974,35.24,'Eddy Merckx'],
+  [1975,34.91,'Bernard Thévenet'],[1976,34.52,'Lucien Van Impe'],[1977,35.42,'Bernard Thévenet'],[1978,36.08,'Bernard Hinault'],
+  [1979,36.51,'Bernard Hinault'],[1980,35.14,'Joop Zoetemelk'],[1981,38.96,'Bernard Hinault'],[1982,38.06,'Bernard Hinault'],
+  [1983,36.23,'Laurent Fignon'],[1984,35.88,'Laurent Fignon'],[1985,36.23,'Bernard Hinault'],[1986,37.02,'Greg LeMond'],
+  [1987,36.65,'Stephen Roche'],[1988,38.91,'Pedro Delgado'],[1989,37.49,'Greg LeMond'],[1990,38.62,'Greg LeMond'],
+  [1991,38.75,'Miguel Indurain'],[1992,39.50,'Miguel Indurain'],[1993,38.71,'Miguel Indurain'],[1994,38.38,'Miguel Indurain'],
+  [1995,39.19,'Miguel Indurain'],[1996,39.23,'Bjarne Riis (Doping)'],[1997,39.24,'Jan Ullrich'],[1998,39.98,'Marco Pantani'],
+  [1999,40.28,'Armstrong — aberkannt'],[2000,39.57,'Armstrong — aberkannt'],[2001,40.07,'Armstrong — aberkannt'],
+  [2002,39.92,'Armstrong — aberkannt'],[2003,40.94,'Armstrong — aberkannt'],[2004,40.55,'Armstrong — aberkannt'],
+  [2005,41.65,'Armstrong — aberkannt'],
+  [2006,40.78,'Óscar Pereiro'],[2007,39.23,'Alberto Contador'],[2008,40.49,'Carlos Sastre'],[2009,40.32,'Alberto Contador'],
+  [2010,39.59,'Andy Schleck'],[2011,39.79,'Cadel Evans'],[2012,39.83,'Bradley Wiggins'],[2013,40.55,'Chris Froome'],
+  [2014,40.85,'Vincenzo Nibali'],[2015,40.01,'Chris Froome'],[2016,39.52,'Chris Froome']
+];
+
+const MODERN = { 2016: 39.52, 2025: 42.73, 2026: 43.23 };
+const WINNER = { 2025: 'Tadej Pogačar', 2026: 'Tadej Pogačar — Rekord' };
+
+const data = HIST.map(([year, speed, w]) => ({
+  year,
+  speed,
+  record: MODERN[year] != null ? MODERN[year] : null,
+  w
+}));
+[2025, 2026].forEach((y) => data.push({ year: y, speed: null, record: MODERN[y], w: WINNER[y] }));
+data.sort((a, b) => a.year - b.year);
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = isDark ? '#9a988d' : '#6c6b63';
+const grid = isDark ? '#2c2c2a' : '#e3e1d7';
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const p = payload.find((x) => x.value != null) || payload[0];
+  const row = p && p.payload;
+  if (!row || (row.speed == null && row.record == null)) return null;
+  const val = row.record != null ? row.record : row.speed;
+  return (
+    <div style={{ background: isDark ? '#20201a' : '#fff', border: '1px solid ' + grid,
+      borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: isDark ? '#f0eee4' : '#17160f' }}>
+      <div style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>{row.year}</div>
+      <div style={{ color: axis }}>{(row.w ? row.w + ' — ' : '') + val.toFixed(1) + ' km/h'}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <div className="cards">
+        <div className="kpi"><div className="lab">2026 — neuer Rekord</div><div className="val">43,2 <small>km/h</small></div></div>
+        <div className="kpi"><div className="lab">Erste Tour 1903</div><div className="val">25,7 <small>km/h</small></div></div>
+        <div className="kpi"><div className="lab">Zuwachs seit 1903</div><div className="val">+68 <small>%</small></div></div>
+      </div>
+      <div className="legend">
+        <span><span className="swatch" style={{ background: 'var(--hist)' }}></span>Siegertempo pro Ausgabe</span>
+        <span><span className="swatch dot" style={{ background: 'var(--record)' }}></span>Rekorde 2025 / 2026 (offizielle Zeitmessung)</span>
+        <span><span className="swatch box" style={{ background: 'var(--dope)' }}></span>aberkannt (Doping)</span>
+      </div>
+      <div role="img" aria-label="Liniendiagramm des Tour-de-France-Siegertempos von 1903 bis 2026, Anstieg von 25,7 auf 43,2 km/h.">
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={data} margin={{ top: 8, right: 12, bottom: 4, left: -8 }}>
+            <CartesianGrid stroke={grid} vertical={false} />
+            <ReferenceArea x1={1915} x2={1918} fill="var(--war)" fillOpacity={1} />
+            <ReferenceArea x1={1940} x2={1946} fill="var(--war)" fillOpacity={1} />
+            <ReferenceArea x1={1999} x2={2005} fill="var(--dope)" fillOpacity={1} />
+            <XAxis dataKey="year" type="number" domain={[1903, 2028]} ticks={[1910,1930,1950,1970,1990,2010,2026]}
+              tick={{ fill: axis, fontSize: 12 }} stroke={grid} />
+            <YAxis domain={[22, 45]} tick={{ fill: axis, fontSize: 12 }} stroke={grid}
+              tickFormatter={(v) => v + ' km/h'} width={64} />
+            <Tooltip content={<ChartTip />} />
+            <Line type="monotone" dataKey="speed" stroke="var(--hist)" strokeWidth={2}
+              dot={false} activeDot={{ r: 4 }} connectNulls={false} isAnimationActive={false} />
+            <Line type="linear" dataKey="record" stroke="var(--record)" strokeWidth={2}
+              strokeDasharray="5 4" dot={{ r: 4, fill: 'var(--record)', stroke: 'var(--record)' }}
+              connectNulls={true} isAnimationActive={false} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
