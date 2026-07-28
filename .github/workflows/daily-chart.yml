@@ -18,8 +18,5 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          # TEMPORARY test prompt — verifies auth/permissions/push work end to end.
-          # Revert to the PROMPT.md line below once confirmed.
-          prompt: "Append a single line to the end of README.md noting that this is a connectivity test from the GitHub Action, then commit and push that change to main. Do nothing else."
-          # prompt: "Read and fully execute the task defined in PROMPT.md."
-          claude_args: "--max-turns 10 --allowedTools Edit,Read,Write,Bash"
+          prompt: "Read and fully execute the task defined in PROMPT.md."
+          claude_args: "--max-turns 30 --allowedTools Edit,Read,Write,Bash,WebSearch,WebFetch"
