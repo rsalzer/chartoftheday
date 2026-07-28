@@ -64,3 +64,4 @@ npx serve .
   their content.
 - Reader-facing chart text is German (Swiss High German); code and this README
   are English.
+This is a connectivity test from the GitHub Action.
