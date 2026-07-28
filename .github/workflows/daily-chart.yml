@@ -1,0 +1,21 @@
+name: Daily Chart of the Day
+
+permissions:
+  contents: write
+
+on:
+  schedule:
+    - cron: '0 5 * * *'   # 5 AM UTC daily
+  workflow_dispatch:       # manual "Run workflow" button for testing
+
+jobs:
+  chart:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: "Read and fully execute the task defined in PROMPT.md."
+          claude_args: "--max-turns 30"
