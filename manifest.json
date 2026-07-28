@@ -19,21 +19,20 @@
   },
   {
     "date": "2026-07-28",
-    "title": "Neuer US-Zoll trifft die Schweiz härter als die EU",
-    "lead": "Seit dem 24. Juli 2026 ersetzt ein neuer US-Zoll gegen Zwangsarbeit-Importe den bisher einheitlichen Aufschlag von 10 Prozent. Weil die Schweiz – anders als die EU, Grossbritannien, Kanada und Taiwan – kein Einfuhrverbot für Waren aus Zwangsarbeit kennt, zahlt sie künftig 12,5 Prozent; auch Japan und Südkorea trifft die höhere Stufe.",
-    "category": "Wirtschaft",
+    "title": "Hitzewochen treiben Sterblichkeit der über 65-Jährigen nach oben",
+    "lead": "In den beiden Hitzewochen Ende Juni und Anfang Juli starben in der Schweiz laut provisorischen BFS-Wochenzahlen 10 bis 12 Prozent mehr Menschen über 65 Jahren als im Mittel der Vergleichsjahre 2019 und 2021–2025 – deutlich mehr als in den ruhigeren Wochen zuvor. Medienberichte sprechen für die gesamte Bevölkerung von rund 474 zusätzlichen Todesfällen in drei Wochen; weil Todesfälle bei der BFS-Statistik verzögert gemeldet werden, dürften die jüngsten Werte noch nach oben korrigiert werden.",
+    "category": "Gesundheit",
     "keywords": [
-      "zoll",
-      "zwangsarbeit",
-      "handelspolitik",
-      "usa",
-      "section-301"
+      "übersterblichkeit",
+      "hitzewelle",
+      "sterblichkeit",
+      "bfs",
+      "65-jährige"
     ],
-    "chartType": "slope",
+    "chartType": "bar",
     "sourceUrls": [
-      "https://www.seco.admin.ch/de/handelsbeziehung-schweiz-usa",
-      "https://globalimportblog.bakermckenzie.com/2026/07/24/united-states-new-10-to-12-5-section-301-forced-labor-tariffs-on-over-60-countries-take-effect-july-24-2026-replacing-current-10-section-122-duties/",
-      "https://www.economiesuisse.ch/de/artikel/neue-us-zoelle-von-125-prozent-angekuendigt-wirtschaft-weist-vorwuerfe-zu-zwangsarbeit"
+      "https://www.bfs.admin.ch/asset/de/36753898",
+      "https://www.20min.ch/story/uebersterblichkeit-extreme-hitze-in-der-schweiz-fordert-fast-500-tote-in-drei-wochen-103607820"
     ],
     "file": "days/2026-07-28.html"
   }
