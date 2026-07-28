@@ -149,7 +149,7 @@ Entry fields:
 - `sourceUrls` — the primary source URL(s) you verified against
 - `file` — `days/<today>.html`
 
-## Step 7 — Commit
+## Step 7 — Commit and push
 
 Commit the new day file and the manifest update **in a single commit**:
 
@@ -157,9 +157,15 @@ Commit the new day file and the manifest update **in a single commit**:
 add data chart <today>: <short German headline>
 ```
 
-Commit to `main` so GitHub Pages redeploys automatically. (If a review gate is
-later desired, switch this to opening a PR on a `claude/`-prefixed branch
-instead of committing to `main`.)
+Then **run `git push` (e.g. `git push origin main`) and confirm it succeeds.**
+A local commit alone does nothing here — this routine runs in a fresh
+checkout each time, so if the commit isn't pushed to the remote, it is
+completely lost the moment the run ends, even though the run itself reports
+success. Do not consider the task complete until the push has actually
+happened and returned without error; check its output rather than assuming it
+worked. Pushing to `main` is what makes GitHub Pages redeploy. (If a review
+gate is later desired, switch this to opening a PR on a `claude/`-prefixed
+branch instead of pushing to `main`.)
 
 ## Guardrails
 
