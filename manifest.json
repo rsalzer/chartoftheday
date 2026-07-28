@@ -16,5 +16,24 @@
       "https://www.cyclingnews.com/pro-cycling/racing/tadej-pogacars-winning-time-sees-2026-tour-de-france-set-new-record-for-fastest-ever-edition/"
     ],
     "file": "days/2026-07-27.html"
+  },
+  {
+    "date": "2026-07-28",
+    "title": "Hitzewochen treiben Sterblichkeit der über 65-Jährigen nach oben",
+    "lead": "In den beiden Hitzewochen Ende Juni und Anfang Juli starben in der Schweiz laut provisorischen BFS-Wochenzahlen 10 bis 12 Prozent mehr Menschen über 65 Jahren als im Mittel der Vergleichsjahre 2019 und 2021–2025 – deutlich mehr als in den ruhigeren Wochen zuvor. Medienberichte sprechen für die gesamte Bevölkerung von rund 474 zusätzlichen Todesfällen in drei Wochen; weil Todesfälle bei der BFS-Statistik verzögert gemeldet werden, dürften die jüngsten Werte noch nach oben korrigiert werden.",
+    "category": "Gesundheit",
+    "keywords": [
+      "übersterblichkeit",
+      "hitzewelle",
+      "sterblichkeit",
+      "bfs",
+      "65-jährige"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/asset/de/36753898",
+      "https://www.20min.ch/story/uebersterblichkeit-extreme-hitze-in-der-schweiz-fordert-fast-500-tote-in-drei-wochen-103607820"
+    ],
+    "file": "days/2026-07-28.html"
   }
 ]
