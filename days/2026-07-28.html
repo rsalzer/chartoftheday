@@ -3,27 +3,27 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Hitzewochen treiben Sterblichkeit der über 65-Jährigen nach oben</title>
+	<title>Neuer US-Zoll trifft die Schweiz härter als die EU</title>
 	<style>
 		:root {
-			--ink: #17160f; --muted: #6c6b63; --hair: #e3e1d7; --card: #ffffff;
-			--base: #8b8a80; --heat: #c0472a; --zero: #b9b7ab;
+			--ink: #0b0b0b; --muted: #52514e; --axis: #898781; --hair: #e1e0d9; --card: #fcfcfb;
+			--ch: #e34948; --eu: #2a78d6;
 			--serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
 			--sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 		}
 		@media (prefers-color-scheme: dark) {
 			:root {
-				--ink: #f0eee4; --muted: #9a988d; --hair: #2a2924; --card: #1b1b16;
-				--base: #6f6e66; --heat: #e0704f; --zero: #4a4940;
+				--ink: #ffffff; --muted: #c3c2b7; --axis: #898781; --hair: #2c2c2a; --card: #1a1a19;
+				--ch: #e66767; --eu: #3987e5;
 			}
 		}
 		* { box-sizing: border-box; }
 		html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
 		#root { padding: 14px 16px 18px; }
 		.cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
-		.kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+		.kpi { flex: 1 1 160px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
 		.kpi .lab { font-size: 12px; color: var(--muted); }
-		.kpi .val { font-family: var(--serif); font-size: 26px; font-weight: 600; letter-spacing: -0.01em; }
+		.kpi .val { font-family: var(--serif); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
 		.kpi .val small { font-size: 13px; color: var(--muted); font-family: var(--sans); font-weight: 400; }
 		.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 12px; color: var(--muted); margin: 2px 2px 10px; }
 		.legend span { display: inline-flex; align-items: center; gap: 6px; }
@@ -34,7 +34,7 @@
 </head>
 <body>
 <div id="root">
-	<p class="fallback">Wöchentliche Todesfälle von über 65-Jährigen in der Schweiz, 2026, im Vergleich zum Mittel 2019 und 2021–2025 (BFS): In den Hitzewochen vom 22. Juni und 29. Juni lagen die Todesfälle 12,4% resp. 9,7% über dem Mittel, in den Wochen davor zwischen -4,8% und +6,1%.</p>
+	<p class="fallback">Slope-Chart: Zusätzlicher US-Einfuhrzoll auf Importe verschiedener Wirtschaften, vor und ab dem 24. Juli 2026. Bis zum 23. Juli galt für alle sieben betrachteten Wirtschaften ein einheitlicher Aufschlag von 10 Prozent. Seit dem 24. Juli zahlen Schweiz, Japan und Südkorea 12,5 Prozent, weil sie kein Einfuhrverbot für Waren aus Zwangsarbeit haben; die EU, Grossbritannien, Kanada und Taiwan bleiben bei 10 Prozent.</p>
 </div>
 
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -46,81 +46,94 @@
 <script type="text/babel" data-presets="react">
 	/** @jsx React.createElement */
 	/** @jsxFrag React.Fragment */
-	const { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, ResponsiveContainer } = Recharts;
-	
-	// Wöchentliche Todesfälle, Altersgruppe 65+ (65-79 plus 80 und mehr Jahre),
-	// Schweiz. Quelle: BFS, "Todesfälle nach Altersklasse, Woche und Kanton"
-	// (provisorische 2026-Zahlen, Stand 21.07.2026). Vergleichswert = Mittel der
-	// gleichen Kalenderwoche 2019 und 2021-2025 (2020 wegen Covid-19 ausgeschlossen).
-	// Abweichung selbst berechnet und gegen die Rohdaten geprüft.
+	const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+
+	// US Section 301 "forced labor" tariff, effective 24 July 2026 00:01 ET,
+	// replacing the flat 10% Section 122 global surcharge (expired 23 July 2026).
+	// Rates verified against SECO (Swiss government), economiesuisse and two
+	// independent trade-law trackers (Baker McKenzie Global Import Blog,
+	// Global Trade Alert). Switzerland, Japan and South Korea receive
+	// net-of-MFN treatment capped at 12.5% (no forced-labor import ban);
+	// EU, UK, Canada and Taiwan are capped at 10% (ban, partial regime, or
+	// reciprocal-trade commitment).
 	const DATA = [
-		{ week: 18, label: '27.4.', deaths2026: 1175, avg: 1123.5 },
-		{ week: 19, label: '4.5.',  deaths2026: 1104, avg: 1087.5 },
-		{ week: 20, label: '11.5.', deaths2026: 1120, avg: 1074.7 },
-		{ week: 21, label: '18.5.', deaths2026: 1154, avg: 1088.0 },
-		{ week: 22, label: '25.5.', deaths2026: 1126, avg: 1077.3 },
-		{ week: 23, label: '1.6.',  deaths2026: 1026, avg: 1058.5 },
-		{ week: 24, label: '8.6.',  deaths2026: 1025, avg: 1077.2 },
-		{ week: 25, label: '15.6.', deaths2026: 1109, avg: 1076.8 },
-		{ week: 26, label: '22.6.', deaths2026: 1240, avg: 1103.0, heat: true },
-		{ week: 27, label: '29.6.', deaths2026: 1189, avg: 1084.2, heat: true }
-	].map((d) => ({ ...d, pct: Math.round(((d.deaths2026 - d.avg) / d.avg) * 1000) / 10 }));
-	
+		{ stage: 'bis 23.7.2026', tier125: 10, tier10: 10 },
+		{ stage: 'ab 24.7.2026', tier125: 12.5, tier10: 10 }
+	];
+
 	const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
-	const axis = isDark ? '#9a988d' : '#6c6b63';
-	const grid = isDark ? '#2c2c2a' : '#e3e1d7';
-	
-	function ChartTip({ active, payload }) {
+	const axis = isDark ? '#898781' : '#898781';
+	const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+	const ch = isDark ? '#e66767' : '#e34948';
+	const eu = isDark ? '#3987e5' : '#2a78d6';
+	const ink = isDark ? '#ffffff' : '#0b0b0b';
+
+	function endLabel(color, text) {
+		return (props) => {
+			if (props.index !== 1) return null;
+			return (
+				<text x={props.x + 10} y={props.y} dy={4} textAnchor="start" fontSize={12.5} fontWeight={600} fill={color}>
+					{text}
+				</text>
+			);
+		};
+	}
+
+	function ChartTip({ active, payload, label }) {
 		if (!active || !payload || !payload.length) return null;
-		const row = payload[0].payload;
 		return (
 			<div style={{ background: isDark ? '#20201a' : '#fff', border: '1px solid ' + grid,
-				borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: isDark ? '#f0eee4' : '#17160f' }}>
-				<div style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>Woche ab {row.label}</div>
-				<div style={{ color: axis }}>{row.deaths2026} Todesfälle ({row.pct > 0 ? '+' : ''}{row.pct.toFixed(1).replace('.', ',')}% vs. Mittel)</div>
+				borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: ink }}>
+				<div style={{ fontWeight: 600, marginBottom: 2 }}>{label}</div>
+				{payload.slice().reverse().map((p) => (
+					<div key={p.dataKey} style={{ color: p.color }}>
+						{p.dataKey === 'tier125' ? 'Schweiz, Japan, Südkorea' : 'EU, UK, Kanada, Taiwan'}: {String(p.value).replace('.', ',')} %
+					</div>
+				))}
 			</div>
 		);
 	}
-	
+
 	function App() {
 		return (
 			<div>
 				<div className="cards">
-					<div className="kpi"><div className="lab">Woche ab 22. Juni</div><div className="val">+12,4 <small>%</small></div></div>
-					<div className="kpi"><div className="lab">Woche ab 29. Juni</div><div className="val">+9,7 <small>%</small></div></div>
-					<div className="kpi"><div className="lab">Wochen davor</div><div className="val">-4,8 … +6,1 <small>%</small></div></div>
+					<div className="kpi"><div className="lab">Schweiz, Japan, Südkorea</div><div className="val">10 → 12,5 <small>%</small></div></div>
+					<div className="kpi"><div className="lab">EU, UK, Kanada, Taiwan</div><div className="val">10 → 10 <small>%</small></div></div>
+					<div className="kpi"><div className="lab">Neue Differenz</div><div className="val">2,5 <small>Pp.</small></div></div>
 				</div>
 				<div className="legend">
-					<span><span className="swatch" style={{ background: 'var(--heat)' }}></span>Hitzewochen (Ende Juni / Anfang Juli)</span>
-					<span><span className="swatch" style={{ background: 'var(--base)' }}></span>übrige Wochen seit Ende April</span>
+					<span><span className="swatch" style={{ background: ch }}></span>Schweiz, Japan, Südkorea (kein Einfuhrverbot für Zwangsarbeitsgüter)</span>
+					<span><span className="swatch" style={{ background: eu }}></span>EU, Grossbritannien, Kanada, Taiwan (Verbot, Teilregime oder Zusage)</span>
 				</div>
-				<div role="img" aria-label="Balkendiagramm: Abweichung der wöchentlichen Todesfälle von über 65-Jährigen in der Schweiz 2026 vom Sechsjahresmittel, Ende April bis Anfang Juli. In den beiden Hitzewochen liegt die Abweichung bei plus 12,4 und plus 9,7 Prozent, in den Wochen davor zwischen minus 4,8 und plus 6,1 Prozent.">
+				<div role="img" aria-label="Slope-Chart: Zusätzlicher US-Einfuhrzoll vor und ab dem 24. Juli 2026. Bis zum 23. Juli lag der Aufschlag für alle sieben Wirtschaften einheitlich bei 10 Prozent. Seit dem 24. Juli zahlen Schweiz, Japan und Südkorea 12,5 Prozent, EU, Grossbritannien, Kanada und Taiwan bleiben bei 10 Prozent.">
 					<ResponsiveContainer width="100%" height={300}>
-						<BarChart data={DATA} margin={{ top: 8, right: 12, bottom: 4, left: -8 }}>
+						<LineChart data={DATA} margin={{ top: 8, right: 56, bottom: 4, left: -8 }}>
 							<CartesianGrid stroke={grid} vertical={false} />
-							<XAxis dataKey="label" tick={{ fill: axis, fontSize: 12 }} stroke={grid} />
-							<YAxis tick={{ fill: axis, fontSize: 12 }} stroke={grid}
-							       tickFormatter={(v) => (v > 0 ? '+' : '') + v + '%'} width={54} />
-							<ReferenceLine y={0} stroke="var(--zero)" />
-							<Tooltip content={<ChartTip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)' }} />
-							<Bar dataKey="pct" radius={[3, 3, 3, 3]} isAnimationActive={false}>
-								{DATA.map((d, i) => <Cell key={i} fill={d.heat ? 'var(--heat)' : 'var(--base)'} />)}
-							</Bar>
-						</BarChart>
+							<XAxis dataKey="stage" tick={{ fill: axis, fontSize: 12 }} stroke={grid} padding={{ left: 24, right: 24 }} />
+							<YAxis domain={[0, 14]} ticks={[0, 5, 10, 12.5]} tick={{ fill: axis, fontSize: 12 }} stroke={grid}
+							       tickFormatter={(v) => String(v).replace('.', ',') + '%'} width={54} />
+							<Tooltip content={<ChartTip />} />
+							<Line type="linear" dataKey="tier125" stroke={ch} strokeWidth={2.5} dot={{ r: 4, fill: ch, strokeWidth: 0 }}
+							      isAnimationActive={false} label={endLabel(ch, '12,5%')} />
+							<Line type="linear" dataKey="tier10" stroke={eu} strokeWidth={2.5} dot={{ r: 4, fill: eu, strokeWidth: 0 }}
+							      isAnimationActive={false} label={endLabel(eu, '10%')} />
+						</LineChart>
 					</ResponsiveContainer>
 				</div>
 				<p className="note">
-					Abweichung der Todesfälle bei über 65-Jährigen vom Mittel derselben Kalenderwoche 2019 und 2021–2025
-					(2020 wegen Covid-19-Sondereffekt ausgeschlossen). Wochen nach ISO 8601, Datum = Wochenbeginn.
-					Die jüngsten BFS-Wochenwerte sind wegen der Melde­verzögerung bei Todesfällen provisorisch und
-					werden erfahrungsgemäss nach oben korrigiert.
+					Zusätzlicher US-Einfuhrzoll unter Section 301 („Forced Labor“-Untersuchung), in Kraft seit 24. Juli 2026,
+					00:01 Uhr ET; er ersetzt den bis 23. Juli 2026 geltenden einheitlichen 10-Prozent-Aufschlag nach Section 122.
+					Bei Schweiz, Japan, Südkorea, EU und Taiwan wird der Satz netto zum MFN-Zollsatz gedeckelt (bei bereits
+					hohem MFN-Satz sinkt der Zusatz entsprechend); bei Grossbritannien und Kanada gilt er pauschal. Nicht
+					eingerechnet sind weitere, getrennt erhobene Zölle (z. B. Section 232 auf Stahl, Aluminium oder Pharma).
 				</p>
 			</div>
 		);
 	}
-	
+
 	ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-	
+
 	// Report height to the gallery so the surrounding iframe fits exactly.
 	function postHeight() {
 		const h = document.documentElement.scrollHeight;
