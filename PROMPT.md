@@ -107,17 +107,21 @@ Create `days/<today>.html` as a **fully self-contained** page:
 - Keep it robust: if one day's code is exotic, isolation means only that tile
   breaks — but still aim for a page that renders cleanly on its own.
 
-## Step 6 — Register the day (append-only)
+## Step 6 — Register the day
 
-Append one entry to `manifest.json` by running:
+Register today's entry in `manifest.json` by running:
 
 ```
 node scripts/register.mjs
 ```
 
-with the fields below (pass as JSON/flags per the script's interface). Never
-rewrite or reorder the array — only append. The gallery sorts by date descending
-at render time, so appending is enough to make today appear on top.
+with the fields below (pass as JSON/flags per the script's interface). The
+script appends a new entry, or — if an entry for today's date already exists
+(e.g. this routine already ran once today) — replaces it in place. Do not
+skip this step just because today's entry already exists; proceed normally
+and let the script's built-in replace behavior handle it. Never manually
+rewrite or reorder the array yourself. The gallery sorts by date descending
+at render time.
 
 Entry fields:
 
@@ -149,4 +153,7 @@ instead of committing to `main`.)
 - Attribute every chart to its verified source.
 - Respect the blocklist. If your first idea is blocked, pick another — do not
   work around the gate.
-- One event, one chart, one commit per day.
+- One event, one chart, one commit per day. If the routine runs more than
+  once on the same day (e.g. a manual re-run), still do the full research and
+  chart work — don't treat an existing entry for today as a reason to stop.
+  The result simply replaces today's earlier chart.
