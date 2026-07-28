@@ -69,6 +69,12 @@ This is the most important step and the one most likely to go wrong.
 - If a number cannot be verified, drop it. Never fill gaps with estimates
   presented as fact.
 - Record every source URL you actually used.
+- **Time-box source hunting.** If you can't locate a working primary-source
+  URL for a candidate topic within about 5 search/fetch attempts, stop
+  guessing URLs (do not try variations like incrementing dates in a PDF
+  filename) and go back to Step 2 to pick a different topic instead. A topic
+  that resists verification this much is a bad candidate, not a puzzle to
+  solve.
 
 ## Step 4 — Choose a chart type (rotate)
 
@@ -106,6 +112,15 @@ Create `days/<today>.html` as a **fully self-contained** page:
 - Transparent background, readable in both light and dark; no external CSS.
 - Keep it robust: if one day's code is exotic, isolation means only that tile
   breaks — but still aim for a page that renders cleanly on its own.
+- If using the `dataviz` skill's color palette, use the pre-validated hex
+  values from its `references/palette.md` directly rather than hand-picking
+  new hex codes and iterating against `validate_palette.js` — that trial-and-error
+  loop is expensive and the bundled defaults already pass.
+- Do not attempt to spin up a local dev server, curl it, or drive a headless
+  browser to visually verify the rendered output — that isn't required here
+  and is unreliable in this environment. Careful authoring against the rules
+  above is the verification; trust it and move on to registering and
+  committing.
 
 ## Step 6 — Register the day
 
