@@ -22,4 +22,4 @@ jobs:
           # Revert to the PROMPT.md line below once confirmed.
           prompt: "Append a single line to the end of README.md noting that this is a connectivity test from the GitHub Action, then commit and push that change to main. Do nothing else."
           # prompt: "Read and fully execute the task defined in PROMPT.md."
-          claude_args: "--max-turns 10"
+          claude_args: "--max-turns 10 --allowedTools Edit,Read,Write,Bash"
