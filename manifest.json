@@ -35,5 +35,24 @@
       "https://www.20min.ch/story/uebersterblichkeit-extreme-hitze-in-der-schweiz-fordert-fast-500-tote-in-drei-wochen-103607820"
     ],
     "file": "days/2026-07-28.html"
+  },
+  {
+    "date": "2026-07-29",
+    "title": "Fliegen wird zum Luxus, Camping bleibt günstig",
+    "lead": "Der Comparis-Freizeit-Preisindex zeigt: Flugtickets sind seit Juni 2021 um 68 Prozent teurer geworden, Hotelübernachtungen nur um 13,6 Prozent – Camping, Ferienwohnungen und BnBs wurden sogar 2,8 Prozent günstiger.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "flugpreise",
+      "comparis",
+      "freizeitindex",
+      "hotellerie",
+      "ferienpreise"
+    ],
+    "chartType": "slope",
+    "sourceUrls": [
+      "https://www.presseportal.ch/de/pm/100003671/100941418",
+      "https://www.srf.ch/news/wirtschaft/hoehere-kerosinpreise-fliegen-kostet-massiv-mehr-als-vor-fuenf-jahren"
+    ],
+    "file": "days/2026-07-29.html"
   }
 ]

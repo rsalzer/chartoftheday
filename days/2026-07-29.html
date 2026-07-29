@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Fliegen wird zum Luxus, Camping bleibt günstig</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #52514e; --axis: #898781; --hair: #e1e0d9; --card: #fcfcfb;
+    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+    --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #c3c2b7; --axis: #898781; --hair: #2c2c2a; --card: #1a1a19;
+      --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 12px; color: var(--muted); }
+  .kpi .val { font-family: var(--serif); font-size: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 13px; color: var(--muted); font-family: var(--sans); font-weight: 400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 12px; color: var(--muted); margin: 2px 2px 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 14px; height: 3px; display: inline-block; border-radius: 2px; }
+  .note { font-size: 12px; color: var(--muted); margin: 10px 2px 0; line-height: 1.5; }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">Preisentwicklung Freizeitreisen Schweiz, Juni 2021 bis Juni 2026 (Comparis-Freizeit-Preisindex, indexiert auf 100 im Juni 2021): Flugtickets +68 Prozent, Hotellerie +13,6 Prozent, Parahotellerie (Camping, Ferienwohnungen, BnB) -2,8 Prozent.</p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+
+// Comparis-Freizeit-Preisindex (mit KOF-Institut der ETH Zürich), Medienmitteilung
+// vom 28.07.2026: Preisveränderung Juni 2021 -> Juni 2026 je Reisekategorie.
+// Prozentwerte 1:1 aus der Medienmitteilung übernommen; hier auf Basis 100 (Juni 2021)
+// indexiert, um die drei Kategorien in einem Diagramm vergleichbar zu machen.
+const SERIES = [
+  { key: 'flug', label: 'Flugtickets', pct: 68.0, color: 'var(--s1)' },
+  { key: 'hotel', label: 'Hotellerie', pct: 13.6, color: 'var(--s2)' },
+  { key: 'para', label: 'Parahotellerie (Camping, Ferienwohnung, BnB)', pct: -2.8, color: 'var(--s3)' }
+];
+
+const DATA = ['Jun 2021', 'Jun 2026'].map((period, i) => {
+  const row = { period };
+  SERIES.forEach((s) => { row[s.key] = i === 0 ? 100 : Math.round((100 + s.pct) * 10) / 10; });
+  return row;
+});
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = isDark ? '#9a988d' : '#6c6b63';
+const grid = isDark ? '#2c2c2a' : '#e3e1d7';
+
+function fmtPct(p) {
+  const s = p.toFixed(1).replace('.', ',');
+  return (p > 0 ? '+' : '') + s + '%';
+}
+
+function EndLabel(seriesLabel) {
+  return function Label(props) {
+    const { x, y, index } = props;
+    if (index !== DATA.length - 1) return null;
+    return (
+      <text x={x + 8} y={y} dy={4} fill={isDark ? '#f0eee4' : '#0b0b0b'} fontSize={12} fontWeight={600}>
+        {seriesLabel}
+      </text>
+    );
+  };
+}
+
+function ChartTip({ active, payload, label }) {
+  if (!active || !payload || !payload.length) return null;
+  return (
+    <div style={{ background: isDark ? '#20201a' : '#fff', border: '1px solid ' + grid,
+      borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: isDark ? '#f0eee4' : '#17160f' }}>
+      <div style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 600, marginBottom: 2 }}>{label}</div>
+      {SERIES.map((s) => {
+        const row = payload[0].payload;
+        const val = row[s.key];
+        return (
+          <div key={s.key} style={{ color: axis }}>
+            {s.label}: {val.toFixed(1).replace('.', ',')}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <div className="cards">
+        {SERIES.map((s) => (
+          <div className="kpi" key={s.key}>
+            <div className="lab"><span className="swatch" style={{ background: s.color }}></span> {s.label}</div>
+            <div className="val">{fmtPct(s.pct)}</div>
+          </div>
+        ))}
+      </div>
+      <div className="legend">
+        {SERIES.map((s) => (
+          <span key={s.key}><span className="swatch" style={{ background: s.color }}></span>{s.label}</span>
+        ))}
+      </div>
+      <div role="img" aria-label="Sloped-Liniendiagramm: Preisentwicklung von Flugtickets, Hotellerie und Parahotellerie in der Schweiz von Juni 2021 (=100) bis Juni 2026. Flugtickets steigen auf 168, Hotellerie auf 113,6, Parahotellerie sinkt auf 97,2.">
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={DATA} margin={{ top: 8, right: 132, bottom: 4, left: -8 }}>
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis dataKey="period" type="category" tick={{ fill: axis, fontSize: 12 }} stroke={grid} />
+            <YAxis domain={[85, 175]} tick={{ fill: axis, fontSize: 12 }} stroke={grid} width={40} />
+            <Tooltip content={<ChartTip />} />
+            {SERIES.map((s) => (
+              <Line key={s.key} type="linear" dataKey={s.key} name={s.label} stroke={s.color}
+                strokeWidth={2.5} dot={{ r: 4, fill: s.color, stroke: s.color }}
+                activeDot={{ r: 5 }} isAnimationActive={false}
+                label={EndLabel(s.label.split(' (')[0])} />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="note">
+        Comparis-Freizeit-Preisindex (mit dem KOF-Institut der ETH Zürich), Basis Dezember 2017 = 100;
+        Werte hier zusätzlich auf Juni 2021 = 100 umbasiert, um die drei Kategorien vergleichbar zu machen.
+        Flugtickets waren im Juni 2026 zwar 7,3% günstiger als im Vormonat Mai, aber immer noch 3,4% teurer
+        als im Juni 2025 — der langfristige Trend über fünf Jahre zeigt die grösste Verteuerung aller
+        Reisekategorien.
+      </p>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
