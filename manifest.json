@@ -54,5 +54,24 @@
       "https://www.srf.ch/news/wirtschaft/hoehere-kerosinpreise-fliegen-kostet-massiv-mehr-als-vor-fuenf-jahren"
     ],
     "file": "days/2026-07-29.html"
+  },
+  {
+    "date": "2026-07-30",
+    "title": "Der Japankäfer erreicht immer mehr Kantone",
+    "lead": "Ende Juli 2026 hat der Kanton Luzern bei der Allmend einen zweiten Befallsherd des Japankäfers festgestellt – zusätzlich zum bereits 2025 entdeckten Herd bei Neuenkirch. Schweizweit ist die Zahl der Kantone mit bestätigtem Befall seit der Ersteinschleppung im Tessin 2017 auf zehn gestiegen, vier davon allein im Sommer 2025.",
+    "category": "Klima",
+    "keywords": [
+      "japankäfer",
+      "invasive art",
+      "kanton luzern",
+      "tilgungszone",
+      "ausbreitung schweiz"
+    ],
+    "chartType": "area",
+    "sourceUrls": [
+      "https://www.blw.admin.ch/de/japankaefer-aktuelle-situation",
+      "https://lawa.lu.ch/landwirtschaft/pflanzenschutz1/japankaefer"
+    ],
+    "file": "days/2026-07-30.html"
   }
 ]
