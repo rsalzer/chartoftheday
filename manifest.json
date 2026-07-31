@@ -73,5 +73,25 @@
       "https://lawa.lu.ch/landwirtschaft/pflanzenschutz1/japankaefer"
     ],
     "file": "days/2026-07-30.html"
+  },
+  {
+    "date": "2026-07-31",
+    "title": "Erdbeben in Kumamoto: Amtliche Opferzahl versechsfacht sich binnen 24 Stunden",
+    "lead": "Beim Erdbeben der Stärke 7,1 vom 28. Juli 2026 in der japanischen Präfektur Kumamoto ist die amtlich bestätigte Zahl der Todesopfer laut den Lageberichten des japanischen Kabinettsbüros innerhalb von rund 24 Stunden von 2 auf 12 gestiegen. Lokale Medien in Kumamoto meldeten bis zum 31. Juli bereits deutlich höhere, bislang nicht amtlich bestätigte Opferzahlen von über 30.",
+    "category": "International",
+    "keywords": [
+      "kumamoto",
+      "erdbeben",
+      "japan",
+      "todesopfer",
+      "katastrophenschutz"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.bousai.go.jp/updates/r8kumamoto_jishin/pdf/r8kumamoto_jishin_20260729.pdf",
+      "https://www.bousai.go.jp/updates/r8kumamoto_jishin/pdf/r8kumamoto_jishin_20260729-1400.pdf",
+      "https://www.bousai.go.jp/updates/r8kumamoto_jishin/pdf/r8kumamoto_jishin_20260730.pdf"
+    ],
+    "file": "days/2026-07-31.html"
   }
 ]
