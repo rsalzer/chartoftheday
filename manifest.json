@@ -76,21 +76,23 @@
   },
   {
     "date": "2026-07-31",
-    "title": "Erdbeben in Kumamoto: Amtliche Opferzahl versechsfacht sich binnen 24 Stunden",
-    "lead": "Beim Erdbeben der Stärke 7,1 vom 28. Juli 2026 in der japanischen Präfektur Kumamoto ist die amtlich bestätigte Zahl der Todesopfer laut den Lageberichten des japanischen Kabinettsbüros innerhalb von rund 24 Stunden von 2 auf 12 gestiegen. Lokale Medien in Kumamoto meldeten bis zum 31. Juli bereits deutlich höhere, bislang nicht amtlich bestätigte Opferzahlen von über 30.",
-    "category": "International",
+    "title": "Ebola im Kongo wächst schneller als je zuvor",
+    "lead": "Der im Mai 2026 in der Demokratischen Republik Kongo ausgebrochene Ebola-Ausbruch mit dem Bundibugyo-Virus gilt laut WHO und kongolesischer Regierung als der am schnellsten wachsende seiner Art: Bis am 29. Juli stiegen die bestätigten Fälle auf 3442 und die Todesfälle auf 1521, eine Sterblichkeitsrate von rund 44 Prozent.",
+    "category": "Gesundheit",
     "keywords": [
-      "kumamoto",
-      "erdbeben",
-      "japan",
-      "todesopfer",
-      "katastrophenschutz"
+      "ebola",
+      "kongo",
+      "epidemie",
+      "bundibugyo-virus",
+      "seuchenausbruch"
     ],
-    "chartType": "bar",
+    "chartType": "line",
     "sourceUrls": [
-      "https://www.bousai.go.jp/updates/r8kumamoto_jishin/pdf/r8kumamoto_jishin_20260729.pdf",
-      "https://www.bousai.go.jp/updates/r8kumamoto_jishin/pdf/r8kumamoto_jishin_20260729-1400.pdf",
-      "https://www.bousai.go.jp/updates/r8kumamoto_jishin/pdf/r8kumamoto_jishin_20260730.pdf"
+      "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON603",
+      "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON613",
+      "https://www.africanews.com/2026/06/22/confirmed-ebola-cases-rise-to-1003-including-254-deaths-drc-says/",
+      "https://www.doctorswithoutborders.org/latest/ebola-disease-outbreak-2026-how-msf-responding",
+      "https://www.ksat.com/news/world/2026/07/30/congo-says-the-death-toll-in-fastest-growing-ebola-outbreak-has-passed-1500/"
     ],
     "file": "days/2026-07-31.html"
   }

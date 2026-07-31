@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Erdbeben in Kumamoto: Amtliche Opferzahl versechsfacht sich binnen 24 Stunden</title>
+<title>Ebola im Kongo wächst schneller als je zuvor</title>
 <style>
   :root {
     --ink: #0b0b0b; --muted: #52514e; --axis: #898781; --hair: #e1e0d9; --card: #fcfcfb;
-    --series1: #2a78d6; --series2: #eb6834;
+    --series1: #2a78d6; --series2: #e34948;
     --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --ink: #ffffff; --muted: #c3c2b7; --axis: #898781; --hair: #2c2c2a; --card: #1a1a19;
-      --series1: #3987e5; --series2: #d95926;
+      --series1: #3987e5; --series2: #e66767;
     }
   }
   * { box-sizing: border-box; }
@@ -37,7 +37,7 @@
 </head>
 <body>
 <div id="root">
-  <p class="fallback">Amtlich bestätigte Zahl der Todesopfer nach dem Erdbeben in Kumamoto (Japan) laut den Lageberichten des japanischen Kabinettsbüros: 2 Tote am 29. Juli 2026, 7 Uhr; 3 Tote am 29. Juli, 14 Uhr; 12 Tote am 30. Juli, 6.30 Uhr. Verletzte im selben Zeitraum: 7, 23, 77.</p>
+  <p class="fallback">Kumulierte bestätigte Ebola-Fälle und Todesfälle in der Demokratischen Republik Kongo (Bundibugyo-Virus): 83 Fälle/9 Tote am 21. Mai 2026, 1003/254 am 20. Juni, 2124/828 am 15. Juli, 3200/1405 am 26. Juli, 3360/1487 am 27. Juli, 3442/1521 am 29. Juli 2026.</p>
 </div>
 
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -49,17 +49,21 @@
 <script type="text/babel" data-presets="react">
 /** @jsx React.createElement */
 /** @jsxFrag React.Fragment */
-const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
+const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
 
-// Tote (deaths) and Verletzte (injured) at each successive government situation
-// report after the M7.1 Kumamoto earthquake of 28 July 2026. Source: Japanese
-// Cabinet Office (内閣府), "令和8年熊本地震に係る被害状況等について" — the
-// standardised 人的被害 summary table, cross-checked across three sequential
-// reports (each report explicitly supersedes and revises the prior one's count).
+// Cumulative confirmed cases/deaths for DRC only (Uganda's small, separately
+// declared-over side outbreak excluded for a consistent series). Cross-checked
+// across independent reports rather than a single running feed:
+// WHO Disease Outbreak News DON603 (21 May), Africanews citing DRC Ministry of
+// Health (20/22 June), WHO DON613 (15 July), MSF (26 July), WHO/ECDC (27 July),
+// DRC government via AP wire (29 July).
 const DATA = [
-  { label: '29.7., 7 Uhr',    tote: 2,  verletzte: 7  },
-  { label: '29.7., 14 Uhr',   tote: 3,  verletzte: 23 },
-  { label: '30.7., 6.30 Uhr', tote: 12, verletzte: 77 }
+  { label: '21.05.', faelle: 83,   tote: 9    },
+  { label: '20.06.', faelle: 1003, tote: 254  },
+  { label: '15.07.', faelle: 2124, tote: 828  },
+  { label: '26.07.', faelle: 3200, tote: 1405 },
+  { label: '27.07.', faelle: 3360, tote: 1487 },
+  { label: '29.07.', faelle: 3442, tote: 1521 }
 ];
 
 const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
@@ -73,10 +77,10 @@ function ChartTip({ active, payload, label }) {
   return (
     <div style={{ background: surface, border: '1px solid ' + grid,
       borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: ink }}>
-      <div style={{ fontWeight: 600, marginBottom: 2 }}>{label}</div>
+      <div style={{ fontWeight: 600, marginBottom: 2 }}>{label} 2026</div>
       {payload.map((p) => (
         <div key={p.dataKey} style={{ fontVariantNumeric: 'tabular-nums' }}>
-          <span style={{ color: p.color }}>●</span> {p.dataKey === 'tote' ? 'Tote' : 'Verletzte'}: {p.value}
+          <span style={{ color: p.color }}>●</span> {p.dataKey === 'faelle' ? 'Fälle' : 'Todesfälle'}: {p.value.toLocaleString('de-CH')}
         </div>
       ))}
     </div>
@@ -86,41 +90,45 @@ function ChartTip({ active, payload, label }) {
 function App() {
   return (
     <div>
-      <h1>Erdbeben in Kumamoto: Amtliche Opferzahl versechsfacht sich binnen 24 Stunden</h1>
+      <h1>Ebola im Kongo wächst schneller als je zuvor</h1>
       <p className="lead">
-        Beim Erdbeben der Stärke 7,1 vom 28. Juli 2026 in der japanischen Präfektur Kumamoto ist die
-        amtlich bestätigte Zahl der Todesopfer laut den Lageberichten des japanischen Kabinettsbüros
-        innerhalb von rund 24 Stunden von 2 auf 12 gestiegen, während Rettungskräfte weiter nach
-        Verschütteten suchten. Lokale Medien in Kumamoto meldeten bis zum 31. Juli bereits deutlich
-        höhere, bislang nicht in einem vergleichbaren amtlichen Lagebericht bestätigte Opferzahlen von
-        über 30.
+        Der im Mai 2026 in der Demokratischen Republik Kongo ausgebrochene Ebola-Ausbruch mit dem
+        Bundibugyo-Virus gilt laut Weltgesundheitsorganisation und kongolesischer Regierung als der am
+        schnellsten wachsende seiner Art: Bis am 29. Juli stiegen die bestätigten Fälle auf 3442 und die
+        Todesfälle auf 1521, eine Sterblichkeitsrate von rund 44 Prozent. Die Westafrika-Epidemie von
+        2014 bis 2016 brauchte für 1000 Tote noch rund acht Monate, diesmal waren es laut Behördenangaben
+        nur rund zwei Monate.
       </p>
       <div className="cards">
-        <div className="kpi"><div className="lab">Tote, 30.7., 6.30 Uhr</div><div className="val">12</div></div>
-        <div className="kpi"><div className="lab">Tote, 29.7., 7 Uhr</div><div className="val">2</div></div>
-        <div className="kpi"><div className="lab">Verletzte, 30.7., 6.30 Uhr</div><div className="val">77</div></div>
+        <div className="kpi"><div className="lab">Fälle, 29.7.</div><div className="val">3442</div></div>
+        <div className="kpi"><div className="lab">Todesfälle, 29.7.</div><div className="val">1521</div></div>
+        <div className="kpi"><div className="lab">Sterblichkeitsrate</div><div className="val">44 <small>%</small></div></div>
       </div>
       <div className="legend">
-        <span><i className="swatch" style={{ background: 'var(--series1)' }}></i>Tote</span>
-        <span><i className="swatch" style={{ background: 'var(--series2)' }}></i>Verletzte</span>
+        <span><i className="swatch" style={{ background: 'var(--series1)' }}></i>Bestätigte Fälle</span>
+        <span><i className="swatch" style={{ background: 'var(--series2)' }}></i>Todesfälle</span>
       </div>
-      <div role="img" aria-label="Balkendiagramm: Zahl der Toten und Verletzten nach dem Erdbeben in Kumamoto, in drei aufeinanderfolgenden amtlichen Lageberichten. Tote: 2 am 29. Juli 7 Uhr, 3 am 29. Juli 14 Uhr, 12 am 30. Juli 6.30 Uhr. Verletzte: 7, 23, 77 zu den gleichen Zeitpunkten.">
+      <div role="img" aria-label="Liniendiagramm: kumulierte bestätigte Ebola-Fälle und Todesfälle in der Demokratischen Republik Kongo, 21. Mai bis 29. Juli 2026. Fälle steigen von 83 auf 3442, Todesfälle von 9 auf 1521.">
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={DATA} margin={{ top: 8, right: 16, bottom: 4, left: -8 }} barGap={4}>
+          <LineChart data={DATA} margin={{ top: 8, right: 16, bottom: 4, left: -8 }}>
             <CartesianGrid stroke={grid} vertical={false} />
             <XAxis dataKey="label" tick={{ fill: axis, fontSize: 12 }} stroke={grid} />
-            <YAxis tick={{ fill: axis, fontSize: 12 }} stroke={grid} width={30} />
+            <YAxis tick={{ fill: axis, fontSize: 12 }} stroke={grid} width={44} />
             <Tooltip content={<ChartTip />} />
-            <Bar dataKey="tote" name="Tote" fill="var(--series1)" radius={[4, 4, 0, 0]} isAnimationActive={false} />
-            <Bar dataKey="verletzte" name="Verletzte" fill="var(--series2)" radius={[4, 4, 0, 0]} isAnimationActive={false} />
-          </BarChart>
+            <Line type="monotone" dataKey="faelle" name="Fälle" stroke="var(--series1)" strokeWidth={2}
+              dot={{ r: 3, fill: 'var(--series1)', stroke: 'var(--series1)' }} activeDot={{ r: 5 }} isAnimationActive={false} />
+            <Line type="monotone" dataKey="tote" name="Todesfälle" stroke="var(--series2)" strokeWidth={2}
+              dot={{ r: 3, fill: 'var(--series2)', stroke: 'var(--series2)' }} activeDot={{ r: 5 }} isAnimationActive={false} />
+          </LineChart>
         </ResponsiveContainer>
       </div>
       <div className="source">
-        Quelle: Japanisches Kabinettsbüro (内閣府),{' '}
-        <a href="https://www.bousai.go.jp/updates/r8kumamoto_jishin/pdf/r8kumamoto_jishin_20260729.pdf" target="_blank" rel="noopener">Lagebericht 29.7., 7 Uhr</a>,{' '}
-        <a href="https://www.bousai.go.jp/updates/r8kumamoto_jishin/pdf/r8kumamoto_jishin_20260729-1400.pdf" target="_blank" rel="noopener">14 Uhr</a>,{' '}
-        <a href="https://www.bousai.go.jp/updates/r8kumamoto_jishin/pdf/r8kumamoto_jishin_20260730.pdf" target="_blank" rel="noopener">30.7., 6.30 Uhr</a> · 31. Juli 2026
+        Quelle: WHO Disease Outbreak News,{' '}
+        <a href="https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON603" target="_blank" rel="noopener">DON603</a>{' '}
+        &amp; <a href="https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON613" target="_blank" rel="noopener">DON613</a>,{' '}
+        <a href="https://www.africanews.com/2026/06/22/confirmed-ebola-cases-rise-to-1003-including-254-deaths-drc-says/" target="_blank" rel="noopener">Africanews/DRC-Gesundheitsministerium</a>,{' '}
+        <a href="https://www.doctorswithoutborders.org/latest/ebola-disease-outbreak-2026-how-msf-responding" target="_blank" rel="noopener">Ärzte ohne Grenzen</a>,{' '}
+        <a href="https://www.ksat.com/news/world/2026/07/30/congo-says-the-death-toll-in-fastest-growing-ebola-outbreak-has-passed-1500/" target="_blank" rel="noopener">AP/kongolesische Regierung</a> · 31. Juli 2026
       </div>
     </div>
   );
