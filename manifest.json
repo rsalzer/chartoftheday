@@ -95,5 +95,24 @@
       "https://www.ksat.com/news/world/2026/07/30/congo-says-the-death-toll-in-fastest-growing-ebola-outbreak-has-passed-1500/"
     ],
     "file": "days/2026-07-31.html"
+  },
+  {
+    "date": "2026-08-01",
+    "title": "FIFA verspricht Verbänden bis zu fünfmal mehr Fördergeld",
+    "lead": "Die FIFA will mit der neuen Tochtergesellschaft «FIFA Forward Enterprise» private Investoren an den Kommerzrechten der Fussball-Weltmeisterschaft beteiligen und bietet ihren 211 Mitgliedsverbänden im Gegenzug deutlich mehr Entwicklungsgeld: von 8 Millionen US-Dollar pro Vierjahreszyklus (2023–2026) auf neu 20 Millionen, mit einem freiwilligen Zusatzprogramm sogar bis zu 40 Millionen Dollar für 2027–2030.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "fifa",
+      "forward-enterprise",
+      "foerdergelder",
+      "private-equity",
+      "weltmeisterschaft"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://inside.fifa.com/news/gianni-infantino-forward-enterprise-subsidiary-investment",
+      "https://inside.fifa.com/organisation/media-releases/clarifications-fifa-forward-enterprise-ffe-proposal"
+    ],
+    "file": "days/2026-08-01.html"
   }
 ]

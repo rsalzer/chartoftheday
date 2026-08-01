@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FIFA verspricht Verbänden bis zu fünfmal mehr Fördergeld</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #52514e; --axis: #898781; --hair: #e1e0d9; --card: #fcfcfb;
+    --series1: #2a78d6; --series-before: #898781;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #c3c2b7; --axis: #898781; --hair: #2c2c2a; --card: #1a1a19;
+      --series1: #3987e5; --series-before: #898781;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-family: var(--serif); font-size: 21px; font-weight: 600; letter-spacing: -0.01em; margin: 2px 0 6px; }
+  p.lead { font-size: 14px; color: var(--muted); margin: 0 0 12px; max-width: 60em; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 12px; color: var(--muted); }
+  .kpi .val { font-family: var(--serif); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 13px; color: var(--muted); font-family: var(--sans); font-weight: 400; }
+  .legend { display: flex; gap: 16px; font-size: 12.5px; color: var(--muted); margin: 6px 0 2px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--muted); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">FIFA-Fördergeld pro Mitgliedsverband und Vierjahreszyklus: 2023-2026 8 Millionen US-Dollar. Basisförderung 2027-2030 20 Millionen US-Dollar. Maximum inklusive freiwilligem Fast-Forward-Programm 2027-2030 40 Millionen US-Dollar.</p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+
+// FIFA's own 28/31 July 2026 press releases (inside.fifa.com) on the proposed
+// "FIFA Forward Enterprise" (FFE) subsidiary: development funding per Member
+// Association (MA) would rise from USD 8m (current 2023-26 cycle) to USD 20m
+// as a base amount for 2027-30, with an additional optional USD 20m via the
+// "FIFA Fast Forward Programme" -- taking the potential maximum to USD 40m per
+// MA. Both rows share the same 2023-26 starting point.
+const DATA = [
+  { name: 'Basisförderung 2027–2030', range: [8, 20] },
+  { name: 'Maximum inkl. Fast-Forward-Programm', range: [8, 40] }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const before = '#898781';
+const after = isDark ? '#3987e5' : '#2a78d6';
+
+// Custom shape for a floating range Bar: draws a connecting line plus a
+// muted dot at the 2023-26 value and an accent dot at the 2027-30 value.
+function Dumbbell(props) {
+  const { x, y, width, height, payload } = props;
+  const cy = y + height / 2;
+  const x1 = x;
+  const x2 = x + width;
+  return (
+    <g>
+      <line x1={x1} y1={cy} x2={x2} y2={cy} stroke={grid} strokeWidth={4} strokeLinecap="round" />
+      <circle cx={x1} cy={cy} r={7} fill={before} stroke={surface} strokeWidth={2} />
+      <circle cx={x2} cy={cy} r={7} fill={after} stroke={surface} strokeWidth={2} />
+      <text x={x2} y={cy - 14} textAnchor="middle" fontSize={12.5} fontWeight={600} fill={ink}>
+        {payload.range[1]}
+      </text>
+      <text x={x1} y={cy - 14} textAnchor="middle" fontSize={12.5} fill={axis}>
+        {payload.range[0]}
+      </text>
+    </g>
+  );
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const p = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: ink, maxWidth: 220 }}>
+      <div style={{ fontWeight: 600, marginBottom: 2 }}>{p.name}</div>
+      <div><span style={{ color: before }}>●</span> 2023–2026: {p.range[0]} Mio. USD</div>
+      <div><span style={{ color: after }}>●</span> 2027–2030: {p.range[1]} Mio. USD</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>FIFA verspricht Verbänden bis zu fünfmal mehr Fördergeld</h1>
+      <p className="lead">
+        Die FIFA will mit der neuen Tochtergesellschaft «FIFA Forward Enterprise» private Investoren an
+        den Kommerzrechten der Fussball-Weltmeisterschaft beteiligen und bietet ihren 211 Mitgliedsverbänden
+        im Gegenzug deutlich mehr Entwicklungsgeld: von 8 Millionen US-Dollar pro Vierjahreszyklus (2023–2026)
+        auf neu 20 Millionen, mit einem freiwilligen Zusatzprogramm sogar bis zu 40 Millionen Dollar für
+        2027–2030. Die UEFA, die Concacaf und die AFC lehnen den Plan ab; die Konsultation der Verbände läuft
+        seit dem 28. Juli 2026 noch mehrere Wochen.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">2023–2026, pro Verband</div><div className="val">8 <small>Mio. $</small></div></div>
+        <div className="kpi"><div className="lab">Basis 2027–2030</div><div className="val">20 <small>Mio. $</small></div></div>
+        <div className="kpi"><div className="lab">Maximum 2027–2030</div><div className="val">40 <small>Mio. $</small></div></div>
+      </div>
+      <div className="legend">
+        <span><i className="dot" style={{ background: before }}></i>2023–2026 (heutiger Zyklus)</span>
+        <span><i className="dot" style={{ background: after }}></i>2027–2030 (FFE-Vorschlag)</span>
+      </div>
+      <div role="img" aria-label="Dumbbell-Diagramm: FIFA-Fördergeld pro Mitgliedsverband steigt vom heutigen Zyklus 2023-2026 mit 8 Millionen US-Dollar auf 20 Millionen als Basisbetrag beziehungsweise bis zu 40 Millionen US-Dollar inklusive freiwilligem Fast-Forward-Programm im Zyklus 2027-2030.">
+        <ResponsiveContainer width="100%" height={220}>
+          <ComposedChart data={DATA} layout="vertical" margin={{ top: 20, right: 40, bottom: 8, left: 8 }}>
+            <CartesianGrid stroke={grid} horizontal={false} />
+            <XAxis type="number" domain={[0, 44]} tick={{ fill: axis, fontSize: 12 }} stroke={grid}
+              label={{ value: 'Mio. US-Dollar pro Verband, pro Vierjahreszyklus', position: 'insideBottom', offset: -4, fill: axis, fontSize: 12 }} />
+            <YAxis type="category" dataKey="name" tick={{ fill: axis, fontSize: 12.5 }} stroke={grid} width={170} />
+            <Tooltip content={<ChartTip />} cursor={false} />
+            <Bar dataKey="range" shape={<Dumbbell />} isAnimationActive={false} barSize={4} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: FIFA, {' '}
+        <a href="https://inside.fifa.com/news/gianni-infantino-forward-enterprise-subsidiary-investment" target="_blank" rel="noopener">«Infantino: FIFA Forward Enterprise a golden opportunity»</a>,{' '}
+        <a href="https://inside.fifa.com/organisation/media-releases/clarifications-fifa-forward-enterprise-ffe-proposal" target="_blank" rel="noopener">Klarstellungen zum FFE-Vorschlag</a> · 1. August 2026
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
