@@ -114,5 +114,24 @@
       "https://inside.fifa.com/organisation/media-releases/clarifications-fifa-forward-enterprise-ffe-proposal"
     ],
     "file": "days/2026-08-01.html"
+  },
+  {
+    "date": "2026-08-02",
+    "title": "Malaysia und Jamaika holen am meisten Gold pro Medaille",
+    "lead": "Am letzten Tag der Commonwealth Games 2026 in Glasgow verwandelte Malaysia 8 seiner 14 Medaillen in Gold (57%) – der höchste Goldanteil aller Nationen mit mindestens 12 Medaillen, knapp vor Jamaika (56%). Australien sammelte zwar am meisten Medaillen überhaupt (158), davon waren aber nur 41% Gold – bei England (102 Medaillen) war es nur rund ein Viertel.",
+    "category": "Sport",
+    "keywords": [
+      "commonwealth games",
+      "glasgow 2026",
+      "medaillenspiegel",
+      "goldanteil",
+      "medaillen-effizienz"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/2026_Commonwealth_Games_medal_table",
+      "https://www.tntsports.co.uk/commonwealth-games/2026/medals.shtml"
+    ],
+    "file": "days/2026-08-02.html"
   }
 ]

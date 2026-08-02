@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Malaysia und Jamaika holen am meisten Gold pro Medaille</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #52514e; --axis: #898781; --hair: #e1e0d9; --card: #fcfcfb;
+    --series1: #2a78d6;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #c3c2b7; --axis: #898781; --hair: #2c2c2a; --card: #1a1a19;
+      --series1: #3987e5;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-family: var(--serif); font-size: 21px; font-weight: 600; letter-spacing: -0.01em; margin: 2px 0 6px; }
+  p.lead { font-size: 14px; color: var(--muted); margin: 0 0 12px; max-width: 60em; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 12px; color: var(--muted); }
+  .kpi .val { font-family: var(--serif); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 13px; color: var(--muted); font-family: var(--sans); font-weight: 400; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--muted); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Goldanteil an allen Medaillen bei den Commonwealth Games 2026 (Nationen mit mindestens 12 Medaillen, Stand 2. August 2026):
+    Malaysia 57.1% (8 von 14), Jamaika 55.6% (10 von 18), Nigeria 41.7% (10 von 24), Australien 41.1% (65 von 158),
+    Schottland 34.2% (13 von 38), Indien 33.3% (13 von 39), Kanada 30.5% (18 von 59), Neuseeland 28.6% (8 von 28),
+    Wales 26.7% (8 von 30), England 25.5% (26 von 102), Kenia 25.0% (3 von 12).
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ResponsiveContainer } = Recharts;
+
+// Medal counts cross-verified against two independently updated tables as of
+// 2 August 2026 (closing day of the Glasgow Commonwealth Games): the
+// Wikipedia medal table (sourced from official Commonwealth Sport results)
+// and TNT Sports' live medal table. All rows below matched exactly between
+// both sources except South Africa, whose silver/total count differed
+// between the two (7-10-10-27 vs 7-11-10-28) -- likely a mid-event update
+// gap on the Games' final day -- so it was dropped rather than guessed at.
+// Restricted to nations with >=12 total medals to avoid single-medal noise
+// (e.g. a nation with 1 gold and nothing else would show "100%").
+const DATA = [
+  { name: 'Malaysia', gold: 8, total: 14 },
+  { name: 'Jamaika', gold: 10, total: 18 },
+  { name: 'Nigeria', gold: 10, total: 24 },
+  { name: 'Australien', gold: 65, total: 158 },
+  { name: 'Schottland', gold: 13, total: 38 },
+  { name: 'Indien', gold: 13, total: 39 },
+  { name: 'Kanada', gold: 18, total: 59 },
+  { name: 'Neuseeland', gold: 8, total: 28 },
+  { name: 'Wales', gold: 8, total: 30 },
+  { name: 'England', gold: 26, total: 102 },
+  { name: 'Kenia', gold: 3, total: 12 }
+].map((d) => ({ ...d, share: Math.round((d.gold / d.total) * 1000) / 10 }));
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const bar = isDark ? '#3987e5' : '#2a78d6';
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const p = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: ink, maxWidth: 220 }}>
+      <div style={{ fontWeight: 600, marginBottom: 2 }}>{p.name}</div>
+      <div>{p.gold} von {p.total} Medaillen sind Gold ({p.share}%)</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Malaysia und Jamaika holen am meisten Gold pro Medaille</h1>
+      <p className="lead">
+        Am letzten Tag der Commonwealth Games 2026 in Glasgow verwandelte Malaysia 8 seiner 14 Medaillen in Gold
+        (57%) – der höchste Goldanteil aller Nationen mit mindestens 12 Medaillen, knapp vor Jamaika (56%).
+        Australien sammelte zwar am meisten Medaillen überhaupt (158), davon waren aber nur 41% Gold –
+        bei England (102 Medaillen) war es nur rund ein Viertel.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Höchster Goldanteil</div><div className="val">57 <small>% Malaysia</small></div></div>
+        <div className="kpi"><div className="lab">Meiste Medaillen total</div><div className="val">158 <small>Australien</small></div></div>
+        <div className="kpi"><div className="lab">Tiefster Goldanteil (Top 11)</div><div className="val">25 <small>% Kenia</small></div></div>
+      </div>
+      <div role="img" aria-label="Balkendiagramm: Anteil der Goldmedaillen an allen Medaillen je Nation bei den Commonwealth Games 2026, für Nationen mit mindestens 12 Medaillen. Malaysia führt mit 57 Prozent vor Jamaika mit 56 Prozent; Australien, die Nation mit den meisten Medaillen insgesamt, liegt bei 41 Prozent; England und Kenia bilden mit je 25 Prozent das Schlusslicht.">
+        <ResponsiveContainer width="100%" height={360}>
+          <BarChart data={DATA} layout="vertical" margin={{ top: 8, right: 34, bottom: 24, left: 8 }}>
+            <CartesianGrid stroke={grid} horizontal={false} />
+            <XAxis type="number" domain={[0, 60]} tickFormatter={(v) => v + '%'} tick={{ fill: axis, fontSize: 12 }} stroke={grid}
+              label={{ value: 'Anteil Goldmedaillen an allen Medaillen', position: 'insideBottom', offset: -6, fill: axis, fontSize: 12 }} />
+            <YAxis type="category" dataKey="name" tick={{ fill: ink, fontSize: 12.5 }} stroke={grid} width={92} />
+            <Tooltip content={<ChartTip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(11,11,11,0.03)' }} />
+            <Bar dataKey="share" fill={bar} radius={[0, 4, 4, 0]} barSize={16} isAnimationActive={false}>
+              <LabelList dataKey="share" position="right" formatter={(v) => v + '%'} fill={axis} fontSize={12} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: {' '}
+        <a href="https://en.wikipedia.org/wiki/2026_Commonwealth_Games_medal_table" target="_blank" rel="noopener">Medaillenspiegel Commonwealth Games 2026 (Wikipedia, nach offiziellen Commonwealth-Sport-Resultaten)</a>,{' '}
+        <a href="https://www.tntsports.co.uk/commonwealth-games/2026/medals.shtml" target="_blank" rel="noopener">TNT Sports Medal Table</a> · 2. August 2026
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
