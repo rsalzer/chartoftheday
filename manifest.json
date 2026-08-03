@@ -136,20 +136,20 @@
   },
   {
     "date": "2026-08-03",
-    "title": "Europas Waldbrandsaison 2026 übertrifft den bisherigen Rekord",
-    "lead": "Bis zum 29. Juli 2026 sind laut dem europäischen Waldbrand-Informationssystem EFFIS bereits 434'976 Hektar EU-Fläche verbrannt – mehr als im bisherigen Rekordjahr 2025 (346'836 ha) und weit über dem langjährigen Schnitt von 172'186 ha. Zwar registrierten die Behörden bisher etwas weniger einzelne Feuer als 2025, doch diese waren im Schnitt deutlich zerstörerischer: Die CO2-Emissionen liegen mit 17.98 Millionen Tonnen mehr als doppelt so hoch wie im langjährigen Durchschnitt.",
-    "category": "Klima",
+    "title": "Cyberangriff auf Liechtenstein: drei Tage bis zur Information der Öffentlichkeit",
+    "lead": "In der Nacht auf den 30. Juli 2026 verschafften sich Unbekannte Zugriff auf das liechtensteinische Verzeichnis wirtschaftlich berechtigter Personen (VwbP) und kopierten Datensätze von rund 31'000 Rechtsträgern. Die Regierung informierte die Öffentlichkeit und bestätigte einen Krisenstab erst drei Tage später.",
+    "category": "Tech",
     "keywords": [
-      "waldbrände",
-      "effis",
-      "brandfläche",
-      "co2-emissionen",
-      "rekordsaison"
+      "liechtenstein",
+      "cyberangriff",
+      "vwbp",
+      "datenleck",
+      "krisenstab"
     ],
-    "chartType": "radar",
+    "chartType": "step",
     "sourceUrls": [
-      "https://joint-research-centre.ec.europa.eu/projects-and-activities/natural-and-man-made-hazards/forest-fires/current-wildfire-situation-europe_en",
-      "https://www.euronews.com/my-europe/2026/07/29/wildfires-europe-on-track-for-worst-year-on-record-as-burned-area-reaches-size-of-luxembou"
+      "https://www.presseportal.ch/de/pm/100000148/100941487",
+      "https://www.srf.ch/news/international/hackerangriff-cyberangriff-auf-wirtschaftsdaten-im-fuerstentum-liechtenstein"
     ],
     "file": "days/2026-08-03.html"
   }

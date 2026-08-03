@@ -3,46 +3,37 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Europas Waldbrandsaison 2026 übertrifft den bisherigen Rekord</title>
+<title>Cyberangriff auf Liechtenstein: drei Tage bis zur Information</title>
 <style>
   :root {
-    --ink: #0b0b0b; --muted: #52514e; --axis: #898781; --hair: #e1e0d9; --card: #fcfcfb;
-    --series1: #2a78d6; --series2: #eb6834; --series3: #1baf7a;
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series: #2a78d6; --mark: #eb6834;
     --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --ink: #ffffff; --muted: #c3c2b7; --axis: #898781; --hair: #2c2c2a; --card: #1a1a19;
-      --series1: #3987e5; --series2: #d95926; --series3: #199e70;
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series: #3987e5; --mark: #d95926;
     }
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
   #root { padding: 14px 16px 18px; }
-  h1 { font-family: var(--serif); font-size: 21px; font-weight: 600; letter-spacing: -0.01em; margin: 2px 0 6px; }
-  p.lead { font-size: 14px; color: var(--muted); margin: 0 0 12px; max-width: 62em; }
-  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
-  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
-  .kpi .lab { font-size: 12px; color: var(--muted); }
-  .kpi .val { font-family: var(--serif); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
-  .kpi .val small { font-size: 13px; color: var(--muted); font-family: var(--sans); font-weight: 400; }
-  .legend { display: flex; gap: 16px; font-size: 12.5px; color: var(--muted); margin: 6px 0 2px; flex-wrap: wrap; }
-  .legend span { display: inline-flex; align-items: center; gap: 6px; }
-  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 62ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 140px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
   .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
-  .source a { color: var(--muted); }
+  .source a { color: var(--sub); }
   .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 </style>
 </head>
 <body>
 <div id="root">
-  <p class="fallback">
-    EU-Waldbrandbilanz bis 29. Juli 2026 (EFFIS/Copernicus), Index langjähriger Schnitt 2006–2025 = 100:
-    Brandfläche 2026 434'976 ha (Index 253), 2025 346'836 ha (Index 201), Schnitt 172'186 ha.
-    Feueranzahl 2026 1'407 (Index 223), 2025 1'467 (Index 232), Schnitt 632.
-    CO2-Emissionen 2026 17.98 Mt (Index 175), 2025 8.48 Mt (Index 83), Schnitt 10.26 Mt.
-  </p>
+  <p class="fallback">Cyberangriff auf das liechtensteinische Register wirtschaftlich berechtigter Personen (VwbP): Zugriff in der Nacht auf den 30. Juli 2026, Entdeckung noch am selben Tag, doch erst nach drei Tagen — am 2. August, 18:34 Uhr — informierte die Regierung die Öffentlichkeit und bestätigte den Krisenstab. Rund 31'000 Rechtsträger betroffen.</p>
 </div>
 
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -54,20 +45,22 @@
 <script type="text/babel" data-presets="react">
 /** @jsx React.createElement */
 /** @jsxFrag React.Fragment */
-const { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip, ResponsiveContainer } = Recharts;
+const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
 
-// Source: EU Joint Research Centre / Copernicus EFFIS, "Current wildfire
-// situation in Europe" (data as of 29 July 2026, page updated 30 July 2026,
-// https://joint-research-centre.ec.europa.eu/.../current-wildfire-situation-europe_en).
-// Index = value / long-term average (2006-2025) * 100, so all three metrics
-// (hectares, fire count, megatonnes CO2) sit on one comparable radial scale.
+// Timeline reconstructed from the Liechtenstein government's press release
+// (2 Aug 2026, 18:34) and the 2 Aug press conference in Vaduz. "day" = whole
+// days elapsed since the night of the intrusion (29/30 July).
 const DATA = [
-  { metrik: 'Brandfläche', j2026: 252.6, j2025: 201.4, schnitt: 100,
-    raw2026: "434'976 ha", raw2025: "346'836 ha", rawSchnitt: "172'186 ha" },
-  { metrik: 'Feueranzahl', j2026: 222.6, j2025: 232.1, schnitt: 100,
-    raw2026: "1'407", raw2025: "1'467", rawSchnitt: "632" },
-  { metrik: 'CO2-Emissionen', j2026: 175.2, j2025: 82.6, schnitt: 100,
-    raw2026: '17.98 Mt', raw2025: '8.48 Mt', rawSchnitt: '10.26 Mt' }
+  { label: 'Angriff', date: 'Nacht 29./30. Juli 2026', day: 0,
+    desc: 'Unbekannte verschaffen sich Zugriff auf das VwbP-Register und kopieren Daten von rund 31’000 Rechtsträgern.' },
+  { label: 'Entdeckung', date: '30. Juli 2026', day: 0,
+    desc: 'Das Amt für Justiz bemerkt Unregelmässigkeiten und nimmt das Verzeichnis vom Netz.' },
+  { label: 'Regierung', date: '31. Juli 2026', day: 1,
+    desc: 'Die Regierung wird über den mutmasslich erfolgreichen Angriff informiert.' },
+  { label: 'Untersuchung', date: '1. August 2026, nachmittags', day: 2,
+    desc: 'Erste Ergebnisse der technischen Untersuchung liegen vor.' },
+  { label: 'Kommunikation', date: '2. August 2026, 18:34 Uhr', day: 3,
+    desc: 'Die Regierung informiert die Öffentlichkeit und bestätigt den Krisenstab unter Regierungschefin Brigitte Haas.' }
 ];
 
 const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
@@ -76,65 +69,60 @@ const grid = isDark ? '#2c2c2a' : '#e1e0d9';
 const ink = isDark ? '#ffffff' : '#0b0b0b';
 const surface = isDark ? '#1a1a19' : '#fcfcfb';
 
-const SERIES_LABEL = { j2026: '2026 (aktuell)', j2025: '2025 (bisheriger Rekord)', schnitt: 'Schnitt 2006–2025' };
-const RAW_KEY = { j2026: 'raw2026', j2025: 'raw2025', schnitt: 'rawSchnitt' };
-
-function ChartTip({ active, payload, label }) {
+function ChartTip({ active, payload }) {
   if (!active || !payload || !payload.length) return null;
-  const row = payload[0] && payload[0].payload;
+  const row = payload[0].payload;
   return (
     <div style={{ background: surface, border: '1px solid ' + grid,
-      borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: ink }}>
-      <div style={{ fontWeight: 600, marginBottom: 2 }}>{label}</div>
-      {payload.map((p) => (
-        <div key={p.dataKey} style={{ fontVariantNumeric: 'tabular-nums' }}>
-          <span style={{ color: p.color }}>●</span> {SERIES_LABEL[p.dataKey]}: {row ? row[RAW_KEY[p.dataKey]] : p.value} <span style={{ color: axis }}>(Index {Math.round(p.value)})</span>
-        </div>
-      ))}
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 240 }}>
+      <div style={{ fontWeight: 700 }}>{row.label}</div>
+      <div style={{ color: axis, marginBottom: 4 }}>{row.date}</div>
+      <div>{row.desc}</div>
     </div>
   );
+}
+
+function EndDot(props) {
+  const { cx, cy, index } = props;
+  if (index !== DATA.length - 1) return <circle cx={cx} cy={cy} r={4} fill="var(--series)" stroke="none" />;
+  return <circle cx={cx} cy={cy} r={6} fill="var(--mark)" stroke={surface} strokeWidth={2} />;
 }
 
 function App() {
   return (
     <div>
-      <h1>Europas Waldbrandsaison 2026 übertrifft den bisherigen Rekord</h1>
+      <h1>Cyberangriff auf Liechtenstein: drei Tage bis zur Information der Öffentlichkeit</h1>
       <p className="lead">
-        Bis zum 29. Juli 2026 sind laut dem europäischen Waldbrand-Informationssystem EFFIS bereits 434'976
-        Hektar EU-Fläche verbrannt – mehr als im bisherigen Rekordjahr 2025 (346'836 ha) und weit über dem
-        langjährigen Schnitt von 172'186 ha (2006–2025). Zwar registrierten die Behörden bisher etwas weniger
-        einzelne Feuer als 2025, doch diese waren im Schnitt deutlich zerstörerischer: Die CO2-Emissionen liegen
-        mit 17.98 Millionen Tonnen mehr als doppelt so hoch wie im langjährigen Durchschnitt.
+        In der Nacht auf den 30. Juli 2026 verschafften sich Unbekannte Zugriff auf das liechtensteinische
+        Verzeichnis wirtschaftlich berechtigter Personen (VwbP) und kopierten Datensätze von rund 31’000
+        Rechtsträgern. Die Regierung informierte die Öffentlichkeit und bestätigte einen Krisenstab
+        erst drei Tage später.
       </p>
       <div className="cards">
-        <div className="kpi"><div className="lab">Brandfläche 2026</div><div className="val">434'976 <small>ha</small></div></div>
-        <div className="kpi"><div className="lab">Feuer 2026</div><div className="val">1'407</div></div>
-        <div className="kpi"><div className="lab">CO2 2026</div><div className="val">17.98 <small>Mt</small></div></div>
+        <div className="kpi"><div className="lab">Betroffene Rechtsträger</div><div className="val">≈31’000</div></div>
+        <div className="kpi"><div className="lab">Bis zur öffentlichen Information</div><div className="val">3 <small>Tage</small></div></div>
+        <div className="kpi"><div className="lab">Lösegeldforderung / Darknet-Fund</div><div className="val">Keine <small>(Stand 2.8.)</small></div></div>
       </div>
-      <div className="legend">
-        <span><i className="swatch" style={{ background: 'var(--series3)' }}></i>Schnitt 2006–2025 (=100)</span>
-        <span><i className="swatch" style={{ background: 'var(--series2)' }}></i>2025 (bisheriger Rekord)</span>
-        <span><i className="swatch" style={{ background: 'var(--series1)' }}></i>2026 (aktuell)</span>
-      </div>
-      <div role="img" aria-label="Radardiagramm: Brandfläche, Feueranzahl und CO2-Emissionen der EU-Waldbrandsaison 2026 im Vergleich zu 2025 und zum langjährigen Schnitt 2006–2025, indexiert auf Schnitt=100. 2026 liegt bei allen drei Kennzahlen deutlich über dem Schnitt und bei Fläche und Emissionen auch über 2025, trotz leicht weniger Einzelfeuern.">
-        <ResponsiveContainer width="100%" height={320}>
-          <RadarChart data={DATA} margin={{ top: 8, right: 24, bottom: 8, left: 24 }}>
-            <PolarGrid stroke={grid} />
-            <PolarAngleAxis dataKey="metrik" tick={{ fill: ink, fontSize: 12.5 }} />
-            <PolarRadiusAxis angle={90} domain={[0, 280]} tick={{ fill: axis, fontSize: 10 }} tickCount={5} axisLine={false} />
+      <div role="img" aria-label="Zeitlinie des Cyberangriffs auf das liechtensteinische VwbP-Register: vom Angriff in der Nacht auf den 30. Juli bis zur öffentlichen Information am 2. August, drei Tage später.">
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={DATA} margin={{ top: 20, right: 20, bottom: 24, left: -8 }}>
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis dataKey="label" tick={{ fill: axis, fontSize: 11 }} stroke={grid}
+              interval={0} height={50} />
+            <YAxis domain={[0, 3.4]} ticks={[0, 1, 2, 3]} tick={{ fill: axis, fontSize: 12 }} stroke={grid}
+              tickFormatter={(v) => v + (v === 1 ? ' Tag' : ' Tage')} width={64} />
             <Tooltip content={<ChartTip />} />
-            <Radar name="Schnitt 2006-2025" dataKey="schnitt" stroke="var(--series3)" fill="var(--series3)" fillOpacity={0.12} strokeWidth={2} isAnimationActive={false} />
-            <Radar name="2025" dataKey="j2025" stroke="var(--series2)" fill="var(--series2)" fillOpacity={0.12} strokeWidth={2} isAnimationActive={false} />
-            <Radar name="2026" dataKey="j2026" stroke="var(--series1)" fill="var(--series1)" fillOpacity={0.22} strokeWidth={2.5} isAnimationActive={false} />
-          </RadarChart>
+            <Line type="stepAfter" dataKey="day" stroke="var(--series)" strokeWidth={2}
+              dot={<EndDot />} isAnimationActive={false} />
+          </LineChart>
         </ResponsiveContainer>
       </div>
       <div className="source">
-        Quelle: EU Joint Research Centre / Copernicus,{' '}
-        <a href="https://joint-research-centre.ec.europa.eu/projects-and-activities/natural-and-man-made-hazards/forest-fires/current-wildfire-situation-europe_en" target="_blank" rel="noopener">EFFIS – Current wildfire situation in Europe</a>{' '}
-        (Stand 29./30. Juli 2026), zusätzlich eingeordnet via{' '}
-        <a href="https://www.euronews.com/my-europe/2026/07/29/wildfires-europe-on-track-for-worst-year-on-record-as-burned-area-reaches-size-of-luxembou" target="_blank" rel="noopener">Euronews</a>{' '}
-        · 3. August 2026
+        Quelle: Regierung des Fürstentums Liechtenstein, Medienmitteilung vom 2. August 2026
+        (<a href="https://www.presseportal.ch/de/pm/100000148/100941487" target="_blank" rel="noopener">presseportal.ch</a>);
+        SRF, 2. August 2026
+        (<a href="https://www.srf.ch/news/international/hackerangriff-cyberangriff-auf-wirtschaftsdaten-im-fuerstentum-liechtenstein" target="_blank" rel="noopener">srf.ch</a>).
+        Stand: 3. August 2026.
       </div>
     </div>
   );
