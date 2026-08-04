@@ -152,5 +152,25 @@
       "https://www.srf.ch/news/international/hackerangriff-cyberangriff-auf-wirtschaftsdaten-im-fuerstentum-liechtenstein"
     ],
     "file": "days/2026-08-03.html"
+  },
+  {
+    "date": "2026-08-04",
+    "title": "Legionellen-Ausbruch in Basel: 26 Fälle, 7 auf der Intensivstation",
+    "lead": "Seit der ersten Häufungsmeldung am 21. Juli 2026 zählt der Kanton Basel-Stadt 26 bestätigte Legionellose-Fälle – mehr, als laut der stellvertretenden Kantonsärztin Eva Würfel sonst in einem ganzen Jahr auftreten (7 bis 20). 25 der Erkrankten mussten ins Spital, 7 davon auf die Intensivstation; ein 69-jähriger Mann ist gestorben.",
+    "category": "Gesundheit",
+    "keywords": [
+      "legionellen",
+      "basel-stadt",
+      "legionellose",
+      "intensivstation",
+      "kuehltuerme"
+    ],
+    "chartType": "stackedBar",
+    "sourceUrls": [
+      "https://www.bs.ch/medienmitteilungen/gd/2026-legionellenausbruch-im-kanton-basel-stadt",
+      "https://www.srf.ch/news/schweiz/basel-legionellen-ausbruch-ein-mann-gestorben-25-personen-im-spital",
+      "https://www.20min.ch/story/basel-aussergewoehnlich-viele-legionellen-faelle-nun-informiert-kanton-103612518"
+    ],
+    "file": "days/2026-08-04.html"
   }
 ]
