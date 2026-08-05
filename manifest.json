@@ -172,5 +172,25 @@
       "https://www.20min.ch/story/basel-aussergewoehnlich-viele-legionellen-faelle-nun-informiert-kanton-103612518"
     ],
     "file": "days/2026-08-04.html"
+  },
+  {
+    "date": "2026-08-05",
+    "title": "Wien-Stammersdorf knackt mit 41 Grad Österreichs Allzeit-Hitzerekord",
+    "lead": "Am 4. August 2026 meldete GeoSphere Austria in Wien-Stammersdorf 41,0 Grad – der höchste je in Österreich gemessene Wert, 0,5 Grad über dem bisherigen Rekord von 2013. Insgesamt überschritten neun Messstationen die Marke von 40 Grad.",
+    "category": "Klima",
+    "keywords": [
+      "hitzerekord",
+      "oesterreich",
+      "wien-stammersdorf",
+      "geosphere-austria",
+      "hitzewelle"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://wien.orf.at/stories/3365569/",
+      "https://www.tt.com/artikel/30939513/41-grad-in-wien-neuer-allzeit-hitzerekord-in-oesterreich",
+      "https://www.sn.at/panorama/oesterreich/allzeit-hitzerekord-von-41-grad-in-wien-gemessen-art-665772"
+    ],
+    "file": "days/2026-08-05.html"
   }
 ]
