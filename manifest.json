@@ -192,5 +192,25 @@
       "https://www.sn.at/panorama/oesterreich/allzeit-hitzerekord-von-41-grad-in-wien-gemessen-art-665772"
     ],
     "file": "days/2026-08-05.html"
+  },
+  {
+    "date": "2026-08-06",
+    "title": "Antisemitische Gewalt in Grossbritannien wächst am schnellsten",
+    "lead": "Der britische Sicherheitsdienst Community Security Trust (CST) zählte im ersten Halbjahr 2026 landesweit 1926 antisemitische Vorfälle – 21 Prozent mehr als im gleichen Zeitraum 2025. Am stärksten stieg dabei die Gewalt: Tätliche Angriffe nahmen um 82 Prozent zu, fast viermal so schnell wie die Gesamtzahl der Vorfälle.",
+    "category": "International",
+    "keywords": [
+      "antisemitismus",
+      "grossbritannien",
+      "cst-bericht",
+      "hasskriminalitaet",
+      "gewaltverbrechen"
+    ],
+    "chartType": "lollipop",
+    "sourceUrls": [
+      "https://cst.org.uk/public/data/file/a/a/Incidents%20Report%20Jan-Jun%202026%20-%20EMBARGOED.pdf",
+      "https://www.jta.org/2026/08/05/global/antisemitic-incidents-in-britain-rose-21-in-first-half-of-2026-remaining-near-record-levels",
+      "https://www.timesofisrael.com/antisemitic-assaults-in-britain-surged-by-82-in-first-six-months-of-2026-report/"
+    ],
+    "file": "days/2026-08-06.html"
   }
 ]
