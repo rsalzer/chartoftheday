@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Europas Detailhandel driftet auseinander – Schweiz wächst deutlich</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --pos: #2a78d6; --neg: #e34948;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --pos: #3987e5; --neg: #e66767;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 62ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 140px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Detailhandelsumsatz (Volumen), Veränderung Juni 2026 gegenüber Juni 2025, laut Eurostat:
+    Luxemburg +8,3%, Schweden +7,2%, Bulgarien +7,1%, Schweiz +1,5%, EU insgesamt +1,2%,
+    Euroraum +0,7%, Deutschland -0,1%, Belgien -0,1%, Österreich -0,3%, Rumänien -6,6%.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, Cell, ResponsiveContainer, LabelList } = Recharts;
+
+// Eurostat, "Volume of retail trade down by 0.3% in the euro area and by 0.1% in the EU"
+// (euro indicators release 4-06082026-ap, published 6 Aug 2026). Country and aggregate
+// figures are the year-on-year (June 2026 vs June 2025) values from that release's
+// prose highlights and full member-state table; each cross-checked against a second
+// independent report of the same Eurostat release before use.
+const DATA = [
+  { label: 'Luxemburg', value: 8.3 },
+  { label: 'Schweden', value: 7.2 },
+  { label: 'Bulgarien', value: 7.1 },
+  { label: 'Schweiz', value: 1.5, highlight: true },
+  { label: 'EU', value: 1.2 },
+  { label: 'Euroraum', value: 0.7 },
+  { label: 'Deutschland', value: -0.1 },
+  { label: 'Belgien', value: -0.1 },
+  { label: 'Österreich', value: -0.3 },
+  { label: 'Rumänien', value: -6.6 }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const posColor = isDark ? '#3987e5' : '#2a78d6';
+const negColor = isDark ? '#e66767' : '#e34948';
+const baseline = isDark ? '#383835' : '#c3c2b7';
+
+function fmt(v) {
+  const s = v.toFixed(1).replace('.', ',');
+  return (v > 0 ? '+' : '') + s + '%';
+}
+
+function TipLabel(props) {
+  const { x, y, width, value } = props;
+  const positive = value >= 0;
+  const tx = x + width + (positive ? 6 : -6);
+  return (
+    <text x={tx} y={y + 9} fontSize={12} fontWeight={700}
+      textAnchor={positive ? 'start' : 'end'} fill={ink}>
+      {fmt(value)}
+    </text>
+  );
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 240 }}>
+      <div style={{ fontWeight: 700 }}>{row.label}{row.highlight ? ' (Schweiz)' : ''}</div>
+      <div style={{ color: sub }}>{fmt(row.value) + ' ggü. Juni 2025'}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Europas Detailhandel driftet auseinander – Schweiz wächst deutlich</h1>
+      <p className="lead">
+        Im Juni 2026 stieg der Detailhandelsumsatz in der Schweiz im Jahresvergleich um 1,5 Prozent –
+        stärker als im EU-Schnitt (+1,2%) und im Euroraum (+0,7%). Zwischen den europäischen Ländern
+        liegen dabei Welten: Luxemburg verzeichnete ein Plus von 8,3 Prozent, Rumänien einen Einbruch
+        von 6,6 Prozent.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Schweiz</div><div className="val">+1,5%</div></div>
+        <div className="kpi"><div className="lab">EU-Schnitt</div><div className="val">+1,2%</div></div>
+        <div className="kpi"><div className="lab">Spannweite Länder</div><div className="val">8,3 <small>bis −6,6%</small></div></div>
+      </div>
+      <div role="img" aria-label="Divergierendes Balkendiagramm: Veränderung des Detailhandelsvolumens im Juni 2026 gegenüber Juni 2025, nach Land. Luxemburg plus 8,3 Prozent, Schweden plus 7,2 Prozent, Bulgarien plus 7,1 Prozent, Schweiz plus 1,5 Prozent, EU plus 1,2 Prozent, Euroraum plus 0,7 Prozent, Deutschland minus 0,1 Prozent, Belgien minus 0,1 Prozent, Österreich minus 0,3 Prozent, Rumänien minus 6,6 Prozent.">
+        <ResponsiveContainer width="100%" height={340}>
+          <BarChart data={DATA} layout="vertical" margin={{ top: 10, right: 46, bottom: 10, left: 10 }}>
+            <CartesianGrid stroke={grid} horizontal={false} />
+            <XAxis type="number" domain={[-9, 10]} tickFormatter={(v) => v + '%'}
+              tick={{ fill: axis, fontSize: 11.5 }} stroke={grid} />
+            <YAxis type="category" dataKey="label" width={82}
+              tick={(props) => {
+                const row = DATA[props.index];
+                return (
+                  <text x={props.x} y={props.y} dy={4} textAnchor="end"
+                    fontSize={12.5} fontWeight={row && row.highlight ? 700 : 400}
+                    fill={row && row.highlight ? ink : sub}>
+                    {props.payload.value}
+                  </text>
+                );
+              }}
+              stroke={grid} />
+            <ReferenceLine x={0} stroke={baseline} strokeWidth={1} />
+            <Tooltip content={<ChartTip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(11,11,11,0.03)' }} />
+            <Bar dataKey="value" isAnimationActive={false} barSize={16} radius={[4, 4, 4, 4]}>
+              {DATA.map((row, i) => (
+                <Cell key={i} fill={row.value >= 0 ? posColor : negColor}
+                  stroke={row.highlight ? ink : 'none'} strokeWidth={row.highlight ? 1.5 : 0} />
+              ))}
+              <LabelList dataKey="value" content={<TipLabel />} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: Eurostat, Euro-Indikatoren „Volume of retail trade down by 0.3% in the euro area and by
+        0.1% in the EU“, veröffentlicht 6. August 2026
+        (<a href="https://ec.europa.eu/eurostat/web/products-euro-indicators/w/4-06082026-ap" target="_blank" rel="noopener">ec.europa.eu/eurostat</a>).
+        Stand: 8. August 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>

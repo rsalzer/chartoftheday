@@ -212,5 +212,23 @@
       "https://www.timesofisrael.com/antisemitic-assaults-in-britain-surged-by-82-in-first-six-months-of-2026-report/"
     ],
     "file": "days/2026-08-06.html"
+  },
+  {
+    "date": "2026-08-08",
+    "title": "Europas Detailhandel driftet auseinander – Schweiz wächst deutlich",
+    "lead": "Im Juni 2026 stieg der Detailhandelsumsatz in der Schweiz im Jahresvergleich um 1,5 Prozent – stärker als im EU-Schnitt (+1,2%) und im Euroraum (+0,7%). Zwischen den europäischen Ländern liegen Welten: Luxemburg legte um 8,3 Prozent zu, Rumänien brach um 6,6 Prozent ein.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "detailhandel",
+      "eurostat",
+      "konsum",
+      "wirtschaftsdaten",
+      "eu-vergleich"
+    ],
+    "chartType": "divergingBar",
+    "sourceUrls": [
+      "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/4-06082026-ap"
+    ],
+    "file": "days/2026-08-08.html"
   }
 ]
