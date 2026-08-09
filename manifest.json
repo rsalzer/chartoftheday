@@ -230,5 +230,23 @@
       "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/4-06082026-ap"
     ],
     "file": "days/2026-08-08.html"
+  },
+  {
+    "date": "2026-08-09",
+    "title": "US-Waldbrandsaison 2026 liegt weit über dem Zehnjahresschnitt",
+    "lead": "Bis zum 8. August 2026 sind in den USA landesweit 6,27 Millionen Acres verbrannt – 157 Prozent des Zehnjahresschnitts 2016–2025. Am stärksten betroffen ist der pazifische Nordwesten mit 1,81 Millionen Acres; die nationale Bereitschaftsstufe steht auf der höchsten Stufe 5.",
+    "category": "Klima",
+    "keywords": [
+      "waldbraende",
+      "usa",
+      "nifc",
+      "bereitschaftsstufe",
+      "zehnjahresschnitt"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.nifc.gov/nicc-files/sitreprt.pdf"
+    ],
+    "file": "days/2026-08-09.html"
   }
 ]
