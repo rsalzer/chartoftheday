@@ -248,5 +248,25 @@
       "https://www.nifc.gov/nicc-files/sitreprt.pdf"
     ],
     "file": "days/2026-08-09.html"
+  },
+  {
+    "date": "2026-08-10",
+    "title": "Street Parade 2026: Mehr Publikum, mehr Einsätze, weniger Spitaltransporte",
+    "lead": "Die Street Parade in Zürich zog am 8. August 2026 schätzungsweise 900'000 Menschen an, rund 100'000 mehr als 2025. Schutz & Rettung Zürich behandelte mit 906 Personen so viele wie noch nie zuvor – die Spitaltransporte sanken dabei leicht, während die Betreuungen zum Ausnüchtern deutlich zunahmen.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "street parade",
+      "zürich",
+      "sanitätseinsätze",
+      "besucherzahlen",
+      "spitaltransporte"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.stadt-zuerich.ch/de/aktuell/medienmitteilungen/2025/08/positive_schlussbilanzvonschutzrettungzuerichzurstreetparade.html",
+      "https://www.blick.ch/schweiz/zuerich/30-festnahmen-906-behandlungen-rund-eine-festnahme-auf-30000-besucher-street-parade-groesstenteils-friedlich-id22168038.html",
+      "https://www.polizeinews.ch/2026/08/09/zuerich-zh-906-sanitaetseinsaetze-an-street-parade-alkohol-sorgt-fuer-223-behandlungen/"
+    ],
+    "file": "days/2026-08-10.html"
   }
 ]

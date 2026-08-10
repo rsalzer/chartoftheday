@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Street Parade 2026: Mehr Publikum, mehr Einsätze, weniger Spitaltransporte</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --before: #898781; --after: #2a78d6;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --before: #898781; --after: #3987e5;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 12px; max-width: 62ch; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin: 2px 0 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .rows { display: flex; flex-direction: column; gap: 2px; }
+  .row-label { font-size: 12.5px; color: var(--sub); display: flex; justify-content: space-between; align-items: baseline; margin: 8px 0 -8px; }
+  .row-label .delta { font-size: 11.5px; color: var(--muted); font-weight: 600; }
+  .note { font-size: 12px; color: var(--muted); margin: 10px 0 0; max-width: 62ch; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 12px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Street Parade Zürich, Vergleich 2025 vs. 2026: Besucherzahl (Schätzung) 800'000 auf 900'000
+    (plus 12,5 Prozent). Medizinische Behandlungen durch Schutz &amp; Rettung Zürich 757 auf 906
+    (plus 19,7 Prozent), davon Schnittwunden 199 auf 263 und alkoholbedingte Behandlungen 159 auf
+    223. Spitaltransporte 54 auf 45 (minus 16,7 Prozent). Betreuungen in der Nüchterungs- und
+    Überwachungsstelle (NUK) 95 auf 128 (plus 34,7 Prozent).
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ComposedChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } = Recharts;
+
+// Schutz & Rettung Zürich (SRZ) / Stadt Zürich, "Positive Schlussbilanz von Schutz & Rettung
+// Zürich zur Street Parade" (2025-08, official press release) for the 2025 baseline figures,
+// cross-checked against 2026 Schlussbilanz figures as reported 9 August 2026 by Blick and
+// Polizeinews.ch (both citing SRZ's official statement). Each row keeps its own scale since
+// the four metrics have very different magnitudes (visitors vs. incident counts).
+const METRICS = [
+  { key: 'besucher', label: 'Besucher (Schätzung)', range: [800, 900], domain: [740, 960],
+    beforeLabel: "800'000", afterLabel: "900'000", deltaPct: 12.5 },
+  { key: 'behandlungen', label: 'Medizinische Behandlungen (Schutz & Rettung Zürich)', range: [757, 906],
+    domain: [690, 960], beforeLabel: '757', afterLabel: '906', deltaPct: 19.7 },
+  { key: 'spital', label: 'Spitaltransporte', range: [54, 45], domain: [33, 62],
+    beforeLabel: '54', afterLabel: '45', deltaPct: -16.7 },
+  { key: 'nuk', label: 'Betreuungen zur Überwachung/Ausnüchterung (NUK)', range: [95, 128],
+    domain: [78, 142], beforeLabel: '95', afterLabel: '128', deltaPct: 34.7 }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const hair = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const before = '#898781';
+const after = isDark ? '#3987e5' : '#2a78d6';
+
+function Dumbbell(props) {
+  // Recharts lays out a range-Bar rect from min(range) to max(range), so when
+  // the "after" value is smaller than "before" (e.g. fewer hospital transfers
+  // in 2026), x/width alone don't tell us which side is which — use the
+  // actual values to place the before/after dots correctly either way.
+  const { x, y, width, height, payload } = props;
+  const cy = y + height / 2;
+  const ascending = payload.range[1] >= payload.range[0];
+  const xBefore = ascending ? x : x + width;
+  const xAfter = ascending ? x + width : x;
+  return (
+    <g>
+      <line x1={x} y1={cy} x2={x + width} y2={cy} stroke={hair} strokeWidth={4} strokeLinecap="round" />
+      <circle cx={xBefore} cy={cy} r={7} fill={before} stroke={surface} strokeWidth={2} />
+      <circle cx={xAfter} cy={cy} r={7} fill={after} stroke={surface} strokeWidth={2} />
+      <text x={xBefore} y={cy - 14} textAnchor="middle" fontSize={12} fill="#898781">{payload.beforeLabel}</text>
+      <text x={xAfter} y={cy - 14} textAnchor="middle" fontSize={12} fontWeight={600} fill={ink}>{payload.afterLabel}</text>
+    </g>
+  );
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const p = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + hair,
+      borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: ink, maxWidth: 240 }}>
+      <div style={{ fontWeight: 600, marginBottom: 2 }}>{p.label}</div>
+      <div><span style={{ color: before }}>●</span> 2025: {p.beforeLabel}</div>
+      <div><span style={{ color: after }}>●</span> 2026: {p.afterLabel}</div>
+    </div>
+  );
+}
+
+function Row({ m }) {
+  const sign = m.deltaPct > 0 ? '+' : '';
+  const deltaStr = sign + String(m.deltaPct).replace('.', ',') + ' %';
+  return (
+    <div>
+      <div className="row-label">
+        <span>{m.label}</span>
+        <span className="delta">{deltaStr}</span>
+      </div>
+      <ResponsiveContainer width="100%" height={62}>
+        <ComposedChart data={[m]} layout="vertical" margin={{ top: 22, right: 30, bottom: 6, left: 8 }}>
+          <XAxis type="number" domain={m.domain} hide />
+          <YAxis type="category" dataKey="key" hide width={0} />
+          <Tooltip content={<ChartTip />} cursor={false} />
+          <Bar dataKey="range" shape={<Dumbbell />} isAnimationActive={false} barSize={4} />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Street Parade 2026: Mehr Publikum, mehr Einsätze, weniger Spitaltransporte</h1>
+      <p className="lead">
+        Die Street Parade in Zürich zog am 8. August 2026 schätzungsweise 900'000 Menschen an, rund
+        100'000 mehr als 2025. Schutz &amp; Rettung Zürich behandelte mit 906 Personen so viele wie noch
+        nie zuvor – die Spitaltransporte sanken dabei leicht, während die Betreuungen zum Ausnüchtern
+        deutlich zunahmen.
+      </p>
+      <div className="legend">
+        <span><i className="dot" style={{ background: before }}></i>2025</span>
+        <span><i className="dot" style={{ background: after }}></i>2026</span>
+      </div>
+      <div role="img" aria-label="Vier Kennzahlen der Street Parade, je 2025 gegenüber 2026: Besucher von geschätzt 800'000 auf 900'000, medizinische Behandlungen von 757 auf 906, Spitaltransporte von 54 auf 45, Betreuungen zur Überwachung und Ausnüchterung von 95 auf 128.">
+        <div className="rows">
+          {METRICS.map((m) => <Row key={m.key} m={m} />)}
+        </div>
+      </div>
+      <p className="note">
+        Bei den Behandlungen entfielen 263 (2025: 199) auf Schnittwunden und 223 (2025: 159) auf
+        übermässigen Alkoholkonsum – die beiden häufigsten Ursachen in beiden Jahren.
+      </p>
+      <div className="source">
+        Quelle: Schutz &amp; Rettung Zürich / Stadt Zürich, {' '}
+        <a href="https://www.stadt-zuerich.ch/de/aktuell/medienmitteilungen/2025/08/positive_schlussbilanzvonschutzrettungzuerichzurstreetparade.html" target="_blank" rel="noopener">
+          «Positive Schlussbilanz ... zur Street Parade» (2025)
+        </a>, Schlussbilanz 2026 zitiert nach{' '}
+        <a href="https://www.blick.ch/schweiz/zuerich/30-festnahmen-906-behandlungen-rund-eine-festnahme-auf-30000-besucher-street-parade-groesstenteils-friedlich-id22168038.html" target="_blank" rel="noopener">Blick</a>
+        {' '}und{' '}
+        <a href="https://www.polizeinews.ch/2026/08/09/zuerich-zh-906-sanitaetseinsaetze-an-street-parade-alkohol-sorgt-fuer-223-behandlungen/" target="_blank" rel="noopener">Polizeinews.ch</a>
+        , 9. August 2026 · Stand 10. August 2026
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
