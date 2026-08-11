@@ -268,5 +268,24 @@
       "https://www.polizeinews.ch/2026/08/09/zuerich-zh-906-sanitaetseinsaetze-an-street-parade-alkohol-sorgt-fuer-223-behandlungen/"
     ],
     "file": "days/2026-08-10.html"
+  },
+  {
+    "date": "2026-08-11",
+    "title": "Rekordteam der Schweiz startet mit wachsender Medaillenserie in die Leichtathletik-EM",
+    "lead": "Mit 67 Athletinnen und Athleten reist Swiss Athletics so gross wie nie zuvor an die Europameisterschaft in Birmingham (10. bis 16. August 2026). Seit 2016 wächst die Schweizer Medaillenbilanz an Leichtathletik-EM stetig – von 5 über 4 und 6 auf den Rekord von 9 Medaillen in Rom 2024; für Birmingham lautet das Ziel mindestens 7.",
+    "category": "Sport",
+    "keywords": [
+      "leichtathletik-em",
+      "birmingham-2026",
+      "swiss-athletics",
+      "medaillen",
+      "rekordteam"
+    ],
+    "chartType": "line",
+    "sourceUrls": [
+      "https://www.swiss-athletics.ch/newsroom/artikel/schweizer-rekordteam-geht-an-der-em-in-birmingham-auf-medaillenjagd/",
+      "https://www.srf.ch/sport/leichtathletik/leichtathletik-em/67-koepfiges-team-in-birmingham-swiss-athletics-beschickt-em-mit-naechster-rekord-delegation"
+    ],
+    "file": "days/2026-08-11.html"
   }
 ]

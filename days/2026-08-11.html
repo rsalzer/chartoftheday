@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rekordteam der Schweiz startet mit wachsender Medaillenserie in die Leichtathletik-EM</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-1: #2a78d6; --series-2: #eb6834;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-1: #3987e5; --series-2: #d95926;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 12px; max-width: 62ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .kpi { flex: 1 1 140px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--muted); margin: 2px 0 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 14px; height: 2px; display: inline-block; }
+  .swatch.dashed { background: repeating-linear-gradient(to right, var(--series-2) 0 4px, transparent 4px 7px); }
+  .note { font-size: 12px; color: var(--muted); margin: 10px 0 0; max-width: 62ch; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 12px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Schweizer Medaillen an Leichtathletik-Europameisterschaften: 5 (Amsterdam 2016), 4 (Berlin 2018),
+    6 (München 2022), 9 (Rom 2024, Rekord). Ziel für Birmingham 2026: mindestens 7 Medaillen. Zum
+    Vergleich: zwischen 1934 und 2014 gewann die Schweiz an 22 Europameisterschaften insgesamt nur
+    24 Medaillen – genauso viele wie allein an den letzten vier Austragungen 2016 bis 2024. Das
+    Schweizer Team in Birmingham zählt 67 Athletinnen und Athleten, so viele wie nie zuvor.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+
+// Swiss Athletics, "Schweizer Rekordteam geht an der EM in Birmingham auf
+// Medaillenjagd" (official media release, Aug 2026): "fünf 2016 in Amsterdam,
+// vier 2018 in Berlin, sechs 2022 in München und neun 2024 in Rom" (24 medals
+// over the last four championships), plus the stated 2026 goal of "mindestens
+// 15 Top-8-Plätze, davon 7 Medaillen". The 2026 point is a target, not a
+// result yet — kept in its own dashed series so it never reads as an actual medal count.
+const DATA = [
+  { edition: '2016', city: 'Amsterdam', medals: 5, target: null },
+  { edition: '2018', city: 'Berlin', medals: 4, target: null },
+  { edition: '2022', city: 'München', medals: 6, target: null },
+  { edition: '2024', city: 'Rom', medals: 9, target: 9 },
+  { edition: '2026*', city: 'Birmingham', medals: null, target: 7 }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = isDark ? '#9a988d' : '#6c6b63';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+
+function ValueLabel(color) {
+  return function Label({ x, y, value }) {
+    if (value == null) return null;
+    return (
+      <text x={x} y={y - 12} textAnchor="middle" fontSize={12} fontWeight={600} fill={color}>
+        {value}
+      </text>
+    );
+  };
+}
+
+function ChartTip({ active, payload, label }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0] && payload[0].payload;
+  if (!row) return null;
+  const isGoal = row.medals == null && row.target != null;
+  const val = isGoal ? row.target : row.medals;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: ink }}>
+      <div style={{ fontWeight: 600, marginBottom: 2 }}>{row.city} {label}</div>
+      <div style={{ color: axis }}>{isGoal ? 'Ziel: mindestens ' + val + ' Medaillen' : val + ' Medaillen'}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Rekordteam der Schweiz startet mit wachsender Medaillenserie in die Leichtathletik-EM</h1>
+      <p className="lead">
+        Mit 67 Athletinnen und Athleten reist Swiss Athletics so gross wie nie zuvor an die
+        Europameisterschaft in Birmingham (10. bis 16. August 2026). Seit 2016 wächst die Schweizer
+        Medaillenbilanz an Leichtathletik-EM stetig – von 5 über 4 und 6 auf den Rekord von 9
+        Medaillen in Rom 2024; für Birmingham lautet das Ziel mindestens 7.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Rekord Rom 2024</div><div className="val">9 <small>Medaillen</small></div></div>
+        <div className="kpi"><div className="lab">Ziel Birmingham 2026</div><div className="val">≥7 <small>Medaillen</small></div></div>
+        <div className="kpi"><div className="lab">Team-Grösse 2026</div><div className="val">67 <small>Athlet:innen</small></div></div>
+      </div>
+      <div className="legend">
+        <span><span className="swatch" style={{ background: 'var(--series-1)' }}></span>Medaillen (effektiv)</span>
+        <span><span className="swatch dashed"></span>Ziel Birmingham 2026</span>
+      </div>
+      <div role="img" aria-label="Liniendiagramm der Schweizer Medaillen an Leichtathletik-Europameisterschaften: 5 in Amsterdam 2016, 4 in Berlin 2018, 6 in München 2022, 9 in Rom 2024 (Rekord). Für Birmingham 2026 gilt ein Ziel von mindestens 7 Medaillen, als gestrichelte Linie dargestellt.">
+        <ResponsiveContainer width="100%" height={280}>
+          <LineChart data={DATA} margin={{ top: 26, right: 16, bottom: 4, left: -8 }}>
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis dataKey="edition" tick={{ fill: axis, fontSize: 12 }} stroke={grid} interval={0} />
+            <YAxis domain={[0, 10]} allowDecimals={false} tick={{ fill: axis, fontSize: 12 }} stroke={grid} width={28} />
+            <Tooltip content={<ChartTip />} />
+            <Line type="monotone" dataKey="medals" stroke="var(--series-1)" strokeWidth={2}
+              dot={{ r: 4, fill: 'var(--series-1)', stroke: surface, strokeWidth: 2 }}
+              activeDot={{ r: 5 }} connectNulls={false} isAnimationActive={false}
+              label={ValueLabel(isDark ? '#3987e5' : '#2a78d6')} />
+            <Line type="linear" dataKey="target" stroke="var(--series-2)" strokeWidth={2}
+              strokeDasharray="5 4" dot={{ r: 4, fill: 'var(--series-2)', stroke: surface, strokeWidth: 2 }}
+              connectNulls={true} isAnimationActive={false}
+              label={ValueLabel(isDark ? '#d95926' : '#eb6834')} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="note">
+        Zwischen 1934 und 2014 gewann die Schweiz an 22 Europameisterschaften insgesamt nur 24
+        Medaillen – genauso viele wie allein an den letzten vier Austragungen 2016 bis 2024. In Rom
+        2024 kamen zudem 18 Top-8-Platzierungen dazu, ein weiterer Rekord (München 2022: 14).
+      </p>
+      <div className="source">
+        Quelle: Swiss Athletics, {' '}
+        <a href="https://www.swiss-athletics.ch/newsroom/artikel/schweizer-rekordteam-geht-an-der-em-in-birmingham-auf-medaillenjagd/" target="_blank" rel="noopener">
+          «Schweizer Rekordteam geht an der EM in Birmingham auf Medaillenjagd»
+        </a>
+        {' '}und{' '}
+        <a href="https://www.srf.ch/sport/leichtathletik/leichtathletik-em/67-koepfiges-team-in-birmingham-swiss-athletics-beschickt-em-mit-naechster-rekord-delegation" target="_blank" rel="noopener">SRF</a>
+        , 11. August 2026
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
