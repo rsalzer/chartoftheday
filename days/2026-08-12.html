@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Juli 2026 zieht mit 2024 gleich – gemeinsam zweitwärmster Juli der Messgeschichte</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --bar-strong: #2a78d6; --bar-mild: #9ec5f4;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --bar-strong: #3987e5; --bar-mild: #184f95;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 62ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 140px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Globale Durchschnittstemperatur im Juli, Abweichung vom Referenzwert 1991–2020, laut Copernicus
+    Climate Change Service (C3S/ERA5): Juli 2023 (Rekord) +0,72 Grad, Juli 2024 +0,68 Grad, Juli 2025
+    +0,45 Grad, Juli 2026 +0,67 Grad. Juli 2024 und Juli 2026 gelten laut C3S als gemeinsam
+    zweitwärmster Juli der Messgeschichte, da sie nur 0,01 Grad voneinander abweichen.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, ResponsiveContainer, LabelList } = Recharts;
+
+// Copernicus Climate Change Service (C3S), based on ECMWF ERA5 reanalysis.
+// Anomalies vs the 1991-2020 July average, taken directly from each month's own
+// C3S bulletin (not recomputed): July 2023 +0.72°C (16.95°C) —
+// https://climate.copernicus.eu/july-2023-global-air-and-ocean-temperatures-reach-new-record-highs ;
+// July 2024 +0.68°C (16.91°C) —
+// https://climate.copernicus.eu/copernicus-globally-second-hottest-month-record-only-slightly-behind-july-2023 ;
+// July 2025 +0.45°C (16.68°C) —
+// https://climate.copernicus.eu/copernicus-third-warmest-july-marks-slight-respite-record-global-temperatures ;
+// July 2026 +0.67°C (16.90°C) —
+// https://climate.copernicus.eu/copernicus-highest-july-global-ocean-surface-temperatures-exceptionally-hot-dry-conditions-fuel .
+// The 2026 bulletin itself states 2026 was "0.01°C cooler than July 2024" and calls
+// the two joint-second warmest — that comparison is quoted directly, not derived here.
+const DATA = [
+  { year: '2023', anomaly: 0.72, abs: 16.95, tag: 'Rekord', current: false },
+  { year: '2024', anomaly: 0.68, abs: 16.91, tag: 'gemeinsam Platz 2', current: false },
+  { year: '2025', anomaly: 0.45, abs: 16.68, tag: 'Platz 3', current: false },
+  { year: '2026', anomaly: 0.67, abs: 16.90, tag: 'gemeinsam Platz 2', current: true }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const strong = isDark ? '#3987e5' : '#2a78d6';
+const mild = isDark ? '#184f95' : '#9ec5f4';
+
+function fmt(v) {
+  return '+' + v.toFixed(2).replace('.', ',') + ' °C';
+}
+
+function ValueLabel(props) {
+  const { x, y, width, value } = props;
+  return (
+    <text x={x + width / 2} y={y - 8} textAnchor="middle" fontSize={12} fontWeight={700} fill={ink}>
+      {fmt(value)}
+    </text>
+  );
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 240 }}>
+      <div style={{ fontWeight: 700 }}>Juli {row.year}</div>
+      <div style={{ color: sub }}>{row.abs.toFixed(2).replace('.', ',') + ' °C global – ' + fmt(row.anomaly) + ' ggü. 1991–2020'}</div>
+      <div style={{ color: sub }}>{row.tag}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Juli 2026 zieht mit 2024 gleich – gemeinsam zweitwärmster Juli der Messgeschichte</h1>
+      <p className="lead">
+        Der Juli 2026 war weltweit im Schnitt 0,67 Grad wärmer als 1991–2020 und liegt damit gleichauf
+        mit 2024 auf Platz zwei der wärmsten je gemessenen Julimonate – nur der Rekordjuli 2023 war
+        noch heisser. Die Meeresoberflächentemperatur ausserhalb der Polargebiete erreichte im Juli
+        2026 mit 20,96 Grad einen neuen Julirekord.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Juli 2026 ggü. 1991–2020</div><div className="val">+0,67 <small>°C</small></div></div>
+        <div className="kpi"><div className="lab">Rang unter allen Julis</div><div className="val">2 <small>von n, geteilt mit 2024</small></div></div>
+        <div className="kpi"><div className="lab">Ozean-SST Juli (Rekord)</div><div className="val">20,96 <small>°C</small></div></div>
+      </div>
+      <div role="img" aria-label="Balkendiagramm: Globale Julitemperatur-Abweichung vom Durchschnitt 1991–2020 für 2023 bis 2026. Juli 2023 plus 0,72 Grad (Rekord), Juli 2024 plus 0,68 Grad, Juli 2025 plus 0,45 Grad, Juli 2026 plus 0,67 Grad. 2024 und 2026 sind gemeinsam die zweitwärmsten Julis der Messgeschichte.">
+        <ResponsiveContainer width="100%" height={340}>
+          <BarChart data={DATA} margin={{ top: 28, right: 16, bottom: 6, left: 6 }}>
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis dataKey="year" tickFormatter={(v) => 'Juli ' + v}
+              tick={{ fill: sub, fontSize: 12 }} stroke={grid} />
+            <YAxis domain={[0, 0.85]} tickFormatter={(v) => '+' + v.toFixed(2).replace('.', ',')}
+              tick={{ fill: axis, fontSize: 11.5 }} stroke={grid} width={54} />
+            <Tooltip content={<ChartTip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(11,11,11,0.03)' }} />
+            <Bar dataKey="anomaly" isAnimationActive={false} barSize={48} radius={[4, 4, 0, 0]}>
+              {DATA.map((row, i) => (
+                <Cell key={i} fill={row.current ? strong : mild} />
+              ))}
+              <LabelList dataKey="anomaly" content={<ValueLabel />} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: Copernicus Climate Change Service (C3S/ECMWF), ERA5-Reanalyse –
+        <a href="https://climate.copernicus.eu/copernicus-highest-july-global-ocean-surface-temperatures-exceptionally-hot-dry-conditions-fuel" target="_blank" rel="noopener"> Bulletin Juli 2026</a>,
+        <a href="https://climate.copernicus.eu/copernicus-globally-second-hottest-month-record-only-slightly-behind-july-2023" target="_blank" rel="noopener"> Juli 2024</a>,
+        <a href="https://climate.copernicus.eu/copernicus-third-warmest-july-marks-slight-respite-record-global-temperatures" target="_blank" rel="noopener"> Juli 2025</a>,
+        <a href="https://climate.copernicus.eu/july-2023-global-air-and-ocean-temperatures-reach-new-record-highs" target="_blank" rel="noopener"> Juli 2023</a>.
+        Abgerufen am 12. August 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
