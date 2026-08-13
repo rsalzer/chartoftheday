@@ -308,5 +308,24 @@
       "https://climate.copernicus.eu/july-2023-global-air-and-ocean-temperatures-reach-new-record-highs"
     ],
     "file": "days/2026-08-12.html"
+  },
+  {
+    "date": "2026-08-13",
+    "title": "Die grösste Sonnenfinsternis der Schweiz seit 1999",
+    "lead": "Am 12. August 2026 bedeckte der Mond über der Schweiz zwischen 91 und 93 Prozent der Sonnenscheibe, kurz vor Sonnenuntergang – so viel wie zuletzt am 11. August 1999. Eine derart tiefe partielle Verfinsterung gibt es laut der Astronomischen Gesellschaft Schweiz erst wieder am 13. Juli 2075.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "sonnenfinsternis",
+      "bedeckungsgrad",
+      "astronomie",
+      "luzern",
+      "mondschatten"
+    ],
+    "chartType": "radialBar",
+    "sourceUrls": [
+      "https://sternwarteluzern.ch/sonnenfinsternisse-ueber-luzern-2025-2030/",
+      "https://sag-sas.ch/sonnenfinsternis-20260812/"
+    ],
+    "file": "days/2026-08-13.html"
   }
 ]
