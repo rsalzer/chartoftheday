@@ -327,5 +327,24 @@
       "https://sag-sas.ch/sonnenfinsternis-20260812/"
     ],
     "file": "days/2026-08-13.html"
+  },
+  {
+    "date": "2026-08-14",
+    "title": "Ukraine: Juli 2026 bringt höchste Zahl ziviler Kriegsopfer seit März 2022",
+    "lead": "Die UNO-Menschenrechtsbeobachtungsmission zählte im Juli 437 getötete und 2610 verletzte Zivilpersonen in der Ukraine – zusammen so viele wie in keinem Monat seit März 2022. In den ersten sieben Monaten 2026 stieg die Zahl ziviler Opfer gegenüber derselben Periode 2025 um 44 Prozent.",
+    "category": "International",
+    "keywords": [
+      "ukraine",
+      "zivilisten",
+      "kriegsopfer",
+      "menschenrechte",
+      "ohchr"
+    ],
+    "chartType": "stackedBar",
+    "sourceUrls": [
+      "https://ukraine.ohchr.org/en/UN-human-rights-monitors-report-the-highest-monthly-number-of-civilian-deaths-and-injuries-in-Ukraine-since-March-2022",
+      "https://news.un.org/en/story/2026/08/1168082"
+    ],
+    "file": "days/2026-08-14.html"
   }
 ]

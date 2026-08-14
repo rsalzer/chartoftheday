@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ukraine: Juli 2026 bringt höchste Zahl ziviler Kriegsopfer seit März 2022</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-1: #2a78d6; --series-2: #eb6834;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-1: #3987e5; --series-2: #d95926;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 12px; max-width: 62ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--muted); margin: 2px 0 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex: none; }
+  .note { font-size: 12px; color: var(--muted); margin: 10px 0 0; max-width: 62ch; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 12px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Zivile Opfer in der Ukraine, Januar bis Juli, nach Jahr (UNO-Menschenrechtsbeobachtungsmission
+    HRMMU): 2024 total 5748 (1188 Getötete, 4560 Verletzte); 2025 total 8650 (1434 Getötete, 7216
+    Verletzte); 2026 total 12477 (1839 Getötete, 10638 Verletzte) – ein Anstieg von 44 Prozent
+    gegenüber 2025 und mehr als eine Verdoppelung gegenüber 2024. Allein im Juli 2026 wurden 437
+    Zivilpersonen getötet und 2610 verletzt, zusammen die höchste Monatszahl seit März 2022.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+
+// Verified against UN Human Rights Monitoring Mission in Ukraine (HRMMU) / OHCHR,
+// "UN human rights monitors report the highest monthly number of civilian deaths
+// and injuries in Ukraine since March 2022" (ukraine.ohchr.org, 13 Aug 2026).
+// Jan-Jul cumulative civilian casualties per year, killed + injured, each figure
+// as stated in the report (totals are the report's own sums, not derived here).
+const DATA = [
+  { year: '2024', killed: 1188, injured: 4560, total: 5748 },
+  { year: '2025', killed: 1434, injured: 7216, total: 8650 },
+  { year: '2026', killed: 1839, injured: 10638, total: 12477 }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const killedColor = isDark ? '#3987e5' : '#2a78d6';
+const injuredColor = isDark ? '#d95926' : '#eb6834';
+
+function fmt(v) { return v.toLocaleString('de-CH'); }
+
+function TotalLabel(props) {
+  const { x, y, width, index } = props;
+  const row = DATA[index];
+  if (!row) return null;
+  return (
+    <text x={x + width / 2} y={y - 8} textAnchor="middle" fontSize={12} fontWeight={700} fill={ink}>
+      {fmt(row.total)}
+    </text>
+  );
+}
+
+function ChartTip({ active, payload, label }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0] && payload[0].payload;
+  if (!row) return null;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: ink }}>
+      <div style={{ fontWeight: 600, marginBottom: 2 }}>Jan–Jul {label}</div>
+      <div style={{ color: killedColor }}>Getötete: {fmt(row.killed)}</div>
+      <div style={{ color: injuredColor }}>Verletzte: {fmt(row.injured)}</div>
+      <div style={{ color: sub, marginTop: 2 }}>Total: {fmt(row.total)}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Ukraine: Juli 2026 bringt höchste Zahl ziviler Kriegsopfer seit März 2022</h1>
+      <p className="lead">
+        Die UNO-Menschenrechtsbeobachtungsmission (HRMMU) zählte im Juli 437 getötete und 2610
+        verletzte Zivilpersonen in der Ukraine – zusammen so viele wie in keinem Monat seit März
+        2022, bei den Getöteten allein der höchste Wert seit Mai 2022. In den ersten sieben Monaten
+        2026 stieg die Zahl ziviler Opfer gegenüber derselben Periode 2025 um 44 Prozent und hat
+        sich gegenüber 2024 mehr als verdoppelt.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Getötete, Juli 2026</div><div className="val">437</div></div>
+        <div className="kpi"><div className="lab">Verletzte, Juli 2026</div><div className="val">2'610</div></div>
+        <div className="kpi"><div className="lab">Anstieg Jan–Jul ggü. 2025</div><div className="val">+44 <small>%</small></div></div>
+      </div>
+      <div className="legend">
+        <span><span className="swatch" style={{ background: 'var(--series-1)' }}></span>Getötete</span>
+        <span><span className="swatch" style={{ background: 'var(--series-2)' }}></span>Verletzte</span>
+      </div>
+      <div role="img" aria-label="Gestapeltes Balkendiagramm: zivile Opfer in der Ukraine, Januar bis Juli, nach Jahr. 2024: 1188 Getötete und 4560 Verletzte, total 5748. 2025: 1434 Getötete und 7216 Verletzte, total 8650. 2026: 1839 Getötete und 10638 Verletzte, total 12477 – ein Anstieg von 44 Prozent gegenüber 2025 und mehr als eine Verdoppelung gegenüber 2024.">
+        <ResponsiveContainer width="100%" height={280}>
+          <BarChart data={DATA} margin={{ top: 26, right: 16, bottom: 4, left: -8 }} barCategoryGap="32%">
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis dataKey="year" tick={{ fill: axis, fontSize: 12 }} stroke={grid} />
+            <YAxis domain={[0, 14000]} tick={{ fill: axis, fontSize: 12 }} stroke={grid} width={44}
+              tickFormatter={(v) => fmt(v)} />
+            <Tooltip content={<ChartTip />} cursor={{ fill: 'rgba(137,135,129,0.12)' }} />
+            <Bar dataKey="killed" stackId="a" fill={killedColor} isAnimationActive={false}
+              stroke={surface} strokeWidth={2} />
+            <Bar dataKey="injured" stackId="a" fill={injuredColor} isAnimationActive={false}
+              stroke={surface} strokeWidth={2} radius={[4, 4, 0, 0]} label={<TotalLabel />} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="note">
+        Ursache Nummer eins bleiben weitreichende Waffen (Raketen und Drohnen, 38% der Opfer im
+        Juli); Opfer durch Luftbombardierungen stiegen gegenüber Juni um 143 Prozent. Seit
+        Kriegsbeginn am 24. Februar 2022 zählt die HRMMU insgesamt 16'874 getötete und 51'273
+        verletzte Zivilpersonen.
+      </p>
+      <div className="source">
+        Quelle: UN Human Rights Monitoring Mission in Ukraine (HRMMU) / OHCHR,{' '}
+        <a href="https://ukraine.ohchr.org/en/UN-human-rights-monitors-report-the-highest-monthly-number-of-civilian-deaths-and-injuries-in-Ukraine-since-March-2022" target="_blank" rel="noopener">
+          «UN human rights monitors report the highest monthly number of civilian deaths and injuries in Ukraine since March 2022»
+        </a>
+        {' '}(13. August 2026), sowie{' '}
+        <a href="https://news.un.org/en/story/2026/08/1168082" target="_blank" rel="noopener">UN News</a>
+        {' '}— Stand 14. August 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
