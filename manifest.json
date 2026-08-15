@@ -346,5 +346,25 @@
       "https://news.un.org/en/story/2026/08/1168082"
     ],
     "file": "days/2026-08-14.html"
+  },
+  {
+    "date": "2026-08-15",
+    "title": "Fall Vincenz: Staatsanwaltschaft fordert im Berufungsprozess deutlich härtere Strafen",
+    "lead": "Im Berufungsprozess vor dem Zürcher Obergericht verlangte die Staatsanwaltschaft am 13. August 2026 für den früheren Raiffeisen-Chef Pierin Vincenz und seinen Geschäftspartner Beat Stocker neu je sechs Jahre unbedingte Freiheitsstrafe. Das Bezirksgericht Zürich hatte die beiden 2022 noch zu 3 Jahren 9 Monaten beziehungsweise 4 Jahren verurteilt.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "vincenz",
+      "stocker",
+      "raiffeisen",
+      "berufungsprozess",
+      "freiheitsstrafe"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.srf.ch/news/wirtschaft/vincenz-prozess-zuercher-staatsanwaltschaft-fordert-harte-strafen",
+      "https://www.finanzen.ch/nachrichten/aktien/vincenz-prozess-zuercher-staatsanwaltschaft-fordert-6-jahre-fuer-pierin-vincenz-1036454577",
+      "https://www.moneycab.com/finanz/vincenz-prozess-zuercher-staatsanwaltschaft-fordert-6-jahre-fuer-pierin-vincenz/"
+    ],
+    "file": "days/2026-08-15.html"
   }
 ]
