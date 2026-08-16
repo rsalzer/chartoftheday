@@ -366,5 +366,23 @@
       "https://www.moneycab.com/finanz/vincenz-prozess-zuercher-staatsanwaltschaft-fordert-6-jahre-fuer-pierin-vincenz/"
     ],
     "file": "days/2026-08-15.html"
+  },
+  {
+    "date": "2026-08-16",
+    "title": "Gesundheitskosten pro Kopf 2026: Spitex und Psychotherapie wachsen weit über dem Schnitt",
+    "lead": "Die Kosten der obligatorischen Krankenpflegeversicherung stiegen im 2. Quartal 2026 pro Kopf im Schnitt nur um 0,4 Prozent – Spitex-Leistungen und Psychotherapie wuchsen aber um 14,9 beziehungsweise 10,9 Prozent.",
+    "category": "Gesundheit",
+    "keywords": [
+      "krankenversicherung",
+      "spitex",
+      "psychotherapie",
+      "physiotherapie",
+      "tarifsystem"
+    ],
+    "chartType": "divergingBar",
+    "sourceUrls": [
+      "https://www.bag.admin.ch/de/newnsb/kOveA4FEKQ_lyWJ6Y2qGA"
+    ],
+    "file": "days/2026-08-16.html"
   }
 ]
