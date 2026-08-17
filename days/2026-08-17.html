@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Europas Waldbrandsaison 2026: weit über dem Schnitt, aber unter dem Vorjahresrekord</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series: #2a78d6; --ref: #898781;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series: #3987e5; --ref: #898781;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 62ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Verbrannte Waldfläche in der EU, jeweils kumuliert bis zum 13. August, laut EFFIS/Copernicus
+    (Joint Research Centre der EU-Kommission): 20-Jahres-Schnitt 2006–2025: 243'189 Hektar.
+    2026: 568'415 Hektar bei 1647 Bränden – 134 Prozent über dem Schnitt.
+    2025, das bisherige Rekordjahr zu diesem Stichtag: 775'748 Hektar bei 1735 Bränden.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+
+// Source: Joint Research Centre / EFFIS (European Forest Fire Information System),
+// "Current wildfire situation in Europe" — figures as published for 13 August 2026,
+// each year's burnt area and fire count cumulated from 1 January to the same calendar date.
+const DATA = [
+  { label: 'Schnitt 2006–2025', value: 243189, fires: null, detail: '20-Jahres-Referenzwert zum 13. August', highlight: false },
+  { label: '2026 (bis 13. Aug.)', value: 568415, fires: 1647, detail: '1647 Brände gezählt', highlight: true },
+  { label: '2025 – bisheriger Rekord (bis 13. Aug.)', value: 775748, fires: 1735, detail: '1735 Brände gezählt', highlight: false }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const seriesColor = isDark ? '#3987e5' : '#2a78d6';
+const refColor = '#898781';
+
+function fmt(n) {
+  return n.toLocaleString('de-CH');
+}
+
+function LollipopBar(props) {
+  const { x, y, height, width, payload } = props;
+  const cy = y + height / 2;
+  const endX = x + width;
+  const color = payload.highlight ? seriesColor : refColor;
+  return (
+    <g>
+      <line x1={x} y1={cy} x2={endX} y2={cy} stroke={color} strokeWidth={2} />
+      <circle cx={endX} cy={cy} r={7} fill={color} stroke={surface} strokeWidth={2} />
+      <text x={endX + 12} y={cy} dy={4} fontSize={13} fontWeight={700} fill={ink}>
+        {fmt(payload.value) + ' ha'}
+      </text>
+    </g>
+  );
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 240 }}>
+      <div style={{ fontWeight: 700 }}>{row.label}</div>
+      <div style={{ color: sub }}>{fmt(row.value) + ' Hektar verbrannt'}</div>
+      <div style={{ color: axis, marginTop: 2 }}>{row.detail}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Europas Waldbrandsaison 2026: weit über dem Schnitt, aber unter dem Vorjahresrekord</h1>
+      <p className="lead">
+        Bis zum 13. August 2026 sind in der EU laut EFFIS/Copernicus 568'415 Hektar Wald verbrannt –
+        134 Prozent mehr als im Schnitt der Jahre 2006–2025 (243'189 Hektar) zum gleichen Stichtag.
+        Das bisherige Rekordjahr 2025 lag zum selben Datum mit 775'748 Hektar aber noch deutlich höher.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Verbrannt bis 13. Aug. 2026</div><div className="val">568'415 ha</div></div>
+        <div className="kpi"><div className="lab">Ggü. 20-Jahres-Schnitt</div><div className="val">+134 <small>Prozent</small></div></div>
+        <div className="kpi"><div className="lab">Brände gezählt 2026</div><div className="val">1647</div></div>
+      </div>
+      <div role="img" aria-label="Balken-Punkt-Diagramm: Kumulierte verbrannte Waldfläche in der EU jeweils bis zum 13. August. Schnitt 2006 bis 2025: 243189 Hektar. 2026: 568415 Hektar, 134 Prozent über dem Schnitt. 2025, bisheriges Rekordjahr zum gleichen Stichtag: 775748 Hektar.">
+        <ResponsiveContainer width="100%" height={260}>
+          <BarChart data={DATA} layout="vertical" margin={{ top: 10, right: 90, bottom: 10, left: 10 }}>
+            <CartesianGrid stroke={grid} horizontal={false} />
+            <XAxis type="number" domain={[0, 850000]} tickFormatter={fmt}
+              tick={{ fill: axis, fontSize: 11 }} stroke={grid} />
+            <YAxis type="category" dataKey="label" width={165}
+              tick={{ fill: ink, fontSize: 12 }} stroke={grid} />
+            <Tooltip content={<ChartTip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(11,11,11,0.03)' }} />
+            <Bar dataKey="value" shape={<LollipopBar />} isAnimationActive={false} barSize={2} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: Joint Research Centre der Europäischen Kommission / EFFIS (European Forest Fire Information System,
+        Copernicus Emergency Management Service), «Current wildfire situation in Europe», Stand 13. August 2026
+        (<a href="https://joint-research-centre.ec.europa.eu/projects-and-activities/natural-and-man-made-hazards/forest-fires/current-wildfire-situation-europe_en" target="_blank" rel="noopener">joint-research-centre.ec.europa.eu</a>).
+        Veröffentlicht am 17. August 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
