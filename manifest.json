@@ -420,5 +420,23 @@
       "https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20260817-1"
     ],
     "file": "days/2026-08-18.html"
+  },
+  {
+    "date": "2026-08-19",
+    "title": "Asylgesuche im Juli 2026: Afghanistan bleibt wichtigstes Herkunftsland",
+    "lead": "Die Schweiz registrierte im Juli 2026 1'915 Asylgesuche - 22,8 Prozent weniger als im Juli 2025, aber 7,8 Prozent mehr als im Juni. Afghanistan bleibt mit 351 Gesuchen das wichtigste Herkunftsland.",
+    "category": "Politik",
+    "keywords": [
+      "asylstatistik",
+      "sem",
+      "asylgesuche",
+      "herkunftslaender",
+      "afghanistan"
+    ],
+    "chartType": "stackedBar",
+    "sourceUrls": [
+      "https://www.sem.admin.ch/sem/de/home/publiservice/statistik/asylstatistik/aktuell.html"
+    ],
+    "file": "days/2026-08-19.html"
   }
 ]

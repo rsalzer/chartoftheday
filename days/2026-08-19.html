@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Asylgesuche im Juli 2026: Afghanistan bleibt wichtigstes Herkunftsland</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #eda100; --series-5: #e87ba4;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500; --series-5: #d55181;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 12px; max-width: 62ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px 16px; font-size: 12px; color: var(--muted); margin: 10px 0 4px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex: none; }
+  .note { font-size: 12px; color: var(--muted); margin: 10px 0 0; max-width: 62ch; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 12px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Asylgesuche in der Schweiz, Juli 2026: total 1915, 22.8 Prozent weniger als im Juli 2025, aber 7.8
+    Prozent mehr als im Juni 2026. Herkunftslaender: Afghanistan 351, Eritrea 268, Algerien 255,
+    Tuerkei 179, Aethiopien 149, alle uebrigen Laender zusammen 713. Die SEM faellte im Juli 2372
+    erstinstanzliche Entscheide und gewaehrte in 28 Prozent der Faelle Asyl; 939 Personen reisten
+    kontrolliert aus, davon 569 freiwillig und 370 zwangsweise.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } = Recharts;
+
+// Verified against the State Secretariat for Migration (SEM), "Asylstatistik Juli 2026"
+// (sem.admin.ch, published 18 Aug 2026). Country counts and totals are the report's own
+// figures; "Andere" (Other) is the arithmetic remainder of the reported total (1915) minus
+// the five named countries (1915 - 1202 = 713), not an estimate.
+const TOTAL = 1915;
+const SEGMENTS = [
+  { key: 'Afghanistan', label: 'Afghanistan', value: 351, color: 'var(--series-1)' },
+  { key: 'Eritrea', label: 'Eritrea', value: 268, color: 'var(--series-2)' },
+  { key: 'Algerien', label: 'Algerien', value: 255, color: 'var(--series-3)' },
+  { key: 'Tuerkei', label: 'Türkei', value: 179, color: 'var(--series-4)' },
+  { key: 'Aethiopien', label: 'Äthiopien', value: 149, color: 'var(--series-5)' },
+  { key: 'Andere', label: 'Andere Länder', value: 713, color: 'var(--muted)' }
+];
+const DATA = [{ name: 'Juli 2026' }];
+SEGMENTS.forEach((s) => { DATA[0][s.key] = s.value; });
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const axis = '#898781';
+
+function pct(v) { return (v / TOTAL * 100).toFixed(1).replace('.', ',') + '%'; }
+function fmt(v) { return v.toLocaleString('de-CH'); }
+
+// Only the two largest segments (the headline actor and the residual bucket) get a
+// direct label; the rest stay legend + tooltip only, to avoid clipped in-segment text.
+// Andere's fill is mid-tone gray in both modes, so dark ink reads better on it than the
+// light "surface" text used on the darker, saturated Afghanistan segment.
+const LABEL_TEXT_COLOR = { Afghanistan: surface, Andere: '#0b0b0b' };
+
+function makeLabel(key) {
+  return function SegmentLabel(props) {
+    const { x, y, width, height } = props;
+    if (width < 40) return null;
+    if (key !== 'Afghanistan' && key !== 'Andere') return null;
+    const seg = SEGMENTS.find((s) => s.key === key);
+    return (
+      <text x={x + width / 2} y={y + height / 2 + 4} textAnchor="middle" fontSize={12} fontWeight={600} fill={LABEL_TEXT_COLOR[key]}>
+        {seg.label} · {pct(seg.value)}
+      </text>
+    );
+  };
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: ink }}>
+      <div style={{ fontWeight: 600, marginBottom: 4 }}>Juli 2026 · {fmt(TOTAL)} Gesuche total</div>
+      {payload.slice().reverse().map((p) => {
+        const seg = SEGMENTS.find((s) => s.key === p.dataKey);
+        if (!seg) return null;
+        return (
+          <div key={seg.key} style={{ color: sub }}>
+            <span style={{ color: ink }}>{seg.label}</span>: {fmt(seg.value)} ({pct(seg.value)})
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Asylgesuche im Juli 2026: Afghanistan bleibt wichtigstes Herkunftsland</h1>
+      <p className="lead">
+        Die Schweiz registrierte im Juli 2026 1'915 Asylgesuche – 22,8 Prozent weniger als im
+        Juli 2025, aber 7,8 Prozent mehr als im Juni. Mit 351 Gesuchen bleibt Afghanistan das
+        wichtigste Herkunftsland, vor Eritrea, Algerien, der Türkei und Äthiopien.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Gesuche Juli 2026</div><div className="val">1'915</div></div>
+        <div className="kpi"><div className="lab">Ggü. Juli 2025</div><div className="val">−22,8 <small>%</small></div></div>
+        <div className="kpi"><div className="lab">Ggü. Juni 2026</div><div className="val">+7,8 <small>%</small></div></div>
+      </div>
+      <div role="img" aria-label="Gestapeltes Balkendiagramm: Zusammensetzung der 1915 Asylgesuche im Juli 2026 nach Herkunftsland. Afghanistan 351 (18,3%), Eritrea 268 (14,0%), Algerien 255 (13,3%), Türkei 179 (9,3%), Äthiopien 149 (7,8%), alle übrigen Länder zusammen 713 (37,2%).">
+        <ResponsiveContainer width="100%" height={140}>
+          <BarChart data={DATA} layout="vertical" margin={{ top: 8, right: 12, bottom: 8, left: -8 }}>
+            <XAxis type="number" domain={[0, TOTAL]} tick={{ fill: axis, fontSize: 12 }} stroke={grid}
+              tickFormatter={(v) => Math.round(v / TOTAL * 100) + '%'} />
+            <YAxis type="category" dataKey="name" tick={{ fill: axis, fontSize: 12 }} stroke={grid} width={64} />
+            <Tooltip content={<ChartTip />} cursor={{ fill: 'rgba(137,135,129,0.12)' }} />
+            {SEGMENTS.map((s) => (
+              <Bar key={s.key} dataKey={s.key} stackId="a" fill={s.color} isAnimationActive={false}
+                stroke={surface} strokeWidth={2} label={makeLabel(s.key)} barSize={48} />
+            ))}
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="legend">
+        {SEGMENTS.map((s) => (
+          <span key={s.key}><span className="swatch" style={{ background: s.color }}></span>
+            {s.label} ({fmt(s.value)})</span>
+        ))}
+      </div>
+      <p className="note">
+        Die SEM traf im Juli 2'372 erstinstanzliche Entscheide und gewährte in 28 Prozent der
+        Fälle Asyl. 939 Personen reisten kontrolliert aus der Schweiz aus, davon 569 freiwillig
+        und 370 zwangsweise. In den ersten sieben Monaten 2026 gingen 18 Prozent weniger Gesuche
+        ein als in der gleichen Periode 2025.
+      </p>
+      <div className="source">
+        Quelle: Staatssekretariat für Migration (SEM), «Asylstatistik Juli 2026»,{' '}
+        <a href="https://www.sem.admin.ch/sem/de/home/publiservice/statistik/asylstatistik/aktuell.html" target="_blank" rel="noopener">
+          sem.admin.ch
+        </a>
+        {' '}(publiziert 18. August 2026) — Stand 19. August 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
