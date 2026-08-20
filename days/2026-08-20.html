@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Der Hitzesommer trifft eine Fischwelt, die schon vorher auf der Kippe stand</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #eda100; --series-5: #e87ba4; --series-6: #008300;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500; --series-5: #d55181; --series-6: #008300;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 12px; max-width: 62ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .layout { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; }
+  .chart-box { position: relative; flex: 1 1 260px; min-width: 240px; }
+  .center-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; pointer-events: none; }
+  .center-label .big { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; line-height: 1; }
+  .center-label .small { font-size: 11.5px; color: var(--sub); max-width: 100px; display: block; margin-top: 3px; }
+  .legend { display: flex; flex-direction: column; gap: 7px; font-size: 12.5px; color: var(--ink); flex: 1 1 200px; min-width: 200px; }
+  .legend .row { display: flex; align-items: baseline; gap: 8px; }
+  .legend .row .n { color: var(--sub); font-weight: 400; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex: none; margin-top: 2px; }
+  .note { font-size: 12px; color: var(--muted); margin: 12px 0 0; max-width: 62ch; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Rote Liste der Fische und Rundmaeuler der Schweiz (BAFU / info fauna, Stand 2022), 66 beurteilte
+    einheimische Taxa: in der Schweiz ausgestorben (RE) 9 (13,6%), vom Aussterben bedroht (CR) 15 (22,7%),
+    stark gefaehrdet (EN) 8 (12,1%), verletzlich (VU) 11 (16,6%), potenziell gefaehrdet (NT) 9 (13,6%),
+    nicht gefaehrdet (LC) 14 (21,2%). Damit stehen 43 der 66 Taxa (65 Prozent) auf der Roten Liste; zaehlt
+    man die potenziell gefaehrdeten dazu, sind 52 von 66 (79 Prozent) gefaehrdet oder schlimmer. Fuer 5
+    weitere Taxa reichen die Daten nicht aus (data deficient), 19 zusaetzliche Arten sind nicht einheimisch.
+    Aktueller Anlass: der Hitze- und Duerresommer 2026 laesst laut Schweizerischem Fischereiverband
+    landesweit Fische sterben.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } = Recharts;
+
+// Source: BAFU / info fauna 2022, "Rote Liste der Fische und Rundmäuler — Gefährdete
+// Arten der Schweiz, Stand 2022" (Tabelle 1, S. 10). Counts are the report's own figures
+// for the 66 native fish and lamprey taxa it could assign an IUCN category to (5 further
+// taxa are "data deficient" and excluded here, matching the report's own Abbildung 1).
+const TOTAL = 66;
+const SEGMENTS = [
+  { key: 'RE', label: 'In der Schweiz ausgestorben', value: 9, color: 'var(--series-1)' },
+  { key: 'CR', label: 'Vom Aussterben bedroht', value: 15, color: 'var(--series-2)' },
+  { key: 'EN', label: 'Stark gefährdet', value: 8, color: 'var(--series-3)' },
+  { key: 'VU', label: 'Verletzlich', value: 11, color: 'var(--series-4)' },
+  { key: 'NT', label: 'Potenziell gefährdet', value: 9, color: 'var(--series-5)' },
+  { key: 'LC', label: 'Nicht gefährdet', value: 14, color: 'var(--series-6)' }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+
+function pct(v) { return (v / TOTAL * 100).toFixed(1).replace('.', ',') + '%'; }
+function fmt(v) { return v.toLocaleString('de-CH'); }
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const seg = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: ink }}>
+      <div style={{ fontWeight: 600 }}>{seg.label}</div>
+      <div style={{ color: sub }}>{fmt(seg.value)} von {fmt(TOTAL)} Taxa ({pct(seg.value)})</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Der Hitzesommer trifft eine Fischwelt, die schon vorher auf der Kippe stand</h1>
+      <p className="lead">
+        Der Rekord-Hitzesommer 2026 lässt laut Schweizerischem Fischereiverband landesweit Fische
+        sterben – «die grösste Katastrophe, die die Schweizer Fischwelt je gesehen hat», warnte
+        Verbandsdirektor David Bittner am 19. August. Wie prekär die Lage schon vor dieser Krise war,
+        zeigt die amtliche Rote Liste: 43 der 66 beurteilten einheimischen Fisch- und Rundmäulerarten
+        stehen auf der Roten Liste, weitere 9 gelten als potenziell gefährdet.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Auf der Roten Liste</div><div className="val">43 <small>von 66 (65%)</small></div></div>
+        <div className="kpi"><div className="lab">Gefährdet oder schlimmer</div><div className="val">52 <small>von 66 (79%)</small></div></div>
+        <div className="kpi"><div className="lab">In der Schweiz ausgestorben</div><div className="val">9 <small>Taxa (RE)</small></div></div>
+      </div>
+      <div className="layout">
+        <div className="chart-box">
+          <div role="img" aria-label="Donutdiagramm: 66 beurteilte einheimische Fisch- und Rundmäulerarten der Schweiz nach IUCN-Gefährdungskategorie. Ausgestorben 9 (13,6%), vom Aussterben bedroht 15 (22,7%), stark gefährdet 8 (12,1%), verletzlich 11 (16,6%), potenziell gefährdet 9 (13,6%), nicht gefährdet 14 (21,2%). 79 Prozent gelten als gefährdet oder schlimmer.">
+            <ResponsiveContainer width="100%" height={230}>
+              <PieChart>
+                <Pie data={SEGMENTS} dataKey="value" nameKey="label" cx="50%" cy="50%"
+                  innerRadius={62} outerRadius={92} paddingAngle={2} stroke={surface} strokeWidth={2}
+                  isAnimationActive={false}>
+                  {SEGMENTS.map((s) => <Cell key={s.key} fill={s.color} />)}
+                </Pie>
+                <Tooltip content={<ChartTip />} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="center-label">
+            <span className="big">79%</span>
+            <span className="small">gefährdet oder schlimmer</span>
+          </div>
+        </div>
+        <div className="legend">
+          {SEGMENTS.map((s) => (
+            <span key={s.key} className="row">
+              <span className="swatch" style={{ background: s.color }}></span>
+              <span>{s.label} <span className="n">({fmt(s.value)} · {pct(s.value)})</span></span>
+            </span>
+          ))}
+        </div>
+      </div>
+      <p className="note">
+        Für 5 weitere Taxa reichen die Daten nicht aus, um sie einzustufen (data deficient); sie sind
+        hier nicht dargestellt. 19 zusätzliche, nicht einheimische Arten (Neozoen) fliessen nicht in
+        die Rote Liste ein.
+      </p>
+      <div className="source">
+        Quelle: BAFU / info fauna 2022, «Rote Liste der Fische und Rundmäuler – Gefährdete Arten der
+        Schweiz, Stand 2022» (<a href="https://www.infofauna.ch/sites/default/files/files/publications/rote_liste_der_gefaehrdetenartenderschweizfischeundrundmaeuler.pdf" target="_blank" rel="noopener">infofauna.ch</a>);
+        Schweizerischer Fischereiverband via{' '}
+        <a href="https://www.srf.ch/news/schweiz/fischsterben-wegen-der-hitze-fischereiverband-wir-rechnen-mit-millionen-toten-fischen" target="_blank" rel="noopener">srf.ch</a>,
+        publiziert 19. August 2026 — Stand 20. August 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>

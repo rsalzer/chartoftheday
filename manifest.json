@@ -438,5 +438,24 @@
       "https://www.sem.admin.ch/sem/de/home/publiservice/statistik/asylstatistik/aktuell.html"
     ],
     "file": "days/2026-08-19.html"
+  },
+  {
+    "date": "2026-08-20",
+    "title": "Der Hitzesommer trifft eine Fischwelt, die schon vorher auf der Kippe stand",
+    "lead": "Der Rekord-Hitzesommer 2026 lässt laut Schweizerischem Fischereiverband landesweit Fische sterben – die grösste Katastrophe, die die Schweizer Fischwelt je gesehen hat. Die amtliche Rote Liste von BAFU und info fauna zeigt, wie prekär die Lage schon vorher war: 43 der 66 beurteilten einheimischen Fisch- und Rundmäulerarten stehen auf der Roten Liste, weitere 9 gelten als potenziell gefährdet.",
+    "category": "Klima",
+    "keywords": [
+      "fischsterben",
+      "hitze",
+      "trockenheit",
+      "rote liste",
+      "biodiversitaet"
+    ],
+    "chartType": "donut",
+    "sourceUrls": [
+      "https://www.infofauna.ch/sites/default/files/files/publications/rote_liste_der_gefaehrdetenartenderschweizfischeundrundmaeuler.pdf",
+      "https://www.srf.ch/news/schweiz/fischsterben-wegen-der-hitze-fischereiverband-wir-rechnen-mit-millionen-toten-fischen"
+    ],
+    "file": "days/2026-08-20.html"
   }
 ]
