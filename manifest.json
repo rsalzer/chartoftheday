@@ -457,5 +457,23 @@
       "https://www.srf.ch/news/schweiz/fischsterben-wegen-der-hitze-fischereiverband-wir-rechnen-mit-millionen-toten-fischen"
     ],
     "file": "days/2026-08-20.html"
+  },
+  {
+    "date": "2026-08-21",
+    "title": "US-Staatsschulden knacken 40 Billionen Dollar – in Rekordtempo",
+    "lead": "Die ausstehenden Schulden der USA haben laut US-Finanzministerium am 18. August 2026 die Marke von 40 Billionen Dollar überschritten. Für den letzten Fünf-Billionen-Schritt brauchte es nur noch 2,1 Jahre – in den 1990er- und 2000er-Jahren dauerte ein solcher Schritt über zwölf Jahre.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "usa",
+      "staatsschulden",
+      "schuldenberg",
+      "treasury",
+      "billionengrenze"
+    ],
+    "chartType": "area",
+    "sourceUrls": [
+      "https://fiscaldata.treasury.gov/datasets/debt-to-the-penny/debt-to-the-penny"
+    ],
+    "file": "days/2026-08-21.html"
   }
 ]
