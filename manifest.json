@@ -475,5 +475,24 @@
       "https://fiscaldata.treasury.gov/datasets/debt-to-the-penny/debt-to-the-penny"
     ],
     "file": "days/2026-08-21.html"
+  },
+  {
+    "date": "2026-08-22",
+    "title": "Neutralitätsinitiative deutlich im Rückstand, Ernährungsinitiative ein Kopf-an-Kopf-Rennen",
+    "lead": "Die erste SRG-Trendumfrage von gfs.bern zur Abstimmung vom 27. September 2026 zeigt: 54 Prozent lehnen die Neutralitätsinitiative ab, nur 42 Prozent sind dafür. Bei der Ernährungsinitiative liegen Ja (47 Prozent) und Nein (49 Prozent) praktisch gleichauf.",
+    "category": "Politik",
+    "keywords": [
+      "neutralitaetsinitiative",
+      "ernaehrungsinitiative",
+      "srg-trend",
+      "gfs-bern",
+      "volksabstimmung"
+    ],
+    "chartType": "stackedBar",
+    "sourceUrls": [
+      "https://www.gfsbern.ch/de/news/1-srg-trendumfrage-zur-eidg-abstimmung-von-27-september-2026/",
+      "https://www.srf.ch/news/schweiz/1-srg-umfrage-auf-einen-blick-neutralitaetsinitiative-im-rueckstand-ernaehrungsinitiative-offen"
+    ],
+    "file": "days/2026-08-22.html"
   }
 ]
