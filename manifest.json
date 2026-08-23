@@ -494,5 +494,27 @@
       "https://www.srf.ch/news/schweiz/1-srg-umfrage-auf-einen-blick-neutralitaetsinitiative-im-rueckstand-ernaehrungsinitiative-offen"
     ],
     "file": "days/2026-08-22.html"
+  },
+  {
+    "date": "2026-08-23",
+    "title": "Ebola-Ausbruch im Kongo ist der grösste der Landesgeschichte",
+    "lead": "Der im Mai 2026 in der Demokratischen Republik Kongo ausgebrochene Ebola-Ausbruch mit dem Bundibugyo-Virus hat sich seither mehr als verfünfzigfacht: von 83 Fällen am 21. Mai auf 4665 bestätigte Fälle und 2184 Tote per 12. August – mehr als im bisherigen Rekordausbruch 2018–2020 (3317 Fälle).",
+    "category": "Gesundheit",
+    "keywords": [
+      "ebola",
+      "bundibugyo-virus",
+      "dr kongo",
+      "epidemie",
+      "fallzahlen",
+      "who"
+    ],
+    "chartType": "line",
+    "sourceUrls": [
+      "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON603",
+      "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON613",
+      "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON614",
+      "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON615"
+    ],
+    "file": "days/2026-08-23.html"
   }
 ]
