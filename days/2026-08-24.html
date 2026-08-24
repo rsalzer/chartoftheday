@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vuelta-Etappe 2: Brennan holt auf, Favoriten verlieren im Bergsprint viel Zeit</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-1: #2a78d6; --series-2: #eb6834; --connector: #c3c2b7;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-1: #3987e5; --series-2: #d95926; --connector: #383835;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 62ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; gap: 16px; align-items: center; font-size: 12px; color: var(--sub); margin: 2px 0 8px; }
+  .legend .item { display: flex; gap: 6px; align-items: center; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Vuelta a España 2026, Rückstand auf Gesamtführer Tadej Pogačar in Sekunden, nach Etappe 1
+    (Zeitfahren Monaco) und nach Etappe 2 (Manosque): Pogačar 0/0. Wout van Aert 9/9.
+    Matthew Brennan (Etappensieger) 16/10. Léo Bisiaux 8/12. Stefan Küng 14/18.
+    Primož Roglič 22/26. João Almeida 18/40. Jørgen Nordhagen 35/57. Felix Gall 46/68.
+    Cian Uijtdebroeks 54/76.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+
+// Sources: ciclismointernacional.com "Diferencias entre favoritos tras la crono inaugural
+// de la Vuelta 2026" (stage-1 gaps) and "...etapa 2" (stage-2 gaps); cross-checked against
+// esciclismo.com's full stage-1 classification and Wikipedia's stage-2 general-classification
+// summary. All gaps are seconds behind race leader Tadej Pogačar.
+const DATA = [
+  { name: 'Pogačar', team: 'UAE Team Emirates-XRG', s1: 0, s2: 0 },
+  { name: 'Van Aert', team: 'Visma-Lease a Bike', s1: 9, s2: 9 },
+  { name: 'Brennan', team: 'Visma-Lease a Bike', s1: 16, s2: 10 },
+  { name: 'Bisiaux', team: 'Decathlon-CMA CGM', s1: 8, s2: 12 },
+  { name: 'Küng', team: 'Tudor Pro Cycling', s1: 14, s2: 18 },
+  { name: 'Roglič', team: 'Red Bull-Bora', s1: 22, s2: 26 },
+  { name: 'Almeida', team: 'UAE Team Emirates-XRG', s1: 18, s2: 40 },
+  { name: 'Nordhagen', team: 'Visma-Lease a Bike', s1: 35, s2: 57 },
+  { name: 'Gall', team: 'Decathlon-CMA CGM', s1: 46, s2: 68 },
+  { name: 'Uijtdebroeks', team: 'Movistar Team', s1: 54, s2: 76 }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const connector = isDark ? '#383835' : '#c3c2b7';
+const color1 = isDark ? '#3987e5' : '#2a78d6';
+const color2 = isDark ? '#d95926' : '#eb6834';
+
+function fmtSec(n) {
+  return n + ' Sek.';
+}
+
+function DumbbellShape(props) {
+  const { x, y, width, height, payload } = props;
+  const cy = y + height / 2;
+  const xZero = x;
+  let x1, x2;
+  if (payload.s2 === 0 && payload.s1 === 0) {
+    x1 = xZero; x2 = xZero;
+  } else {
+    const pxPerSec = width / payload.s2;
+    x1 = xZero + payload.s1 * pxPerSec;
+    x2 = xZero + width;
+  }
+  return (
+    <g>
+      {x1 !== x2 && <line x1={x1} y1={cy} x2={x2} y2={cy} stroke={connector} strokeWidth={2} />}
+      <circle cx={x1} cy={cy} r={6} fill={color1} stroke={surface} strokeWidth={2} />
+      <circle cx={x2} cy={cy} r={6} fill={color2} stroke={surface} strokeWidth={2} />
+    </g>
+  );
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0].payload;
+  const delta = row.s2 - row.s1;
+  const deltaText = delta === 0 ? 'unverändert'
+    : delta < 0 ? (Math.abs(delta) + ' Sek. aufgeholt')
+    : (delta + ' Sek. verloren');
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 240 }}>
+      <div style={{ fontWeight: 700 }}>{row.name}</div>
+      <div style={{ color: axis, marginBottom: 4 }}>{row.team}</div>
+      <div style={{ color: sub }}>{'Nach Etappe 1: ' + fmtSec(row.s1) + ' zurück'}</div>
+      <div style={{ color: sub }}>{'Nach Etappe 2: ' + fmtSec(row.s2) + ' zurück'}</div>
+      <div style={{ color: ink, marginTop: 2, fontWeight: 600 }}>{deltaText}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Vuelta-Etappe 2: Brennan holt auf, Favoriten verlieren im Bergsprint viel Zeit</h1>
+      <p className="lead">
+        Ein explosiver Sprint bergauf spaltete an der 2. Etappe der Vuelta a España 2026 das Feld:
+        Nachwuchsfahrer Matthew Brennan gewann die Etappe und verkürzte seinen Rückstand auf
+        Gesamtführer Tadej Pogačar von 16 auf 10 Sekunden. Mitfavoriten wie João Almeida, Felix Gall
+        und Cian Uijtdebroeks wurden dagegen abgehängt und verloren zusätzlich 22 Sekunden.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Brennan, Etappensieger</div><div className="val">16 → 10 <small>Sek. Rückstand</small></div></div>
+        <div className="kpi"><div className="lab">Grösster Rückstand (Uijtdebroeks)</div><div className="val">76 <small>Sek.</small></div></div>
+        <div className="kpi"><div className="lab">Verlust der abgehängten Favoriten</div><div className="val">+22 <small>Sek.</small></div></div>
+      </div>
+      <div className="legend">
+        <span className="item"><span className="dot" style={{ background: color1 }}></span>Rückstand nach Etappe 1</span>
+        <span className="item"><span className="dot" style={{ background: color2 }}></span>Rückstand nach Etappe 2</span>
+      </div>
+      <div role="img" aria-label="Punkt-Linien-Diagramm (Dumbbell): Rückstand ausgewählter Fahrer auf Gesamtführer Tadej Pogačar nach Etappe 1 und nach Etappe 2 der Vuelta a España 2026. Matthew Brennan verkürzte seinen Rückstand von 16 auf 10 Sekunden. Wout van Aert blieb bei 9 Sekunden. Léo Bisiaux, Stefan Küng, Primož Roglič, João Almeida, Jørgen Nordhagen, Felix Gall und Cian Uijtdebroeks verloren zwischen 4 und 22 Sekunden, Uijtdebroeks liegt neu 76 Sekunden zurück.">
+        <ResponsiveContainer width="100%" height={340}>
+          <BarChart data={DATA} layout="vertical" margin={{ top: 10, right: 24, bottom: 10, left: 10 }}>
+            <CartesianGrid stroke={grid} horizontal={false} />
+            <XAxis type="number" domain={[0, 85]} ticks={[0, 20, 40, 60, 80]}
+              tickFormatter={(v) => v + ' s'} tick={{ fill: axis, fontSize: 11 }} stroke={grid} />
+            <YAxis type="category" dataKey="name" width={100}
+              tick={{ fill: ink, fontSize: 12 }} stroke={grid} />
+            <Tooltip content={<ChartTip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(11,11,11,0.03)' }} />
+            <Bar dataKey="s2" fill="transparent" shape={<DumbbellShape />} isAnimationActive={false} barSize={2} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quellen: ciclismointernacional.com, «Diferencias entre favoritos tras la crono inaugural de
+        la Vuelta 2026» (<a href="https://ciclismointernacional.com/diferencias-entre-favoritos-tras-la-crono-inaugural-de-la-vuelta-2026/" target="_blank" rel="noopener">Etappe 1</a>)
+        und «...etapa 2» (<a href="https://ciclismointernacional.com/diferencias-favoritos-clasificacion-general-vuelta-a-espana-2026-etapa-2/" target="_blank" rel="noopener">Etappe 2</a>),
+        cross-check <a href="https://www.esciclismo.com/actualidad/carretera/92640.html" target="_blank" rel="noopener">esciclismo.com</a>.
+        Stand 23. August 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>

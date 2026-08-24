@@ -516,5 +516,25 @@
       "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON615"
     ],
     "file": "days/2026-08-23.html"
+  },
+  {
+    "date": "2026-08-24",
+    "title": "Vuelta-Etappe 2: Brennan holt auf, Favoriten verlieren im Bergsprint viel Zeit",
+    "lead": "Ein explosiver Sprint bergauf spaltete an der 2. Etappe der Vuelta a España 2026 das Feld: Nachwuchsfahrer Matthew Brennan gewann die Etappe und verkürzte seinen Rückstand auf Gesamtführer Tadej Pogačar von 16 auf 10 Sekunden. Mitfavoriten wie João Almeida, Felix Gall und Cian Uijtdebroeks wurden dagegen abgehängt und verloren zusätzlich 22 Sekunden.",
+    "category": "Sport",
+    "keywords": [
+      "vuelta",
+      "radsport",
+      "gesamtklassement",
+      "bergsprint",
+      "etappenzeiten"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://ciclismointernacional.com/diferencias-entre-favoritos-tras-la-crono-inaugural-de-la-vuelta-2026/",
+      "https://ciclismointernacional.com/diferencias-favoritos-clasificacion-general-vuelta-a-espana-2026-etapa-2/",
+      "https://www.esciclismo.com/actualidad/carretera/92640.html"
+    ],
+    "file": "days/2026-08-24.html"
   }
 ]
