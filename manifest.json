@@ -536,5 +536,24 @@
       "https://www.esciclismo.com/actualidad/carretera/92640.html"
     ],
     "file": "days/2026-08-24.html"
+  },
+  {
+    "date": "2026-08-25",
+    "title": "AHV trägt heute mehr zur Rente bei als die Pensionskasse – vertraut wird ihr trotzdem weniger",
+    "lead": "Bei einer Beispielperson mit 120'000 Franken Jahreslohn ist die AHV-Rente seit 2002 von 24'720 auf 32'760 Franken gestiegen, während die Pensionskassenrente von 50'200 auf 29'900 Franken eingebrochen ist. Laut einer Befragung von 1558 Personen durch das VZ Vermögenszentrum rechnen trotzdem nur 25 Prozent damit, dass die AHV-Rente auch in 20 Jahren sicher ist – bei der Pensionskasse sind es 30 Prozent.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "ahv",
+      "pensionskasse",
+      "altersvorsorge",
+      "vertrauen",
+      "rentenbarometer"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.srf.ch/news/wirtschaft/sicherheit-der-rente-vertrauen-der-bevoelkerung-in-die-ahv-nimmt-ab",
+      "https://www.blick.ch/wirtschaft/ahv-steigt-pensionskasse-bricht-ein-experte-warnt-menschen-ueberschaetzen-wie-viel-rente-sie-spaeter-kriegen-id22160135.html"
+    ],
+    "file": "days/2026-08-25.html"
   }
 ]
