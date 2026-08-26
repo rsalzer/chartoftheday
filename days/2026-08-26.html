@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vier von fünf in der Schweiz nutzen KI – aber erst jede Dritte täglich</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 64ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Gemäss der Studie IGEM-Digimonitor 2026 (IGEM/WEMF, Befragung von 1957 Personen,
+    veröffentlicht am 25. August 2026) nutzen von den 6,4 Millionen internetnutzenden
+    Personen in der Schweiz (15 bis 75 Jahre) 5,1 Millionen (80 Prozent) mindestens
+    gelegentlich KI-Tools, 4,1 Millionen (64 Prozent) mindestens wöchentlich und 2,0
+    Millionen (31 Prozent) täglich. Die KI-Nutzung insgesamt hat sich seit 2024 von 40
+    auf 80 Prozent verdoppelt.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { FunnelChart, Funnel, Cell, LabelList, Tooltip, ResponsiveContainer } = Recharts;
+
+// Source: IGEM-Digimonitor 2026, Medienmitteilung "Zusammenfassung Studie IGEM-Digimonitor
+// 2026" (igem.ch, 25.8.2026), Grafik 4 "Nutzung von KI-Plattformen in der Schweiz 2026" and
+// accompanying text. Base population: internetnutzende Schweizer Bevölkerung 15-75 Jahre,
+// 6.4 Mio. Personen, n=1957 Befragte. Absolute Mio.-Werte direkt aus Grafik 4 übernommen
+// (5.1 / 4.1 / 2.0 Mio.); Prozentanteile an der Basispopulation daraus abgeleitet
+// (5.1/6.4=80%, 4.1/6.4=64%, 2.0/6.4=31%) - der erste Wert (80%) stimmt exakt mit der im
+// Fliesstext genannten Zahl ("seit 2024 von 40% auf 80% verdoppelt") überein, was die
+// Rechenmethode bestätigt. Der dritte Wert deckt sich mit der im Text genannten
+// Grössenordnung ("fast jede dritte Person nutzt KI-Tools bereits täglich").
+const DATA = [
+  { name: 'Mindestens gelegentlich', value: 5.1, pct: 80 },
+  { name: 'Wöchentlich', value: 4.1, pct: 64 },
+  { name: 'Täglich', value: 2.0, pct: 31 }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const STAGE_COLORS = isDark ? ['#6da7ec', '#2a78d6', '#184f95'] : ['#86b6ef', '#3987e5', '#1c5cab'];
+const STAGE_TEXT = ['#0b0b0b', '#ffffff', '#ffffff'];
+
+function fmtMio(n) {
+  return n.toLocaleString('de-CH', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' Mio.';
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 220 }}>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{d.name}</div>
+      <div style={{ color: sub }}>{fmtMio(d.value) + ' Personen (' + d.pct + ' % von 6,4 Mio.)'}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Vier von fünf in der Schweiz nutzen KI – aber erst jede Dritte täglich</h1>
+      <p className="lead">
+        Gemäss der Studie IGEM-Digimonitor 2026 nutzen 5,1 der 6,4 Millionen internetnutzenden
+        Personen in der Schweiz zumindest gelegentlich KI-Tools wie ChatGPT oder Gemini –
+        doppelt so viele wie 2024. Bei wöchentlicher Nutzung sind es noch 4,1 Millionen, bei
+        täglicher Nutzung sinkt die Zahl auf 2,0 Millionen.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Mindestens gelegentlich</div><div className="val">5,1 <small>Mio. (80 %)</small></div></div>
+        <div className="kpi"><div className="lab">Mindestens wöchentlich</div><div className="val">4,1 <small>Mio. (64 %)</small></div></div>
+        <div className="kpi"><div className="lab">Täglich</div><div className="val">2,0 <small>Mio. (31 %)</small></div></div>
+      </div>
+      <div role="img" aria-label="Trichterdiagramm zur Häufigkeit der KI-Nutzung in der Schweiz 2026: 5,1 Millionen Personen nutzen KI-Tools mindestens gelegentlich, 4,1 Millionen mindestens wöchentlich und 2,0 Millionen täglich, von insgesamt 6,4 Millionen internetnutzenden Personen im Alter von 15 bis 75 Jahren.">
+        <ResponsiveContainer width="100%" height={280}>
+          <FunnelChart margin={{ top: 10, right: 40, bottom: 10, left: 40 }}>
+            <Tooltip content={<ChartTip />} />
+            <Funnel dataKey="value" data={DATA} isAnimationActive={false}>
+              {DATA.map((d, i) => <Cell key={i} fill={STAGE_COLORS[i]} />)}
+              <LabelList dataKey="name" position="left" fill={sub} fontSize={12} offset={12} />
+              <LabelList
+                dataKey="value"
+                position="center"
+                content={(props) => {
+                  const { x, y, value, index } = props;
+                  const item = DATA[index];
+                  return (
+                    <text x={x} y={y} textAnchor="middle" dominantBaseline="middle"
+                      fill={STAGE_TEXT[index]} fontSize={12.5} fontWeight={700}>
+                      {fmtMio(value) + ' (' + item.pct + ' %)'}
+                    </text>
+                  );
+                }}
+              />
+            </Funnel>
+          </FunnelChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: <a href="https://www.igem.ch/wp-content/uploads/Zusammenfassung-Studie-IGEM-Digimonitor-2026_Mediennutzung-Schweiz.pdf" target="_blank" rel="noopener">IGEM-Digimonitor 2026</a>
+        {' '}(IGEM / WEMF AG für Werbemedienforschung, Medienmitteilung vom 25. August 2026, Befragung
+        von 1957 Personen), zusätzlich eingeordnet durch
+        {' '}<a href="https://www.srf.ch/news/schweiz/igem-digimonitor-2026-ki-nutzung-nimmt-in-der-schweiz-rasant-zu" target="_blank" rel="noopener">SRF</a>,
+        Stand 26. August 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
