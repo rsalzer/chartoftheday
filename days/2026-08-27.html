@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aare und Reuss so warm wie nie: Bundesrat reagiert mit 70 Millionen Franken</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-old: #2a78d6; --series-new: #eb6834;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-old: #3987e5; --series-new: #d95926;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 64ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--sub); margin: 6px 2px 0; }
+  .legend .sw { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Gemäss Bundesamt für Umwelt (BAFU) erreichte die Aare in Bern (Messstelle Schönau) am 14. Juli 2026 mit
+    24,8 Grad die höchste je gemessene Wassertemperatur und übertraf damit den bisherigen Rekord von 24,12
+    Grad vom 4. August 2022. Die Reuss in Luzern verzeichnete bereits am 27. Juni 2026 einen neuen
+    Rekordwert von 26,36 Grad, über dem bisherigen Höchstwert von 26,23 Grad vom 5. August 2018. Zwischen
+    dem 1. Juni und dem 16. August 2026 registrierten fast 60 Prozent aller Wassertemperatur-Messstationen
+    der Schweiz neue Höchstwerte, während über 40 Prozent der Abflussmessstationen neue Tiefstwerte beim
+    Wasserstand meldeten. Am 26. August 2026 sprach der Bundesrat deswegen 70 Millionen Franken für die
+    Anpassung des Waldes an den Klimawandel und zur Unterstützung von Landwirtschaftsbetrieben.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+
+// Sources: BAFU FAQ "Sommer 2026 - Trockenheit und hohe Wassertemperaturen"
+// (bafu.admin.ch, veroeffentlicht 21.8.2026): Aare Bern/Schoenau 24,8 C am 14.7.2026,
+// bisheriger Rekord 24,12 C (4.8.2022, laut nau.ch-Bericht vom 14.7.2026 bestaetigt);
+// Reuss Luzern 26,36 C am 27.6.2026, bisheriger Hoechstwert 26,23 C (5.8.2018).
+// Stationsanteile (>40% neue Tiefstwerte Abfluss, ~60% neue Hoechstwerte Temperatur,
+// je 1.6.-16.8.2026) direkt aus derselben BAFU-FAQ. Bundesratsbeitrag von 70 Mio. Franken
+// (17,5 Mio. Waldkredit-Aufstockung 2027 + 54 Mio. einmalige Betriebshilfe Landwirtschaft
+// 2026) aus SRF, 26.8.2026, 14:30 Uhr.
+const DATA = [
+  { name: 'Aare bei Bern', oldVal: 24.12, newVal: 24.8, oldDate: '4. August 2022', newDate: '14. Juli 2026' },
+  { name: 'Reuss bei Luzern', oldVal: 26.23, newVal: 26.36, oldDate: '5. August 2018', newDate: '27. Juni 2026' }
+];
+const DOMAIN_MIN = 23;
+const DOMAIN_MAX = 27.2;
+const CHART_DATA = DATA.map((d) => ({ ...d, base: d.oldVal - DOMAIN_MIN, range: d.newVal - d.oldVal }));
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const muted = '#898781';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const OLD_COLOR = isDark ? '#3987e5' : '#2a78d6';
+const NEW_COLOR = isDark ? '#d95926' : '#eb6834';
+
+function fmtC(n) {
+  return n.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' °C';
+}
+
+function DumbbellShape(props) {
+  const { x, y, width, height, payload } = props;
+  const cy = y + height / 2;
+  const x1 = x;
+  const x2 = x + width;
+  return (
+    <g>
+      <line x1={x1} y1={cy} x2={x2} y2={cy} stroke={muted} strokeWidth={2} />
+      <circle cx={x1} cy={cy} r={6} fill={OLD_COLOR} stroke={surface} strokeWidth={1.5} />
+      <circle cx={x2} cy={cy} r={7} fill={NEW_COLOR} stroke={surface} strokeWidth={1.5} />
+      <text x={x2} y={cy - 14} textAnchor="middle" fontSize={12} fontWeight={700} fill={ink}>
+        {fmtC(payload.newVal)}
+      </text>
+      <text x={x1} y={cy + 20} textAnchor="middle" fontSize={11} fill={sub}>
+        {fmtC(payload.oldVal)}
+      </text>
+    </g>
+  );
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 240 }}>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{d.name}</div>
+      <div style={{ color: sub }}>Bisheriger Rekord: {fmtC(d.oldVal)} ({d.oldDate})</div>
+      <div style={{ color: sub }}>Neuer Rekord 2026: {fmtC(d.newVal)} ({d.newDate})</div>
+      <div style={{ color: sub, marginTop: 2 }}>Differenz: +{(d.newVal - d.oldVal).toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} °C</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Aare und Reuss so warm wie nie: Bundesrat reagiert mit 70 Millionen Franken</h1>
+      <p className="lead">
+        Am 14. Juli 2026 erreichte die Aare in Bern mit 24,8 Grad die höchste je gemessene Wassertemperatur,
+        die Reuss in Luzern lag bereits Ende Juni bei 26,36 Grad. Weil landesweit fast 60 Prozent der
+        Temperatur-Messstationen neue Rekorde und über 40 Prozent der Pegelstationen neue Tiefstwerte
+        meldeten, sprach der Bundesrat am 26. August 70 Millionen Franken für Wald und Landwirtschaft.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Neue Temperaturrekorde</div><div className="val">~60 <small>% aller Stationen</small></div></div>
+        <div className="kpi"><div className="lab">Neue Tiefstwerte Wasserstand</div><div className="val">&gt;40 <small>% aller Stationen</small></div></div>
+        <div className="kpi"><div className="lab">Bundesrats-Hilfspaket</div><div className="val">70 <small>Mio. CHF (26.8.2026)</small></div></div>
+      </div>
+      <div role="img" aria-label="Dumbbell-Diagramm: Die Aare in Bern erreichte am 14. Juli 2026 mit 24,8 Grad einen neuen Wassertemperaturrekord gegenüber bisher 24,12 Grad (4. August 2022). Die Reuss in Luzern erreichte am 27. Juni 2026 mit 26,36 Grad einen neuen Rekord gegenüber bisher 26,23 Grad (5. August 2018).">
+        <ResponsiveContainer width="100%" height={220}>
+          <ComposedChart data={CHART_DATA} layout="vertical" margin={{ top: 24, right: 30, bottom: 8, left: 8 }}>
+            <CartesianGrid stroke={grid} horizontal={false} />
+            <XAxis
+              type="number"
+              domain={[DOMAIN_MIN, DOMAIN_MAX]}
+              ticks={[23, 24, 25, 26, 27]}
+              tickFormatter={(v) => v + ' °C'}
+              stroke={muted}
+              tick={{ fill: muted, fontSize: 11.5 }}
+              axisLine={{ stroke: grid }}
+              tickLine={false}
+            />
+            <YAxis
+              type="category"
+              dataKey="name"
+              width={126}
+              stroke={muted}
+              tick={{ fill: sub, fontSize: 12.5 }}
+              axisLine={{ stroke: grid }}
+              tickLine={false}
+            />
+            <Tooltip content={<ChartTip />} cursor={{ stroke: grid }} />
+            <Bar dataKey="base" stackId="a" fill="transparent" isAnimationActive={false} />
+            <Bar dataKey="range" stackId="a" fill="transparent" shape={<DumbbellShape />} isAnimationActive={false} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="legend">
+        <span className="sw"><span className="dot" style={{ background: OLD_COLOR }}></span>Bisheriger Rekord</span>
+        <span className="sw"><span className="dot" style={{ background: NEW_COLOR }}></span>Neuer Rekord 2026</span>
+      </div>
+      <div className="source">
+        Quelle: <a href="https://www.bafu.admin.ch/de/sommer-2026-trockenheit-und-hohe-wassertemperaturen" target="_blank" rel="noopener">BAFU, «Sommer 2026 – Trockenheit und hohe Wassertemperaturen»</a>
+        {' '}(veröffentlicht 21. August 2026), Bundesratsbeitrag gemäss
+        {' '}<a href="https://www.srf.ch/news/schweiz/wegen-trockenheit-und-hitze-70-millionen-fuer-wald-und-landwirtschaft-gegen-klimafolgen" target="_blank" rel="noopener">SRF</a>
+        {' '}(26. August 2026), Stand 27. August 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>

@@ -574,5 +574,24 @@
       "https://www.srf.ch/news/schweiz/igem-digimonitor-2026-ki-nutzung-nimmt-in-der-schweiz-rasant-zu"
     ],
     "file": "days/2026-08-26.html"
+  },
+  {
+    "date": "2026-08-27",
+    "title": "Aare und Reuss so warm wie nie: Bundesrat reagiert mit 70 Millionen Franken",
+    "lead": "Am 14. Juli 2026 erreichte die Aare in Bern mit 24,8 Grad die höchste je gemessene Wassertemperatur, die Reuss in Luzern lag bereits Ende Juni bei 26,36 Grad. Weil landesweit fast 60 Prozent der Temperatur-Messstationen neue Rekorde und über 40 Prozent der Pegelstationen neue Tiefstwerte meldeten, sprach der Bundesrat am 26. August 70 Millionen Franken für Wald und Landwirtschaft.",
+    "category": "Klima",
+    "keywords": [
+      "hitzesommer",
+      "wassertemperatur",
+      "bafu",
+      "trockenheit",
+      "bundesratsmassnahmen"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.bafu.admin.ch/de/sommer-2026-trockenheit-und-hohe-wassertemperaturen",
+      "https://www.srf.ch/news/schweiz/wegen-trockenheit-und-hitze-70-millionen-fuer-wald-und-landwirtschaft-gegen-klimafolgen"
+    ],
+    "file": "days/2026-08-27.html"
   }
 ]
