@@ -593,5 +593,24 @@
       "https://www.srf.ch/news/schweiz/wegen-trockenheit-und-hitze-70-millionen-fuer-wald-und-landwirtschaft-gegen-klimafolgen"
     ],
     "file": "days/2026-08-27.html"
+  },
+  {
+    "date": "2026-08-28",
+    "title": "In der Industrie schnellen die offenen Stellen hoch, im Dienstleistungssektor sinken sie",
+    "lead": "Im 2. Quartal 2026 wuchs die Beschäftigung im Sekundärsektor (Industrie, Bau) gegenüber dem Vorjahr nur moderat um 1,2 Prozent, doch die Zahl der offenen Stellen legte dort um 21,8 Prozent zu. Im deutlich stärker wachsenden Dienstleistungssektor (+2,2 Prozent Beschäftigung) ging die Zahl der offenen Stellen dagegen um 2,4 Prozent zurück.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "besta",
+      "beschäftigungsstatistik",
+      "offene stellen",
+      "arbeitsmarkt schweiz",
+      "sektorvergleich"
+    ],
+    "chartType": "groupedBar",
+    "sourceUrls": [
+      "https://www.admin.ch/de/newnsb/3iJDgJ638lidRZ0ahW4Vp",
+      "https://www.bfs.admin.ch/bfs/de/home/statistiken/industrie-dienstleistungen/unternehmen-beschaeftigte/beschaeftigungsstatistik.html"
+    ],
+    "file": "days/2026-08-28.html"
   }
 ]
