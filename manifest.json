@@ -612,5 +612,25 @@
       "https://www.bfs.admin.ch/bfs/de/home/statistiken/industrie-dienstleistungen/unternehmen-beschaeftigte/beschaeftigungsstatistik.html"
     ],
     "file": "days/2026-08-28.html"
+  },
+  {
+    "date": "2026-08-29",
+    "title": "Federers 20 Grand-Slam-Titel: zwei Höhepunkte und ein Comeback mit 35",
+    "lead": "Am 29. August 2026 wird Roger Federer in Newport in die International Tennis Hall of Fame aufgenommen. Seine 20 Major-Titel verteilen sich auf eine Dominanzphase 2004–2010, vier titellose Jahre 2013–2016 und ein Comeback 2017/18, als er mit 35 nochmals zwei Titel holte.",
+    "category": "Sport",
+    "keywords": [
+      "federer",
+      "tennis",
+      "hall of fame",
+      "grand-slam-titel",
+      "karrierebilanz"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.tennisfame.com/class-of-2026",
+      "https://www.itftennis.com/en/news-and-media/articles/roger-federer-by-the-numbers/",
+      "https://en.wikipedia.org/wiki/Roger_Federer_career_statistics"
+    ],
+    "file": "days/2026-08-29.html"
   }
 ]
