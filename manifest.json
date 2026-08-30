@@ -632,5 +632,28 @@
       "https://en.wikipedia.org/wiki/Roger_Federer_career_statistics"
     ],
     "file": "days/2026-08-29.html"
+  },
+  {
+    "date": "2026-08-30",
+    "title": "Nepal: Die Opferzahl der Flutkatastrophe steigt Tag für Tag",
+    "lead": "Nach der Flutkatastrophe am Bhote-Koshi-Fluss vom 26. August 2026 meldete Nepals Aussenministerium bis zum 30. August 734 geborgene Tote – fast zehnmal so viele wie am ersten Tag. Rund 2500 Menschen, darunter über 400 ausländische Staatsangehörige, galten zu diesem Zeitpunkt weiterhin als vermisst.",
+    "category": "International",
+    "keywords": [
+      "nepal-flut",
+      "bhote-koshi",
+      "flutkatastrophe",
+      "vermisste",
+      "todesopfer",
+      "tibet"
+    ],
+    "chartType": "area",
+    "sourceUrls": [
+      "https://mofa.gov.np/content/1865/latest-updates-on-flash-floods--26-august/",
+      "https://mofa.gov.np/content/1863/latest-updates-on-flash-floods-27-august-2026/",
+      "https://mofa.gov.np/content/1864/latest-updates-on-flash-floods--28-august/",
+      "https://mofa.gov.np/content/1866/press-briefing-note-by-hon--minister-for/",
+      "https://mofa.gov.np/content/1867/press-briefing-note-by-foreign-secretary-on/"
+    ],
+    "file": "days/2026-08-30.html"
   }
 ]
