@@ -655,5 +655,24 @@
       "https://mofa.gov.np/content/1867/press-briefing-note-by-foreign-secretary-on/"
     ],
     "file": "days/2026-08-30.html"
+  },
+  {
+    "date": "2026-08-31",
+    "title": "Die Lohnlücke schrumpft – ausser im obersten Kader",
+    "lead": "Der unerklärte geschlechtsspezifische Lohnunterschied ist in der Schweiz zwischen 2022 und 2024 laut der neuen Lohnstrukturerhebung des Bundesamts für Statistik (BFS) in fast allen Bereichen gesunken. Einzige Ausnahme: Im obersten Kader stieg er von 10,6 auf 12,4 Prozent.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "lohnstrukturerhebung",
+      "lohnungleichheit",
+      "geschlechterlohnlücke",
+      "kaderlöhne",
+      "unerklärter lohnunterschied"
+    ],
+    "chartType": "slope",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/bfs/de/home/aktuell/neue-veroeffentlichungen.assetdetail.36195847.html",
+      "https://www.bj.admin.ch/de/newnsb/HOLsNqc6Wk9S_oKvUFDF5"
+    ],
+    "file": "days/2026-08-31.html"
   }
 ]

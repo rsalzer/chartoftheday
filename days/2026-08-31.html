@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Die Lohnlücke schrumpft – ausser im obersten Kader</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #52514e; --axis: #898781; --hair: #e1e0d9; --card: #fcfcfb;
+    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #c3c2b7; --axis: #898781; --hair: #2c2c2a; --card: #1a1a19;
+      --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.35; margin: 0 0 6px; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--muted); margin: 0 0 12px; max-width: 62ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 12px; color: var(--muted); }
+  .kpi .val { font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--muted); margin: 10px 2px 0; }
+  .legend .row { display: flex; align-items: baseline; gap: 8px; }
+  .legend .row .name { color: var(--ink); font-weight: 500; min-width: 150px; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex: 0 0 auto; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+  .source a { color: var(--muted); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Unerklärter geschlechtsspezifischer Lohnunterschied in der Schweiz, 2022 vs. 2024 (Bundesamt für
+    Statistik, Lohnstrukturerhebung LSE): Gesamtwirtschaft 7,0% auf 6,5%; privater Sektor 7,2% auf 6,7%;
+    öffentlicher Sektor 6,7% auf 5,9%; ohne Kaderfunktion 6,6% auf 6,1%; oberstes Kader 10,6% auf 12,4%.
+    Medianlohn 2024: CHF 7024 brutto pro Monat.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+
+// BFS, Schweizerische Lohnstrukturerhebung (LSE) 2024, Medienmitteilung vom 31.08.2026:
+// unerklärter (durch messbare Faktoren wie Ausbildung, Position, Dienstjahre nicht erklärter)
+// Anteil des geschlechtsspezifischen Lohnunterschieds, 2022 vs. 2024, in Prozent. Alle Werte
+// 1:1 aus der Medienmitteilung übernommen.
+const SERIES = [
+  { key: 'total', label: 'Gesamtwirtschaft', v2022: 7.0, v2024: 6.5, color: 'var(--s1)' },
+  { key: 'private', label: 'Privater Sektor', v2022: 7.2, v2024: 6.7, color: 'var(--s2)' },
+  { key: 'public', label: 'Öffentlicher Sektor', v2022: 6.7, v2024: 5.9, color: 'var(--s3)' },
+  { key: 'nonmgmt', label: 'Ohne Kaderfunktion', v2022: 6.6, v2024: 6.1, color: 'var(--s4)' },
+  { key: 'topmgmt', label: 'Oberstes Kader', v2022: 10.6, v2024: 12.4, color: 'var(--s5)' }
+];
+
+const DATA = [
+  { period: '2022', ...Object.fromEntries(SERIES.map((s) => [s.key, s.v2022])) },
+  { period: '2024', ...Object.fromEntries(SERIES.map((s) => [s.key, s.v2024])) }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = isDark ? '#9a988d' : '#6c6b63';
+const grid = isDark ? '#2c2c2a' : '#e3e1d7';
+
+function fmt(v) {
+  return v.toFixed(1).replace('.', ',') + '%';
+}
+
+function TopMgmtLabel(props) {
+  const { x, y, index } = props;
+  if (index !== DATA.length - 1) return null;
+  return (
+    <text x={x + 8} y={y} dy={4} fill={isDark ? '#f0eee4' : '#0b0b0b'} fontSize={12} fontWeight={600}>
+      Oberstes Kader
+    </text>
+  );
+}
+
+function ChartTip({ active, payload, label }) {
+  if (!active || !payload || !payload.length) return null;
+  return (
+    <div style={{ background: isDark ? '#20201a' : '#fff', border: '1px solid ' + grid,
+      borderRadius: 8, padding: '6px 10px', fontSize: 12.5, color: isDark ? '#f0eee4' : '#17160f' }}>
+      <div style={{ fontWeight: 600, marginBottom: 2 }}>{label}</div>
+      {SERIES.map((s) => (
+        <div key={s.key} style={{ color: axis }}>
+          {s.label}: {fmt(label === '2022' ? s.v2022 : s.v2024)}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Die Lohnlücke schrumpft – ausser im obersten Kader</h1>
+      <p className="lead">
+        Der unerklärte geschlechtsspezifische Lohnunterschied ist in der Schweiz zwischen 2022 und 2024
+        laut der neuen Lohnstrukturerhebung des Bundesamts für Statistik (BFS) in fast allen Bereichen
+        gesunken. Einzige Ausnahme: Im obersten Kader stieg er von 10,6 auf 12,4 Prozent.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Gesamtwirtschaft, unerklärt, 2024</div><div className="val">6,5% <small>(2022: 7,0%)</small></div></div>
+        <div className="kpi"><div className="lab">Oberstes Kader, unerklärt, 2024</div><div className="val">12,4% <small>(2022: 10,6%)</small></div></div>
+        <div className="kpi"><div className="lab">Medianlohn Schweiz, 2024</div><div className="val">7024 <small>CHF/Monat</small></div></div>
+      </div>
+      <div role="img" aria-label="Sloped-Liniendiagramm: unerklärter geschlechtsspezifischer Lohnunterschied 2022 gegenüber 2024 in Prozent, nach Bereich. Gesamtwirtschaft sinkt von 7,0 auf 6,5, privater Sektor von 7,2 auf 6,7, öffentlicher Sektor von 6,7 auf 5,9, ohne Kaderfunktion von 6,6 auf 6,1 – einzig im obersten Kader steigt er von 10,6 auf 12,4.">
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={DATA} margin={{ top: 8, right: 90, bottom: 4, left: -8 }}>
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis dataKey="period" type="category" tick={{ fill: axis, fontSize: 12 }} stroke={grid} />
+            <YAxis domain={[4, 14]} tickCount={6} unit="%" tick={{ fill: axis, fontSize: 12 }} stroke={grid} width={40} />
+            <Tooltip content={<ChartTip />} />
+            {SERIES.map((s) => (
+              <Line key={s.key} type="linear" dataKey={s.key} name={s.label} stroke={s.color}
+                strokeWidth={2.5} dot={{ r: 4, fill: s.color, stroke: s.color }}
+                activeDot={{ r: 5 }} isAnimationActive={false}
+                label={s.key === 'topmgmt' ? TopMgmtLabel : undefined} />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="legend">
+        {SERIES.map((s) => (
+          <div className="row" key={s.key}>
+            <span className="swatch" style={{ background: s.color }}></span>
+            <span className="name">{s.label}</span>
+            <span>{fmt(s.v2022)} → {fmt(s.v2024)}</span>
+          </div>
+        ))}
+      </div>
+      <div className="source">
+        Quelle: Bundesamt für Statistik (BFS),{' '}
+        <a href="https://www.bfs.admin.ch/bfs/de/home/aktuell/neue-veroeffentlichungen.assetdetail.36195847.html" target="_blank" rel="noopener">
+          Schweizerische Lohnstrukturerhebung (LSE) im Jahr 2024: Erste Ergebnisse
+        </a>{' '}
+        und{' '}
+        <a href="https://www.bj.admin.ch/de/newnsb/HOLsNqc6Wk9S_oKvUFDF5" target="_blank" rel="noopener">
+          Medienmitteilung „Die geschlechtsspezifischen Lohnunterschiede nahmen 2024 weiter ab"
+        </a>, beide vom 31. August 2026. Werte sind der unerklärte, nicht durch Ausbildung, Position,
+        Dienstjahre oder Sektor erklärbare Anteil des Lohnunterschieds.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
