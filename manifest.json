@@ -674,5 +674,24 @@
       "https://www.bj.admin.ch/de/newnsb/HOLsNqc6Wk9S_oKvUFDF5"
     ],
     "file": "days/2026-08-31.html"
+  },
+  {
+    "date": "2026-09-01",
+    "title": "SP kassiert am meisten – Parteien melden 24,6 Millionen Franken für 2025",
+    "lead": "Die im Bundeshaus vertretenen Parteien meldeten der Eidgenössischen Finanzkontrolle (EFK) für 2025 Einnahmen von total 24,6 Millionen Franken – eine Million weniger als 2024. Die SP verbuchte mit 7,9 Millionen so viel wie keine andere Partei; als einzige der zehn Bundeshausparteien legte die Lega dei Ticinesi keine Zahlen offen.",
+    "category": "Politik",
+    "keywords": [
+      "parteienfinanzierung",
+      "politikfinanzierung",
+      "parteispenden",
+      "efk",
+      "offenlegungspflicht"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.efk.admin.ch/en/transparency-in-political-funding-disclosure-of-party-funding-for-the-2025-calendar-year/",
+      "https://www.cash.ch/news/schweizer-parteien-melden-fur-2025-einnahmen-von-246-millionen-964687"
+    ],
+    "file": "days/2026-09-01.html"
   }
 ]
