@@ -693,5 +693,25 @@
       "https://www.cash.ch/news/schweizer-parteien-melden-fur-2025-einnahmen-von-246-millionen-964687"
     ],
     "file": "days/2026-09-01.html"
+  },
+  {
+    "date": "2026-09-02",
+    "title": "Drei Neustarts stürmen die US-Kinocharts – «Coyote vs. Acme» vorn",
+    "lead": "Am Kinowochenende vom 28. bis 30. August 2026 schafften es in den USA und Kanada drei neue Filme in die Top 10: «Coyote vs. Acme» führte sie mit 15,9 Millionen Dollar an, vor «The Dog Stars» (7,7 Mio.) und «Buddy» (5,5 Mio.). Die Chartspitze hält aber weiterhin der schon länger laufende «Spider-Man: Brand New Day» mit 22,5 Millionen Dollar am Wochenende.",
+    "category": "Kultur",
+    "keywords": [
+      "boxoffice",
+      "kinocharts",
+      "kinostart",
+      "usa-kino",
+      "neustarts",
+      "spider-man"
+    ],
+    "chartType": "treemap",
+    "sourceUrls": [
+      "https://www.the-numbers.com/weekend-box-office-chart",
+      "https://www.boxofficemojo.com/weekend/2026W35/"
+    ],
+    "file": "days/2026-09-02.html"
   }
 ]

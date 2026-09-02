@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Drei Neustarts stürmen die US-Kinocharts – «Coyote vs. Acme» vorn</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 64ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; gap: 16px; margin: 2px 0 8px; font-size: 12px; color: var(--sub); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Kinowochenende 28.–30. August 2026 (USA/Kanada), Top 10 nach Wochenendeinspielergebnis:
+    1. Spider-Man: Brand New Day 22,5 Mio. $ (bereits laufend, kumuliert 891,8 Mio. $),
+    2. Coyote vs. Acme 15,9 Mio. $ (Neustart),
+    3. The Odyssey 14,4 Mio. $ (bereits laufend, kumuliert 563,9 Mio. $),
+    4. Insidious: Out of the Further 10,2 Mio. $ (bereits laufend, kumuliert 43,7 Mio. $),
+    5. The Dog Stars 7,7 Mio. $ (Neustart),
+    6. Buddy 5,5 Mio. $ (Neustart),
+    7. PAW Patrol: The Dino Movie 5,0 Mio. $ (bereits laufend, kumuliert 43,5 Mio. $),
+    8. The End of Oak Street 4,9 Mio. $ (bereits laufend, kumuliert 46,0 Mio. $),
+    9. Mutiny 2,8 Mio. $ (bereits laufend, kumuliert 13,2 Mio. $),
+    10. Tony 2,2 Mio. $ (bereits laufend, kumuliert 11,1 Mio. $).
+    Drei Filme feierten an diesem Wochenende Kinostart.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { Treemap, Tooltip, ResponsiveContainer } = Recharts;
+
+// Source: The Numbers, "Weekend Domestic Box Office Chart for August 28, 2026"
+// (the-numbers.com/weekend-box-office-chart) and Box Office Mojo, "Domestic 2026
+// Weekend 35 Box Office Chart" (boxofficemojo.com/weekend/2026W35/), both accessed
+// 2 Sept 2026. Top-10 weekend gross and cumulative domestic gross figures verified
+// identical across both independent trackers. "Neustart" (new release) = weekend
+// gross equals cumulative domestic gross, i.e. this was the film's opening weekend
+// in wide release; that holds for exactly three of the ten films (Coyote vs. Acme,
+// The Dog Stars, Buddy). Everything else is a returning ("bereits laufend") title.
+const DATA = [
+  { rank: 1, title: 'Spider-Man: Brand New Day', weekend: 22513101, total: 891821029, category: 'Bereits laufend' },
+  { rank: 2, title: 'Coyote vs. Acme', weekend: 15914007, total: 15914007, category: 'Neustart' },
+  { rank: 3, title: 'The Odyssey', weekend: 14353795, total: 563875400, category: 'Bereits laufend' },
+  { rank: 4, title: 'Insidious: Out of the Further', weekend: 10204695, total: 43734802, category: 'Bereits laufend' },
+  { rank: 5, title: 'The Dog Stars', weekend: 7709729, total: 7709729, category: 'Neustart' },
+  { rank: 6, title: 'Buddy', weekend: 5531024, total: 5531024, category: 'Neustart' },
+  { rank: 7, title: 'PAW Patrol: The Dino Movie', weekend: 5016050, total: 43452099, category: 'Bereits laufend' },
+  { rank: 8, title: 'The End of Oak Street', weekend: 4902312, total: 45982436, category: 'Bereits laufend' },
+  { rank: 9, title: 'Mutiny', weekend: 2766362, total: 13245027, category: 'Bereits laufend' },
+  { rank: 10, title: 'Tony', weekend: 2220448, total: 11053129, category: 'Bereits laufend' }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+// Categorical palette slots 1-2, fixed order: slot 1 = Neustart, slot 2 = bereits laufend.
+const COLOR_NEUSTART = isDark ? '#3987e5' : '#2a78d6';
+const COLOR_HOLDOVER = isDark ? '#d95926' : '#eb6834';
+
+function fmtUsd(n) {
+  return (n / 1e6).toLocaleString('de-CH', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' Mio. $';
+}
+
+function CustomCell(props) {
+  const { x, y, width, height, title, category, rank } = props;
+  const fill = category === 'Neustart' ? COLOR_NEUSTART : COLOR_HOLDOVER;
+  const showText = width > 58 && height > 30;
+  return (
+    <g>
+      <rect x={x} y={y} width={width} height={height} fill={fill}
+        stroke={surface} strokeWidth={2} rx={4} />
+      {showText && (
+        <text x={x + 8} y={y + 18} fill="#ffffff" fontSize={12} fontWeight={700}>
+          {'#' + rank + ' ' + title}
+        </text>
+      )}
+      {showText && (
+        <text x={x + 8} y={y + 34} fill="#ffffff" fontSize={11.5} opacity={0.9}>
+          {fmtUsd(props.weekend)}
+        </text>
+      )}
+    </g>
+  );
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 260 }}>
+      <div style={{ fontWeight: 700, marginBottom: 2 }}>{'#' + d.rank + ' ' + d.title}</div>
+      <div style={{ color: sub }}>{d.category}</div>
+      <div style={{ color: sub }}>{'Wochenende: ' + fmtUsd(d.weekend)}</div>
+      <div style={{ color: sub }}>{'Kumuliert: ' + fmtUsd(d.total)}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Drei Neustarts stürmen die US-Kinocharts – «Coyote vs. Acme» vorn</h1>
+      <p className="lead">
+        Am Kinowochenende vom 28. bis 30. August 2026 schafften es in den USA und Kanada drei neue
+        Filme in die Top 10: «Coyote vs. Acme» führte sie mit 15,9 Millionen Dollar an, vor «The Dog
+        Stars» (7,7 Mio.) und «Buddy» (5,5 Mio.). Die Chartspitze hält aber weiterhin der schon länger
+        laufende «Spider-Man: Brand New Day» mit 22,5 Millionen Dollar am Wochenende.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Bester Neustart</div><div className="val">15,9 <small>Mio. $ – Coyote vs. Acme</small></div></div>
+        <div className="kpi"><div className="lab">Chartspitze (Wochenende)</div><div className="val">22,5 <small>Mio. $ – Spider-Man: Brand New Day</small></div></div>
+        <div className="kpi"><div className="lab">Neue Filme in Top 10</div><div className="val">3 <small>von 10 platzierten Filmen</small></div></div>
+      </div>
+      <div className="legend">
+        <span><i style={{ background: COLOR_NEUSTART }}></i>Neustart</span>
+        <span><i style={{ background: COLOR_HOLDOVER }}></i>Bereits laufend</span>
+      </div>
+      <div role="img" aria-label="Treemap der US-Kinocharts vom Wochenende 28. bis 30. August 2026, Kacheln proportional zum Wochenendeinspielergebnis. Spider-Man: Brand New Day 22,5 Millionen Dollar (bereits laufend, kumuliert 891,8 Millionen), Coyote vs. Acme 15,9 Millionen (Neustart), The Odyssey 14,4 Millionen (bereits laufend), Insidious: Out of the Further 10,2 Millionen (bereits laufend), The Dog Stars 7,7 Millionen (Neustart), Buddy 5,5 Millionen (Neustart), PAW Patrol: The Dino Movie 5,0 Millionen (bereits laufend), The End of Oak Street 4,9 Millionen (bereits laufend), Mutiny 2,8 Millionen (bereits laufend), Tony 2,2 Millionen (bereits laufend). Drei der zehn platzierten Filme feierten an diesem Wochenende Kinostart.">
+        <ResponsiveContainer width="100%" height={300}>
+          <Treemap data={DATA} dataKey="weekend" stroke={surface} isAnimationActive={false}
+            content={<CustomCell />}>
+            <Tooltip content={<ChartTip />} />
+          </Treemap>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: The Numbers,
+        {' '}<a href="https://www.the-numbers.com/weekend-box-office-chart" target="_blank" rel="noopener">«Weekend Domestic Box Office Chart for August 28, 2026»</a>,
+        {' '}und Box Office Mojo,
+        {' '}<a href="https://www.boxofficemojo.com/weekend/2026W35/" target="_blank" rel="noopener">«Domestic 2026 Weekend 35 Box Office Chart»</a>
+        {' '}(übereinstimmende Zahlen). Stand 2. September 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
