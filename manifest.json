@@ -713,5 +713,25 @@
       "https://www.boxofficemojo.com/weekend/2026W35/"
     ],
     "file": "days/2026-09-02.html"
+  },
+  {
+    "date": "2026-09-03",
+    "title": "SECO: Schweizer Wirtschaft wächst so kräftig wie seit 2021 nicht mehr",
+    "lead": "Das Bruttoinlandprodukt der Schweiz legte im 2. Quartal 2026 saison- und sportevent-bereinigt um 1,5 Prozent zum Vorquartal zu – das stärkste Wachstum seit dem 3. Quartal 2021. Grösster Treiber war das verarbeitende Gewerbe mit der chemisch-pharmazeutischen Industrie.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "bip",
+      "seco",
+      "wirtschaftswachstum",
+      "chemie-pharma",
+      "quartalszahlen",
+      "konjunktur"
+    ],
+    "chartType": "line",
+    "sourceUrls": [
+      "https://www.seco.admin.ch/dam/de/sd-web/G7DmYPB-B26A/2026-2-BIP-Schweiz-SECO.pdf",
+      "https://www.seco.admin.ch/de/bruttoinlandprodukt"
+    ],
+    "file": "days/2026-09-03.html"
   }
 ]
