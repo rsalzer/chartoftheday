@@ -733,5 +733,24 @@
       "https://www.seco.admin.ch/de/bruttoinlandprodukt"
     ],
     "file": "days/2026-09-03.html"
+  },
+  {
+    "date": "2026-09-04",
+    "title": "Ebola-Ausbruch in Kongo: Provinz Ituri trägt die Hauptlast",
+    "lead": "Der Ebola-Ausbruch in der Demokratischen Republik Kongo hat gemäss ECDC und WHO per 1. September 2026 6250 bestätigte Fälle und 3039 Todesfälle erreicht – eine Sterblichkeitsrate von 48,6 Prozent. Allein die nordöstliche Provinz Ituri vereint 5104 Fälle (82 Prozent) und 2324 Todesfälle (76 Prozent) auf sich.",
+    "category": "Gesundheit",
+    "keywords": [
+      "ebola",
+      "kongo",
+      "bundibugyo-virus",
+      "ituri",
+      "epidemie"
+    ],
+    "chartType": "stackedBar",
+    "sourceUrls": [
+      "https://www.ecdc.europa.eu/en/ebola-outbreak-democratic-republic-congo-and-uganda",
+      "https://www.who.int/news-room/speeches/item/who-director-general-s-opening-remarks-at-the-media-briefing---2-september-2026"
+    ],
+    "file": "days/2026-09-04.html"
   }
 ]
