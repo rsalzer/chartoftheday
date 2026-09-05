@@ -752,5 +752,24 @@
       "https://www.who.int/news-room/speeches/item/who-director-general-s-opening-remarks-at-the-media-briefing---2-september-2026"
     ],
     "file": "days/2026-09-04.html"
+  },
+  {
+    "date": "2026-09-05",
+    "title": "Kartoffelernte 2026: Tiefster Stand seit Messbeginn",
+    "lead": "Der heisse, trockene Sommer 2026 hat die Schweizer Kartoffelernte auf 333'000 Tonnen gedrückt – so wenig wie noch nie seit Beginn der Aufzeichnungen. Um die Nachfrage zu decken, müssen rund 130'000 Tonnen importiert werden, der Selbstversorgungsgrad sinkt auf 70 bis 75 Prozent.",
+    "category": "Klima",
+    "keywords": [
+      "kartoffelernte",
+      "swisspatat",
+      "hitzesommer",
+      "selbstversorgungsgrad",
+      "klimawandel"
+    ],
+    "chartType": "waterfall",
+    "sourceUrls": [
+      "https://www.kartoffel.ch/_Resources/Persistent/dfca6728b0f9babefbcafacca065b5e6daa91261/swisspatat_Medienmitteilung%20Kartoffelernte%202026_final.pdf",
+      "https://www.kartoffel.ch/de/branche/medienmitteilung.html"
+    ],
+    "file": "days/2026-09-05.html"
   }
 ]

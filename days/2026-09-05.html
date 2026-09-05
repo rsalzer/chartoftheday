@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kartoffelernte 2026: Tiefster Stand seit Messbeginn</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --level: #2a78d6; --delta: #eb6834;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --level: #3987e5; --delta: #d95926;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 64ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 140px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; margin: 10px 0 2px; font-size: 11.5px; color: var(--sub); }
+  .legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Schweizer Kartoffelernte 2026, Quelle Swisspatat (Medienmitteilung 3. September 2026):
+    Ø-Ernte 2020–2025 411'000 Tonnen. Ernte 2026 333'000 Tonnen, ein Rückgang um 78'000
+    Tonnen bzw. rund 19 Prozent und der tiefste Wert seit Beginn der Aufzeichnungen. Ertrag
+    pro Hektare 2026 29,4 Tonnen, der tiefste seit 1965 (23,1 Tonnen/Hektar). Importbedarf
+    2026 rund 130'000 Tonnen. Selbstversorgungsgrad 2026 70 bis 75 Prozent, im Schnitt sonst
+    85 Prozent.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ResponsiveContainer } = Recharts;
+
+// Source, verified directly against the primary document on 5.9.2026:
+// Swisspatat, Medienmitteilung "Kartoffelernte 2026: Tiefste Gesamternte seit
+// Messbeginn" (Bern/Zürich, 3.9.2026):
+//   - Ernte 2026: 333'000 t, tiefster Wert seit Beginn der Aufzeichnungen.
+//   - Ø-Ernte 2020-2025: 411'000 t ("fast 20 Prozent mehr" als 2026 -> hier als
+//     einfache Differenz 411'000 - 333'000 = 78'000 t dargestellt).
+//   - Ertrag/ha 2026: 29.4 t; Ø 2020-2025: 37.9 t; 1965: 23.1 t (tiefster Wert
+//     seit 1965).
+//   - Importbedarf/Fehlmenge 2026: ca. 130'000 t; Selbstversorgungsgrad 2026:
+//     70-75%, Durchschnitt sonst 85%.
+// Waterfall bars: "base" is the invisible offset stacked below the visible
+// "value" segment, the standard Recharts technique for a bridge/waterfall
+// chart (Recharts has no native waterfall type).
+const DATA = [
+  { label: 'Ø-Ernte 2020–2025', base: 0, value: 411000, display: 411000, kind: 'level' },
+  { label: 'Ernteausfall 2026', base: 333000, value: 78000, display: -78000, kind: 'delta' },
+  { label: 'Ernte 2026', base: 0, value: 333000, display: 333000, kind: 'level' },
+  { label: 'Importbedarf 2026', base: 333000, value: 130000, display: 130000, kind: 'delta' }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const level = isDark ? '#3987e5' : '#2a78d6';
+const delta = isDark ? '#d95926' : '#eb6834';
+const colorOf = (kind) => (kind === 'level' ? level : delta);
+
+function fmtInt(n) {
+  return Math.round(n).toLocaleString('de-CH').replace(/,/g, "'");
+}
+function fmtSigned(n) {
+  return (n > 0 ? '+' : n < 0 ? '−' : '') + fmtInt(Math.abs(n));
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0] && payload[0].payload;
+  if (!row) return null;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 220 }}>
+      <div style={{ fontWeight: 700, marginBottom: 2 }}>{row.label}</div>
+      <div style={{ color: colorOf(row.kind) }}>{fmtSigned(row.display) + ' Tonnen'}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Kartoffelernte 2026: Tiefster Stand seit Messbeginn</h1>
+      <p className="lead">
+        Der heisse, trockene Sommer 2026 hat die Schweizer Kartoffelernte gemäss dem
+        Branchenverband Swisspatat auf 333'000 Tonnen gedrückt – so wenig wie noch nie seit
+        Beginn der Aufzeichnungen und rund 78'000 Tonnen (fast 20 Prozent) unter dem Schnitt
+        der Jahre 2020–2025. Um die Nachfrage zu decken, müssen rund 130'000 Tonnen
+        importiert werden; der Selbstversorgungsgrad sinkt damit auf 70 bis 75 Prozent
+        (im Schnitt sonst 85 Prozent).
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Ernte 2026</div><div className="val">333'000 <small>t</small></div></div>
+        <div className="kpi"><div className="lab">Ertrag pro Hektare 2026</div><div className="val">29,4 <small>t/ha</small></div></div>
+        <div className="kpi"><div className="lab">Importbedarf 2026</div><div className="val">130'000 <small>t</small></div></div>
+        <div className="kpi"><div className="lab">Selbstversorgungsgrad</div><div className="val">70–75 <small>% (Ø 85%)</small></div></div>
+      </div>
+      <div className="legend">
+        <span><span className="sw" style={{ background: level }}></span>Niveau (Ernte)</span>
+        <span><span className="sw" style={{ background: delta }}></span>Veränderung</span>
+      </div>
+      <div role="img" aria-label="Brückendiagramm der Schweizer Kartoffelernte 2026 gegenüber dem Schnitt 2020 bis 2025. Ø-Ernte 2020–2025: 411'000 Tonnen. Ernteausfall 2026: minus 78'000 Tonnen. Ernte 2026: 333'000 Tonnen, der tiefste Wert seit Beginn der Aufzeichnungen. Importbedarf 2026: plus 130'000 Tonnen, damit der Bedarf gedeckt werden kann.">
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={DATA} margin={{ top: 24, right: 16, bottom: 10, left: 0 }} barCategoryGap="28%">
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis dataKey="label" tick={{ fill: axis, fontSize: 11 }} stroke={grid} interval={0} />
+            <YAxis tick={{ fill: axis, fontSize: 11 }} stroke={grid} tickFormatter={fmtInt}
+              domain={[0, 480000]} ticks={[0, 100000, 200000, 300000, 400000]} width={56} />
+            <Tooltip content={<ChartTip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(11,11,11,0.03)' }} />
+            <Bar dataKey="base" stackId="a" fill="transparent" isAnimationActive={false} />
+            <Bar dataKey="value" stackId="a" isAnimationActive={false} radius={[4, 4, 0, 0]}>
+              {DATA.map((d, i) => <Cell key={i} fill={colorOf(d.kind)} />)}
+              <LabelList dataKey="display" position="top" formatter={fmtSigned}
+                style={{ fill: ink, fontSize: 11.5, fontWeight: 600 }} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: Swisspatat, <a href="https://www.kartoffel.ch/_Resources/Persistent/dfca6728b0f9babefbcafacca065b5e6daa91261/swisspatat_Medienmitteilung%20Kartoffelernte%202026_final.pdf" target="_blank" rel="noopener">«Kartoffelernte 2026: Tiefste Gesamternte seit Messbeginn»</a>
+        {' '}(Medienmitteilung, Bern/Zürich, 3. September 2026), <a href="https://www.kartoffel.ch/de/branche/medienmitteilung.html" target="_blank" rel="noopener">kartoffel.ch</a>.
+        Stand: 5. September 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
