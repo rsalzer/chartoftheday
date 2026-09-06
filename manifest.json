@@ -771,5 +771,24 @@
       "https://www.kartoffel.ch/de/branche/medienmitteilung.html"
     ],
     "file": "days/2026-09-05.html"
+  },
+  {
+    "date": "2026-09-06",
+    "title": "162 000 neue US-Jobs im August – aber fast nur in zwei Branchen",
+    "lead": "Die US-Wirtschaft schuf im August 2026 netto 162 000 neue Stellen, die Arbeitslosenquote blieb bei 4,1 Prozent. Das Wachstum kam jedoch höchst ungleich verteilt: Allein Freizeit/Gastgewerbe und der öffentliche Sektor trugen mehr als die Hälfte bei, während Informationswirtschaft und Finanzdienstleistungen Stellen abbauten.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "us-arbeitsmarkt",
+      "bls-beschäftigungsbericht",
+      "nonfarm-payrolls",
+      "sektorentwicklung",
+      "arbeitslosenquote"
+    ],
+    "chartType": "divergingBar",
+    "sourceUrls": [
+      "https://www.bls.gov/news.release/empsit.nr0.htm",
+      "https://www.bls.gov/news.release/empsit.t17.htm"
+    ],
+    "file": "days/2026-09-06.html"
   }
 ]

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>162 000 neue US-Jobs im August – aber fast nur in zwei Branchen</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-pos: #2a78d6; --series-neg: #e34948;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-pos: #3987e5; --series-neg: #e66767;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 64ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--sub); margin: 8px 2px 0; }
+  .legend .sw { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Laut dem "Employment Situation"-Bericht des US Bureau of Labor Statistics (BLS) vom 4. September 2026
+    schufen die USA im August 2026 netto 162 000 neue Stellen; die Arbeitslosenquote blieb bei 4,1 Prozent,
+    die Stundenlöhne stiegen gegenüber dem Vorjahr um 3,1 Prozent. Veränderung der Beschäftigung im August
+    2026 nach Wirtschaftsbereich (in Tausend Stellen, saisonbereinigt, berechnet aus BLS-Tabelle B-1):
+    Freizeit und Gastgewerbe +62, Öffentlicher Sektor +35, Privater Bildungs- und Gesundheitssektor +29,
+    Baugewerbe +22, Verarbeitendes Gewerbe +16, Handel/Transport/Versorger +16, Unternehmensnahe
+    Dienstleistungen +10, Sonstige Dienstleistungen +3, Bergbau und Holzwirtschaft +3, Finanzdienstleistungen
+    −11, Informationswirtschaft −23. Die Summe aller Bereiche ergibt die gemeldeten 162 000 Stellen.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, LabelList, ResponsiveContainer } = Recharts;
+
+// Source: US Bureau of Labor Statistics, "Employment Situation Summary" (August 2026),
+// released 4 Sept 2026, https://www.bls.gov/news.release/empsit.nr0.htm - headline figures
+// (total +162,000; unemployment 4.1%; avg hourly earnings +3.1% y/y). Per-sector changes
+// below are NOT copied from the press release's selective prose highlights; they are
+// computed directly from the official seasonally adjusted supersector employment LEVELS
+// in BLS Table B-1 (empsit.t17.htm), July 2026(p) vs August 2026(p), e.g. Construction
+// 8,359k - 8,337k = +22k. All 11 supersector changes sum to +127k (Total private) and,
+// with Government's +35k, to the headline +162k total - verified internally consistent.
+const DATA = [
+  { name: 'Freizeit und Gastgewerbe', value: 62 },
+  { name: 'Öffentlicher Sektor', value: 35 },
+  { name: 'Bildung/Gesundheit (privat)', value: 29 },
+  { name: 'Baugewerbe', value: 22 },
+  { name: 'Verarbeitendes Gewerbe', value: 16 },
+  { name: 'Handel, Transport, Versorger', value: 16 },
+  { name: 'Unternehmensnahe Dienstl.', value: 10 },
+  { name: 'Sonstige Dienstleistungen', value: 3 },
+  { name: 'Bergbau und Holzwirtschaft', value: 3 },
+  { name: 'Finanzdienstleistungen', value: -11 },
+  { name: 'Informationswirtschaft', value: -23 }
+].map((d) => ({ ...d, pos: d.value > 0 ? d.value : null, neg: d.value < 0 ? d.value : null }));
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const POS = isDark ? '#3987e5' : '#2a78d6';
+const NEG = isDark ? '#e66767' : '#e34948';
+const BASELINE = isDark ? '#383835' : '#c3c2b7';
+// Only the top gainer and the top loser get a direct value label ("label the endpoint/
+// extreme"); the other nine rows rely on the axis and the tooltip, per the "never a
+// number on every point" rule.
+const LABEL_ROWS = new Set(['Freizeit und Gastgewerbe', 'Informationswirtschaft']);
+
+function fmtK(v) {
+  const sign = v > 0 ? '+' : '';
+  return sign + v.toLocaleString('de-CH') + ' Tsd.';
+}
+
+function EndLabel(props) {
+  const { x, y, width, height, value, index } = props;
+  const row = DATA[index];
+  if (!row || !LABEL_ROWS.has(row.name) || value === null || value === undefined) return null;
+  const cy = y + height / 2 + 4;
+  const isPos = value > 0;
+  const tx = isPos ? x + width + 6 : x - 6;
+  return (
+    <text x={tx} y={cy} fontSize={12} fontWeight={700} fill={ink} textAnchor={isPos ? 'start' : 'end'}>
+      {fmtK(value)}
+    </text>
+  );
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 240 }}>
+      <div style={{ fontWeight: 700, marginBottom: 2 }}>{d.name}</div>
+      <div style={{ color: d.value >= 0 ? POS : NEG }}>{fmtK(d.value)} Stellen (August 2026)</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>162 000 neue US-Jobs im August – aber fast nur in zwei Branchen</h1>
+      <p className="lead">
+        Die US-Wirtschaft schuf im August 2026 netto 162 000 neue Stellen, die Arbeitslosenquote blieb
+        bei 4,1 Prozent. Das Wachstum kam jedoch höchst ungleich verteilt: Allein Freizeit/Gastgewerbe
+        (+62 000) und der öffentliche Sektor (+35 000) trugen mehr als die Hälfte bei, während die
+        Informationswirtschaft (−23 000) und Finanzdienstleistungen (−11 000) Stellen abbauten.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Beschäftigungsveränderung</div><div className="val">+162 <small>Tsd. Stellen (Aug. 2026)</small></div></div>
+        <div className="kpi"><div className="lab">Arbeitslosenquote</div><div className="val">4,1 <small>% (unverändert)</small></div></div>
+        <div className="kpi"><div className="lab">Stundenlohn ggü. Vorjahr</div><div className="val">+3,1 <small>% (Ø 37.75 $/Std.)</small></div></div>
+      </div>
+      <div role="img" aria-label="Divergierendes Balkendiagramm: Veränderung der US-Beschäftigung im August 2026 nach Wirtschaftsbereich, in Tausend Stellen. Zunahmen: Freizeit und Gastgewerbe 62, Öffentlicher Sektor 35, Bildung/Gesundheit privat 29, Baugewerbe 22, Verarbeitendes Gewerbe 16, Handel/Transport/Versorger 16, Unternehmensnahe Dienstleistungen 10, Sonstige Dienstleistungen 3, Bergbau und Holzwirtschaft 3. Abnahmen: Finanzdienstleistungen minus 11, Informationswirtschaft minus 23.">
+        <ResponsiveContainer width="100%" height={340}>
+          <ComposedChart data={DATA} layout="vertical" margin={{ top: 4, right: 54, bottom: 4, left: 4 }} barCategoryGap="26%">
+            <CartesianGrid stroke={grid} horizontal={false} />
+            <XAxis
+              type="number"
+              domain={[-30, 70]}
+              ticks={[-20, 0, 20, 40, 60]}
+              tick={{ fill: axis, fontSize: 11 }}
+              stroke={grid}
+              tickLine={false}
+              tickFormatter={(v) => (v > 0 ? '+' + v : v)}
+            />
+            <YAxis
+              type="category"
+              dataKey="name"
+              width={158}
+              tick={{ fill: ink, fontSize: 11.5 }}
+              stroke={grid}
+              tickLine={false}
+              axisLine={{ stroke: grid }}
+            />
+            <ReferenceLine x={0} stroke={BASELINE} strokeWidth={1.5} />
+            <Tooltip content={<ChartTip />} cursor={{ fill: grid, opacity: 0.5 }} />
+            <Bar dataKey="pos" fill={POS} radius={[0, 4, 4, 0]} isAnimationActive={false} maxBarSize={18}>
+              <LabelList content={<EndLabel />} />
+            </Bar>
+            <Bar dataKey="neg" fill={NEG} radius={[4, 0, 0, 4]} isAnimationActive={false} maxBarSize={18}>
+              <LabelList content={<EndLabel />} />
+            </Bar>
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="legend">
+        <span className="sw"><span className="dot" style={{ background: POS }}></span>Zunahme</span>
+        <span className="sw"><span className="dot" style={{ background: NEG }}></span>Abnahme</span>
+      </div>
+      <div className="source">
+        Quelle: US Bureau of Labor Statistics,
+        {' '}<a href="https://www.bls.gov/news.release/empsit.nr0.htm" target="_blank" rel="noopener">«Employment Situation Summary» (August 2026)</a>,
+        veröffentlicht 4. September 2026; Branchenwerte berechnet aus
+        {' '}<a href="https://www.bls.gov/news.release/empsit.t17.htm" target="_blank" rel="noopener">Tabelle B-1</a>
+        {' '}(Juli vs. August 2026, saisonbereinigt). Stand 6. September 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
