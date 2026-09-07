@@ -790,5 +790,31 @@
       "https://www.bls.gov/news.release/empsit.t17.htm"
     ],
     "file": "days/2026-09-06.html"
+  },
+  {
+    "date": "2026-09-07",
+    "title": "Acht von acht: Audrey Werros makellose 800-m-Saison",
+    "lead": "Mit dem Sieg am Diamond-League-Final in Brüssel am 5. September 2026 (1:54,75) beendete die Freiburgerin Audrey Werro ihre gesamte Freiluftsaison über 800 Meter ungeschlagen – acht Rennen, acht Siege. Ihre schnellste Zeit lief sie am 27. August in Zürich mit 1:53,70, Schweizer Rekord und die drittschnellste 800-m-Zeit der Geschichte.",
+    "category": "Sport",
+    "keywords": [
+      "audrey werro",
+      "800m",
+      "diamond league",
+      "leichtathletik",
+      "schweizer rekord"
+    ],
+    "chartType": "line",
+    "sourceUrls": [
+      "https://worldathletics.org/news/report/seven-meeting-records-set-on-final-night-of-diamond-league-season",
+      "https://worldathletics.org/news/report/2026-european-championships-birmingham-werro-warholm-tamberi",
+      "https://worldathletics.org/competitions/diamond-league/news/bauhaus-galan-stockholm-2026-werro",
+      "https://worldathletics.org/competitions/diamond-league/news/werro-kebinatshipi-paulino-meeting-paris-diamond-league-2026",
+      "https://www.swiss-athletics.ch/newsroom/artikel/audrey-werro-triumphiert-in-zuerich-mit-jahres-weltbestzeit/",
+      "https://www.rts.ch/sport/2026/depeche/audrey-werro-a-entame-de-maniere-ideale-sa-saison-estivale-la-fribourgeoise-a-enleve-le-800m-du-meeting-de-rabat-en-1-56-56-29259356.html",
+      "https://www.olympics.com/en/news/diamond-league-lausanne-athletissima-2026-audrey-werro-women-800m-victory",
+      "https://www.olympics.com/en/news/athletics-audrey-werro-continues-800m-breakthrough-easing-by-femke-broeders-bol-for-victory-at-ostrava-golden-spike",
+      "https://www.olympics.com/en/news/diamond-league-final-2026-audrey-werro-takes-800m-title"
+    ],
+    "file": "days/2026-09-07.html"
   }
 ]
