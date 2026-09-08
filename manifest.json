@@ -816,5 +816,26 @@
       "https://www.olympics.com/en/news/diamond-league-final-2026-audrey-werro-takes-800m-title"
     ],
     "file": "days/2026-09-07.html"
+  },
+  {
+    "date": "2026-09-08",
+    "title": "Erdrutsch in Sachsen-Anhalt: AfD verdoppelt sich, CDU halbiert sich",
+    "lead": "Bei der Landtagswahl vom 6. September 2026 wurde die AfD mit 43,8 Prozent der Zweitstimmen so stark wie keine Partei zuvor in Sachsen-Anhalt und mehr als doppelt so stark wie 2021. Die CDU stürzte von 37,1 auf 17,2 Prozent ab, die FDP verpasste mit 2,6 Prozent den Wiedereinzug in den Landtag.",
+    "category": "International",
+    "keywords": [
+      "sachsen-anhalt",
+      "landtagswahl",
+      "afd",
+      "cdu",
+      "wahlergebnis",
+      "fuenf-prozent-huerde"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://wahlergebnisse.sachsen-anhalt.de/wahlen/lt26/erg_land.html",
+      "https://de.wikipedia.org/wiki/Landtagswahl_in_Sachsen-Anhalt_2021",
+      "https://www.wahlrecht.de/news/2026/landtagswahl-sachsen-anhalt-2026.html"
+    ],
+    "file": "days/2026-09-08.html"
   }
 ]
