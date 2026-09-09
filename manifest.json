@@ -837,5 +837,24 @@
       "https://www.wahlrecht.de/news/2026/landtagswahl-sachsen-anhalt-2026.html"
     ],
     "file": "days/2026-09-08.html"
+  },
+  {
+    "date": "2026-09-09",
+    "title": "Der Kurzfrist-Rückgang bei der Post wirkt harmlos – der Zehnjahrestrend nicht",
+    "lead": "Die Post kündigte am 7. September 2026 den Abbau von bis zu 110 Stellen in Verwaltung und Management bis Ende 2027 an – obwohl der Betriebsgewinn im ersten Halbjahr 2026 von 118 auf 173 Millionen Franken stieg. Grund ist der Zehnjahrestrend: Briefvolumen (−38 %) und Bareinzahlungen am Schalter (−68 %) sind seit 2016 weit stärker eingebrochen, als der moderate Rückgang im ersten Halbjahr 2026 allein (−5 bzw. −11 %) vermuten lässt.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "post",
+      "briefvolumen",
+      "stellenabbau",
+      "schaltereinzahlungen",
+      "zehnjahresvergleich"
+    ],
+    "chartType": "groupedBar",
+    "sourceUrls": [
+      "https://site.post.ch/de/ueber-uns/medien/medienmitteilungen/halbjahresergebnis-auf-niveau-der-vorjahre-zukunft-bleibt-anspruchsvoll",
+      "https://www.srf.ch/news/schweiz/in-management-und-support-die-post-will-bis-zu-110-stellen-in-der-verwaltung-abbauen"
+    ],
+    "file": "days/2026-09-09.html"
   }
 ]
