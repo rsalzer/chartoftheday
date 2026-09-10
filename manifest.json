@@ -856,5 +856,25 @@
       "https://www.srf.ch/news/schweiz/in-management-und-support-die-post-will-bis-zu-110-stellen-in-der-verwaltung-abbauen"
     ],
     "file": "days/2026-09-09.html"
+  },
+  {
+    "date": "2026-09-10",
+    "title": "Nur SVP-Basis und Parteilose sagen (noch) Ja zur Neutralitätsinitiative",
+    "lead": "Die erste SRG-Trendumfrage von gfs.bern zur Volksabstimmung vom 27. September 2026 zeigt ein Land, das sich klar entlang der Parteigrenzen positioniert: 86 Prozent der SVP-Anhängerschaft wollen die Neutralitätsinitiative annehmen, ebenso viele SP-Wählende lehnen sie ab. National liegt das Nein mit 54 zu 42 Prozent vorn; eine zweite Umfragewelle folgt am 16. September.",
+    "category": "Politik",
+    "keywords": [
+      "neutralitaetsinitiative",
+      "srg-trendumfrage",
+      "gfs-bern",
+      "parteibindung",
+      "volksabstimmung"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.gfsbern.ch/de/news/1-srg-trendumfrage-zur-eidg-abstimmung-von-27-september-2026/",
+      "https://www.srf.ch/news/schweiz/erste-srg-umfrage-54-prozent-nein-neutralitaetsinitiative-im-gegenwind",
+      "https://www.blick.ch/politik/erste-gfs-trendumfrage-zeigt-54-prozent-nein-blocher-muss-um-seine-initiative-bangen-id22198117.html"
+    ],
+    "file": "days/2026-09-10.html"
   }
 ]
