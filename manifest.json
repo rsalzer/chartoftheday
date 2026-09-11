@@ -876,5 +876,25 @@
       "https://www.blick.ch/politik/erste-gfs-trendumfrage-zeigt-54-prozent-nein-blocher-muss-um-seine-initiative-bangen-id22198117.html"
     ],
     "file": "days/2026-09-10.html"
+  },
+  {
+    "date": "2026-09-11",
+    "title": "Datenleck bei IDScan: 153 Millionen Führerscheine im Darknet aufgetaucht",
+    "lead": "Der US-Ausweisprüfdienst IDScan.net bestätigte am 10. September 2026 einen Einbruch in seine Cloud-Systeme, nachdem Sicherheitsforscher Anfang September ein Datenpaket auf dem Darknet-Marktplatz «Nexus» entdeckt hatten. Die Auswertungen von KrebsOnSecurity und Malwarebytes beziffern die Beute auf mindestens 166,6 Millionen Dokumente – IDScan selbst nennt bislang keine offizielle Gesamtzahl.",
+    "category": "Tech",
+    "keywords": [
+      "idscan",
+      "datenleck",
+      "identitaetsdiebstahl",
+      "fuehrerscheine",
+      "darknet"
+    ],
+    "chartType": "treemap",
+    "sourceUrls": [
+      "https://krebsonsecurity.com/2026/09/fbi-probes-service-selling-153m-drivers-licenses/",
+      "https://www.idscan.net/notification-data-security-incident/",
+      "https://techcrunch.com/2026/09/10/id-verification-giant-idscan-confirms-data-breach-with-more-than-150-million-drivers-licenses-stolen/"
+    ],
+    "file": "days/2026-09-11.html"
   }
 ]
