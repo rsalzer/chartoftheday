@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>US-Inflation zieht wegen Energiepreisen deutlich an</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-1: #2a78d6; --series-2: #eb6834;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-1: #3987e5; --series-2: #d95926;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 66ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--sub); margin: 8px 2px 0; }
+  .legend .sw { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Laut Consumer Price Index Summary des US Bureau of Labor Statistics stieg die
+    US-Teuerung (12-Monats-Vergleich, CPI-U) von 2,4 Prozent im Januar 2026 über
+    3,3 Prozent im März auf einen Höchststand von 4,2 Prozent im Mai 2026 - den
+    höchsten Wert seit 2023 - und kühlte bis August 2026 nur leicht auf 3,4 Prozent
+    ab. Haupttreiber war die Energiekomponente: Sie fiel im Januar noch um 0,1
+    Prozent, legte im Mai aber um 23,5 Prozent zu und lag im August immer noch
+    16,3 Prozent über dem Vorjahr.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceLine, ResponsiveContainer } = Recharts;
+
+// Source: US Bureau of Labor Statistics, Consumer Price Index News Release (M08 2026,
+// released 11 Sept 2026), https://www.bls.gov/news.release/cpi.nr0.htm
+// Monthly 12-month (year-over-year) change for "all items" (headline CPI-U) and the
+// "energy" index, each verified against BLS's own Economics Daily / archived news
+// release for that specific month (not a secondary aggregator):
+// Jan  https://www.bls.gov/opub/ted/2026/consumer-prices-up-2-4-percent-over-the-year-ended-january-2026.htm
+// Feb  https://www.bls.gov/opub/ted/2026/consumer-prices-up-2-4-percent-over-year-ended-february-2026.htm
+// Mar  https://www.bls.gov/opub/ted/2026/consumer-prices-up-3-3-percent-over-the-year-0-9-percent-over-the-month-in-march-2026.htm
+// Apr  https://www.bls.gov/news.release/archives/cpi_05122026.htm
+// May  https://www.bls.gov/opub/ted/2026/consumer-prices-up-4-2-percent-over-the-year-ended-may-2026.htm
+// Jun  https://www.bls.gov/opub/ted/2026/consumer-prices-up-3-5-percent-over-the-year-ended-june-2026.htm
+// Jul  https://www.bls.gov/opub/ted/2026/consumer-prices-up-3-4-over-the-year-in-july-2026.htm
+// Aug  https://www.bls.gov/news.release/cpi.nr0.htm
+const DATA = [
+  { m: 'Jan', headline: 2.4, energy: -0.1 },
+  { m: 'Feb', headline: 2.4, energy: 0.5 },
+  { m: 'Mär', headline: 3.3, energy: 12.5 },
+  { m: 'Apr', headline: 3.8, energy: 17.9 },
+  { m: 'Mai', headline: 4.2, energy: 23.5 },
+  { m: 'Jun', headline: 3.5, energy: 15.7 },
+  { m: 'Jul', headline: 3.4, energy: 14.7 },
+  { m: 'Aug', headline: 3.4, energy: 16.3 }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const S1 = isDark ? '#3987e5' : '#2a78d6';
+const S2 = isDark ? '#d95926' : '#eb6834';
+const BASELINE = isDark ? '#383835' : '#c3c2b7';
+
+function fmtPct(v) {
+  return (v > 0 ? '+' : '−') + Math.abs(v).toLocaleString('de-CH', { minimumFractionDigits: 1 }) + ' %';
+}
+
+function ChartTip({ active, payload, label }) {
+  if (!active || !payload || !payload.length) return null;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 260 }}>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{label} 2026</div>
+      {payload.map((p) => (
+        <div key={p.dataKey} style={{ color: p.dataKey === 'headline' ? S1 : S2 }}>
+          {p.dataKey === 'headline' ? 'Gesamtinflation: ' : 'Energiepreise: '}
+          {fmtPct(p.value)}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>US-Inflation zieht wegen Energiepreisen deutlich an</h1>
+      <p className="lead">
+        Die am 11. September 2026 veröffentlichten Daten des US-Arbeitsministeriums (BLS) zeigen: Die
+        US-Teuerung stieg von 2,4 Prozent im Januar auf ein Zwischenhoch von 4,2 Prozent im Mai 2026 –
+        den höchsten Stand seit 2023 – und hat sich bis August nur leicht auf 3,4 Prozent abgekühlt.
+        Treiber war vor allem die Energiekomponente, die im Mai um fast ein Viertel gegenüber dem
+        Vorjahr zulegte.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Gesamtinflation August 2026</div><div className="val">3,4 % <small>ggü. Vorjahr</small></div></div>
+        <div className="kpi"><div className="lab">Höchststand Mai 2026</div><div className="val">4,2 % <small>höchster Wert seit 2023</small></div></div>
+        <div className="kpi"><div className="lab">Energiepreise August 2026</div><div className="val">+16,3 % <small>ggü. Vorjahr</small></div></div>
+      </div>
+      <div role="img" aria-label="Liniendiagramm: Jährliche Teuerung in den USA und Preisentwicklung bei Energie, Januar bis August 2026. Gesamtinflation stieg von 2,4 Prozent im Januar auf 4,2 Prozent im Mai und lag im August bei 3,4 Prozent. Energiepreise fielen im Januar um 0,1 Prozent, stiegen im Mai um 23,5 Prozent und lagen im August 16,3 Prozent über dem Vorjahr.">
+        <ResponsiveContainer width="100%" height={280}>
+          <LineChart data={DATA} margin={{ top: 8, right: 16, bottom: 4, left: 4 }}>
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis dataKey="m" tick={{ fill: axis, fontSize: 11 }} stroke={grid} tickLine={false} axisLine={{ stroke: grid }} />
+            <YAxis
+              tick={{ fill: axis, fontSize: 11 }}
+              stroke={grid}
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={(v) => v + ' %'}
+              width={44}
+            />
+            <ReferenceLine y={0} stroke={BASELINE} strokeWidth={1} />
+            <Tooltip content={<ChartTip />} cursor={{ stroke: grid }} />
+            <Line type="monotone" dataKey="headline" name="Gesamtinflation" stroke={S1} strokeWidth={2.5} dot={{ r: 3, fill: S1 }} isAnimationActive={false} />
+            <Line type="monotone" dataKey="energy" name="Energiepreise" stroke={S2} strokeWidth={2.5} dot={{ r: 3, fill: S2 }} isAnimationActive={false} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="legend">
+        <span className="sw"><span className="dot" style={{ background: S1 }}></span>Gesamtinflation (CPI-U, ggü. Vorjahr)</span>
+        <span className="sw"><span className="dot" style={{ background: S2 }}></span>Energiepreise (ggü. Vorjahr)</span>
+      </div>
+      <div className="source">
+        Quelle: US Bureau of Labor Statistics,
+        {' '}<a href="https://www.bls.gov/news.release/cpi.nr0.htm" target="_blank" rel="noopener">Consumer Price Index Summary, August 2026 (veröffentlicht 11. September 2026)</a>,
+        {' '}<a href="https://www.bls.gov/opub/ted/2026/consumer-prices-up-4-2-percent-over-the-year-ended-may-2026.htm" target="_blank" rel="noopener">The Economics Daily, Mai 2026</a>
+        {' '}und weitere monatliche BLS-Veröffentlichungen Januar–Juli 2026. Stand 12. September 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>

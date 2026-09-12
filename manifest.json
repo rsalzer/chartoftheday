@@ -896,5 +896,30 @@
       "https://techcrunch.com/2026/09/10/id-verification-giant-idscan-confirms-data-breach-with-more-than-150-million-drivers-licenses-stolen/"
     ],
     "file": "days/2026-09-11.html"
+  },
+  {
+    "date": "2026-09-12",
+    "title": "US-Inflation zieht wegen Energiepreisen deutlich an",
+    "lead": "Die am 11. September 2026 veröffentlichten BLS-Daten zeigen: Die US-Teuerung stieg von 2,4 Prozent im Januar auf ein Zwischenhoch von 4,2 Prozent im Mai 2026 – den höchsten Stand seit 2023 – und kühlte bis August nur leicht auf 3,4 Prozent ab, getrieben vor allem von Energiepreisen.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "us-inflation",
+      "verbraucherpreisindex",
+      "energiepreise",
+      "cpi-bericht",
+      "teuerung"
+    ],
+    "chartType": "line",
+    "sourceUrls": [
+      "https://www.bls.gov/news.release/cpi.nr0.htm",
+      "https://www.bls.gov/opub/ted/2026/consumer-prices-up-2-4-percent-over-the-year-ended-january-2026.htm",
+      "https://www.bls.gov/opub/ted/2026/consumer-prices-up-2-4-percent-over-year-ended-february-2026.htm",
+      "https://www.bls.gov/opub/ted/2026/consumer-prices-up-3-3-percent-over-the-year-0-9-percent-over-the-month-in-march-2026.htm",
+      "https://www.bls.gov/news.release/archives/cpi_05122026.htm",
+      "https://www.bls.gov/opub/ted/2026/consumer-prices-up-4-2-percent-over-the-year-ended-may-2026.htm",
+      "https://www.bls.gov/opub/ted/2026/consumer-prices-up-3-5-percent-over-the-year-ended-june-2026.htm",
+      "https://www.bls.gov/opub/ted/2026/consumer-prices-up-3-4-over-the-year-in-july-2026.htm"
+    ],
+    "file": "days/2026-09-12.html"
   }
 ]
