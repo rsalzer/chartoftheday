@@ -921,5 +921,24 @@
       "https://www.bls.gov/opub/ted/2026/consumer-prices-up-3-4-over-the-year-in-july-2026.htm"
     ],
     "file": "days/2026-09-12.html"
+  },
+  {
+    "date": "2026-09-13",
+    "title": "Nepals Flutkatastrophe: Wo die meisten Todesopfer geborgen wurden",
+    "lead": "Ein Gletscherabbruch am Langtang Lirung löste am 26. August 2026 verheerende Sturzfluten entlang des Trishuli-Flusses aus. Bis Samstagabend, 12. September, waren laut der Katastrophenschutzbehörde NDRRMA landesweit 1386 Leichen geborgen – am meisten im weit flussabwärts gelegenen Distrikt Chitwan –, während 5130 Menschen weiterhin vermisst werden.",
+    "category": "International",
+    "keywords": [
+      "nepal",
+      "flutkatastrophe",
+      "gletscherabbruch",
+      "trishuli-fluss",
+      "ndrrma"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://kathmandupost.com/national/2026/09/12/august-flood-death-toll-rises-to-1386-with-5130-still-missing",
+      "https://mofa.gov.np/content/1883/daily-update-10-september-2026/"
+    ],
+    "file": "days/2026-09-13.html"
   }
 ]
