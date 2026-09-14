@@ -940,5 +940,24 @@
       "https://mofa.gov.np/content/1883/daily-update-10-september-2026/"
     ],
     "file": "days/2026-09-13.html"
+  },
+  {
+    "date": "2026-09-14",
+    "title": "F-35-Beschaffung: Mit sechs Jets weniger am Kostendach vorbeigeschrammt",
+    "lead": "Die Geschäftsprüfungskommission des Nationalrats stellte am 8. September 2026 fest, dass die Schweiz nie einen verbindlichen Fixpreis für die F-35A-Kampfjets hatte. Weil die USA für alle ursprünglich bestellten 36 Flugzeuge rund 1,1 Milliarden Franken mehr verlangten, kürzte der Bundesrat im März 2026 auf 30 Maschinen und beantragte dafür einen Zusatzkredit von nur noch 394 Millionen Franken.",
+    "category": "Politik",
+    "keywords": [
+      "f-35",
+      "fixpreis",
+      "gpk-n",
+      "kostendach",
+      "kampfjet-beschaffung"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.admin.ch/de/newnsb/t7b6NzF5spfq9Zs5wp9sL",
+      "https://www.parlament.ch/press-releases/Pages/mm-gpk-n-2026-09-08.aspx?lang=1031"
+    ],
+    "file": "days/2026-09-14.html"
   }
 ]

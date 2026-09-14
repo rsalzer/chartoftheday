@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>F-35-Beschaffung: Mit sechs Jets weniger am Kostendach vorbeigeschrammt</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-old: #2a78d6; --series-new: #eb6834;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-old: #3987e5; --series-new: #d95926;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 66ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--sub); margin: 6px 2px 0; }
+  .legend .sw { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Die Geschäftsprüfungskommission des Nationalrats (GPK-N) stellte am 8. September 2026 fest, dass die
+    Schweiz nie einen verbindlichen, pauschalen Fixpreis mit den USA für die F-35A-Kampfjets vereinbart
+    hatte. Der bewilligte Kostenrahmen betrug per Ende 2025 indexiert 6,429 Milliarden Franken. Weil die USA
+    für alle ursprünglich bestellten 36 Flugzeuge rund 1,1 Milliarden Franken mehr verlangten, kürzte der
+    Bundesrat die Bestellung im März 2026 auf 30 Maschinen und beantragte dafür einen Zusatzkredit von noch
+    394 Millionen Franken.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+
+// Sources verified directly against primary releases:
+// - admin.ch, Bundesrat-Medienmitteilung "F-35A: Der Bundesrat verzichtet auf die ursprüngliche Anzahl
+//   von 36 Flugzeugen" (6.3.2026, https://www.admin.ch/de/newnsb/t7b6NzF5spfq9Zs5wp9sL): bewilligter
+//   Rahmen "hoechstens 6 Milliarden Franken" (Basis LIK Januar 2018), indexiert per Ende 2025 = 6,429 Mrd.;
+//   fuer alle 36 Flugzeuge waeren "rund 1,1 Milliarden Franken" mehr noetig gewesen; effektiv beantragter
+//   Zusatzkredit fuer 30 Flugzeuge = 394 Millionen Franken.
+// - parlament.ch, GPK-N-Medienmitteilung "Fixpreis F-35A: GPK-N kommt zum Schluss, dass kein pauschaler
+//   Fixpreis mit den USA vereinbart wurde..." (8.9.2026,
+//   https://www.parlament.ch/press-releases/Pages/mm-gpk-n-2026-09-08.aspx?lang=1031): kein bindender
+//   Fixpreis, ungenuegende Verhandlungsorganisation.
+const DATA = [
+  { name: '30 Flugzeuge (beschlossen, 6.3.2026)', oldVal: 6.429, newVal: 6.823, extraLabel: '+394 Mio. Fr.' },
+  { name: '36 Flugzeuge (urspruenglich bestellt)', oldVal: 6.429, newVal: 7.529, extraLabel: '+rund 1,1 Mrd. Fr.' }
+];
+const DOMAIN_MIN = 6.2;
+const DOMAIN_MAX = 7.7;
+const CHART_DATA = DATA.map((d) => ({ ...d, base: d.oldVal - DOMAIN_MIN, range: d.newVal - d.oldVal }));
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const muted = '#898781';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const OLD_COLOR = isDark ? '#3987e5' : '#2a78d6';
+const NEW_COLOR = isDark ? '#d95926' : '#eb6834';
+
+function fmtMrd(n) {
+  return n.toLocaleString('de-CH', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + ' Mrd. Fr.';
+}
+
+function DumbbellShape(props) {
+  const { x, y, width, height, payload } = props;
+  const cy = y + height / 2;
+  const x1 = x;
+  const x2 = x + width;
+  return (
+    <g>
+      <line x1={x1} y1={cy} x2={x2} y2={cy} stroke={muted} strokeWidth={2} />
+      <circle cx={x1} cy={cy} r={6} fill={OLD_COLOR} stroke={surface} strokeWidth={1.5} />
+      <circle cx={x2} cy={cy} r={7} fill={NEW_COLOR} stroke={surface} strokeWidth={1.5} />
+      <text x={x2} y={cy - 14} textAnchor="middle" fontSize={12} fontWeight={700} fill={ink}>
+        {payload.extraLabel}
+      </text>
+      <text x={x1} y={cy + 20} textAnchor="middle" fontSize={11} fill={sub}>
+        Kostendach
+      </text>
+    </g>
+  );
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 260 }}>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{d.name}</div>
+      <div style={{ color: sub }}>Kostendach Ende 2025 (indexiert): {fmtMrd(d.oldVal)}</div>
+      <div style={{ color: sub }}>Zusatzkredit: {d.extraLabel}</div>
+      <div style={{ color: sub, marginTop: 2 }}>Total: {fmtMrd(d.newVal)}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>F-35-Beschaffung: Mit sechs Jets weniger am Kostendach vorbeigeschrammt</h1>
+      <p className="lead">
+        Die Geschäftsprüfungskommission des Nationalrats stellte am 8. September 2026 fest, dass die Schweiz
+        nie einen verbindlichen Fixpreis für die F-35A-Kampfjets hatte. Weil die USA für alle ursprünglich
+        bestellten 36 Flugzeuge rund 1,1 Milliarden Franken mehr verlangten, kürzte der Bundesrat im März
+        2026 auf 30 Maschinen und beantragte dafür einen Zusatzkredit von nur noch 394 Millionen Franken.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Kostendach Ende 2025</div><div className="val">6,429 <small>Mrd. Fr. (indexiert)</small></div></div>
+        <div className="kpi"><div className="lab">Nötig gewesen für 36 Jets</div><div className="val">+1,1 <small>Mrd. Fr.</small></div></div>
+        <div className="kpi"><div className="lab">Beantragt für 30 Jets</div><div className="val">394 <small>Mio. Fr. Zusatzkredit</small></div></div>
+      </div>
+      <div role="img" aria-label="Dumbbell-Diagramm: Ausgehend vom indexierten Kostendach von 6,429 Milliarden Franken (Ende 2025) hätte die Beschaffung aller ursprünglich bestellten 36 F-35A-Flugzeuge rund 1,1 Milliarden Franken zusätzlich gekostet, auf total 7,529 Milliarden. Die im März 2026 beschlossene Reduktion auf 30 Flugzeuge benötigt nur noch einen Zusatzkredit von 394 Millionen Franken, auf total 6,823 Milliarden.">
+        <ResponsiveContainer width="100%" height={220}>
+          <ComposedChart data={CHART_DATA} layout="vertical" margin={{ top: 24, right: 40, bottom: 8, left: 8 }}>
+            <CartesianGrid stroke={grid} horizontal={false} />
+            <XAxis
+              type="number"
+              domain={[DOMAIN_MIN, DOMAIN_MAX]}
+              ticks={[6.2, 6.6, 7.0, 7.4, 7.7]}
+              tickFormatter={(v) => v.toLocaleString('de-CH', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' Mrd.'}
+              stroke={muted}
+              tick={{ fill: muted, fontSize: 11.5 }}
+              axisLine={{ stroke: grid }}
+              tickLine={false}
+            />
+            <YAxis
+              type="category"
+              dataKey="name"
+              width={168}
+              stroke={muted}
+              tick={{ fill: sub, fontSize: 12 }}
+              axisLine={{ stroke: grid }}
+              tickLine={false}
+            />
+            <Tooltip content={<ChartTip />} cursor={{ stroke: grid }} />
+            <Bar dataKey="base" stackId="a" fill="transparent" isAnimationActive={false} />
+            <Bar dataKey="range" stackId="a" fill="transparent" shape={<DumbbellShape />} isAnimationActive={false} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="legend">
+        <span className="sw"><span className="dot" style={{ background: OLD_COLOR }}></span>Kostendach Ende 2025 (indexiert)</span>
+        <span className="sw"><span className="dot" style={{ background: NEW_COLOR }}></span>Gesamtkosten inkl. Zusatzkredit</span>
+      </div>
+      <div className="source">
+        Quelle: <a href="https://www.admin.ch/de/newnsb/t7b6NzF5spfq9Zs5wp9sL" target="_blank" rel="noopener">Bundesrat/VBS, Medienmitteilung «F-35A: Der Bundesrat verzichtet auf die ursprüngliche Anzahl von 36 Flugzeugen»</a>
+        {' '}(6. März 2026), sowie
+        {' '}<a href="https://www.parlament.ch/press-releases/Pages/mm-gpk-n-2026-09-08.aspx?lang=1031" target="_blank" rel="noopener">GPK-N-Medienmitteilung zum Fixpreis F-35A</a>
+        {' '}(8. September 2026). Stand 14. September 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
