@@ -959,5 +959,24 @@
       "https://www.parlament.ch/press-releases/Pages/mm-gpk-n-2026-09-08.aspx?lang=1031"
     ],
     "file": "days/2026-09-14.html"
+  },
+  {
+    "date": "2026-09-15",
+    "title": "Mostra-Rekord: Publikum strömt nach Venedig, die Fachwelt bleibt aus",
+    "lead": "An den 83. Filmfestspielen von Venedig wurden 2026 117'656 Kinokarten verkauft – 14 Prozent mehr als im bisherigen Rekordjahr 2025 (103'033). Die Zahl der akkreditierten Fachbesucherinnen und -besucher stieg im gleichen Zeitraum kaum: von 13'934 auf 14'000.",
+    "category": "Kultur",
+    "keywords": [
+      "venedig",
+      "filmfestival",
+      "biennale",
+      "kinokarten",
+      "akkreditierungen"
+    ],
+    "chartType": "slope",
+    "sourceUrls": [
+      "https://www.labiennale.org/en/news/figures-83rd-venice-international-film-festival",
+      "https://www.labiennale.org/it/news/i-numeri-della-biennale-cinema-2025"
+    ],
+    "file": "days/2026-09-15.html"
   }
 ]
