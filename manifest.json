@@ -978,5 +978,25 @@
       "https://www.labiennale.org/it/news/i-numeri-della-biennale-cinema-2025"
     ],
     "file": "days/2026-09-15.html"
+  },
+  {
+    "date": "2026-09-16",
+    "title": "Wärmepumpen stehen in jedem vierten Gebäude – aber nicht in jedem vierten Haushalt",
+    "lead": "2025 war in jedem vierten Schweizer Gebäude (25 %) eine Wärmepumpe installiert, zeigt die neue Gebäude- und Wohnungsstatistik des Bundesamts für Statistik. Auf Haushaltsebene sinkt der Anteil auf 22 Prozent, während Gasheizungen dort mit 25 statt 17 Prozent deutlich häufiger vorkommen als bei den Gebäuden.",
+    "category": "Klima",
+    "keywords": [
+      "gebaeude-wohnungsstatistik",
+      "waermepumpen",
+      "heizsysteme",
+      "heizoel",
+      "energiewende",
+      "bfs"
+    ],
+    "chartType": "groupedBar",
+    "sourceUrls": [
+      "https://www.vbs.admin.ch/de/newnsb/xrhcMB8jXvge",
+      "https://www.swiss-press.com/2025-jedes-vierte-gebaeude-mit-waermepumpe/1829306"
+    ],
+    "file": "days/2026-09-16.html"
   }
 ]

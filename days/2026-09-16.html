@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wärmepumpen stehen in jedem vierten Gebäude – aber nicht in jedem vierten Haushalt</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-1: #2a78d6; --series-2: #eb6834;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-1: #3987e5; --series-2: #d95926;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 66ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--sub); margin: 8px 2px 0; flex-wrap: wrap; }
+  .legend .sw { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Laut der Gebäude- und Wohnungsstatistik 2025 des Bundesamts für Statistik (BFS, Medienmitteilung
+    vom 15. September 2026) gab es in der Schweiz 1,8 Millionen Wohngebäude und 4,88 Millionen
+    Wohnungen. In jedem vierten Gebäude (25 %) war eine Wärmepumpe installiert, 33 % wurden mit
+    Heizöl beheizt und 17 % mit Gas. Auf Ebene der Haushalte sieht die Verteilung anders aus: 32 %
+    heizten mit Heizöl, 25 % mit Gas und nur 22 % mit einer Wärmepumpe. Der Wärmepumpen-Anteil an den
+    Gebäuden hat sich seit dem Jahr 2000 versechsfacht.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ResponsiveContainer } = Recharts;
+
+// Source: Bundesamt für Statistik (BFS), Gebäude- und Wohnungsstatistik 2025,
+// Medienmitteilung "2025 war jedes vierte Gebäude mit einer Wärmepumpe ausgestattet"
+// (15 Sept 2026), republished on the federal admin.ch newsroom:
+// https://www.vbs.admin.ch/de/newnsb/xrhcMB8jXvge
+// Building-level shares: Heizöl 33%, Gas 17%, Wärmepumpe 25% (of 1.8 Mio. Wohngebäuden).
+// Household-level shares: Heizöl 32%, Gas 25%, Wärmepumpe 22% (of Wohnungen) - corroborated by
+// https://www.swiss-press.com/2025-jedes-vierte-gebaeude-mit-waermepumpe/1829306
+const DATA = [
+  { name: 'Heizöl', buildings: 33, households: 32 },
+  { name: 'Gas', buildings: 17, households: 25 },
+  { name: 'Wärmepumpe', buildings: 25, households: 22 }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const S1 = isDark ? '#3987e5' : '#2a78d6';
+const S2 = isDark ? '#d95926' : '#eb6834';
+
+function fmtPct(v) {
+  return v.toLocaleString('de-CH') + ' %';
+}
+
+function TopLabel(props) {
+  const { x, y, width, value } = props;
+  if (value === null || value === undefined) return null;
+  return (
+    <text x={x + width / 2} y={y - 6} fontSize={12} fontWeight={700} fill={ink} textAnchor="middle">
+      {fmtPct(value)}
+    </text>
+  );
+}
+
+function ChartTip({ active, payload, label }) {
+  if (!active || !payload || !payload.length) return null;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 260 }}>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{label}</div>
+      {payload.map((p) => (
+        <div key={p.dataKey} style={{ color: p.dataKey === 'buildings' ? S1 : S2 }}>
+          {p.dataKey === 'buildings' ? 'Anteil an Gebäuden: ' : 'Anteil an Haushalten: '}
+          {fmtPct(p.value)}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Wärmepumpen stehen in jedem vierten Gebäude – aber nicht in jedem vierten Haushalt</h1>
+      <p className="lead">
+        2025 war in jedem vierten Schweizer Gebäude (25 %) eine Wärmepumpe installiert, zeigt die
+        neue Gebäude- und Wohnungsstatistik des Bundesamts für Statistik. Zählt man stattdessen die
+        Haushalte, sinkt der Anteil auf 22 Prozent – während Gasheizungen, die eher in grossen
+        Mehrfamilienhäusern stehen, bei den Haushalten mit 25 statt 17 Prozent deutlich häufiger
+        vorkommen als bei den Gebäuden.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Wohngebäude Schweiz 2025</div><div className="val">1,8 <small>Mio.</small></div></div>
+        <div className="kpi"><div className="lab">Wohnungen Schweiz 2025</div><div className="val">4,88 <small>Mio.</small></div></div>
+        <div className="kpi"><div className="lab">Wärmepumpen-Anteil an Gebäuden seit 2000</div><div className="val">×6 <small>versechsfacht</small></div></div>
+      </div>
+      <div role="img" aria-label="Gruppiertes Balkendiagramm: Anteil von Heizöl, Gas und Wärmepumpe an Gebäuden gegenüber Haushalten, Schweiz 2025. Heizöl: 33 Prozent der Gebäude, 32 Prozent der Haushalte. Gas: 17 Prozent der Gebäude, 25 Prozent der Haushalte. Wärmepumpe: 25 Prozent der Gebäude, 22 Prozent der Haushalte.">
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={DATA} margin={{ top: 24, right: 12, bottom: 4, left: 4 }} barCategoryGap="28%" barGap={4}>
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis
+              dataKey="name"
+              tick={{ fill: ink, fontSize: 12 }}
+              stroke={grid}
+              tickLine={false}
+              axisLine={{ stroke: grid }}
+            />
+            <YAxis
+              type="number"
+              domain={[0, 40]}
+              ticks={[0, 10, 20, 30, 40]}
+              tick={{ fill: axis, fontSize: 11 }}
+              stroke={grid}
+              tickLine={false}
+              tickFormatter={(v) => v + ' %'}
+            />
+            <Tooltip content={<ChartTip />} cursor={{ fill: grid, opacity: 0.5 }} />
+            <Bar dataKey="buildings" name="Anteil an Gebäuden" fill={S1} radius={[4, 4, 0, 0]} isAnimationActive={false} maxBarSize={46}>
+              <LabelList content={<TopLabel />} />
+            </Bar>
+            <Bar dataKey="households" name="Anteil an Haushalten" fill={S2} radius={[4, 4, 0, 0]} isAnimationActive={false} maxBarSize={46}>
+              <LabelList content={<TopLabel />} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="legend">
+        <span className="sw"><span className="dot" style={{ background: S1 }}></span>Anteil an Gebäuden</span>
+        <span className="sw"><span className="dot" style={{ background: S2 }}></span>Anteil an Haushalten</span>
+      </div>
+      <div className="source">
+        Quelle: Bundesamt für Statistik (BFS), Gebäude- und Wohnungsstatistik 2025,
+        {' '}<a href="https://www.vbs.admin.ch/de/newnsb/xrhcMB8jXvge" target="_blank" rel="noopener">Medienmitteilung «2025 war jedes vierte Gebäude mit einer Wärmepumpe ausgestattet»</a>
+        {' '}(15. September 2026); Haushaltsanteile korroboriert via
+        {' '}<a href="https://www.swiss-press.com/2025-jedes-vierte-gebaeude-mit-waermepumpe/1829306" target="_blank" rel="noopener">swiss-press.com</a>.
+        Stand 16. September 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
