@@ -998,5 +998,25 @@
       "https://www.swiss-press.com/2025-jedes-vierte-gebaeude-mit-waermepumpe/1829306"
     ],
     "file": "days/2026-09-16.html"
+  },
+  {
+    "date": "2026-09-17",
+    "title": "Fed dreht den Zinstrend: erste Leitzins-Erhöhung seit 2023",
+    "lead": "Die US-Notenbank Fed hob den Leitzins am 16. September 2026 einstimmig (12:0 Stimmen) um 0,25 Prozentpunkte auf 3,75 bis 4,00 Prozent an – die erste Erhöhung seit Juli 2023, nachdem sie das Zielband zwischen September 2024 und Dezember 2025 in sechs Schritten gesenkt hatte.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "fed",
+      "leitzins",
+      "zinserhoehung",
+      "fomc",
+      "geldpolitik"
+    ],
+    "chartType": "area",
+    "sourceUrls": [
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a1.htm",
+      "https://www.federalreserve.gov/monetarypolicy/openmarket.htm"
+    ],
+    "file": "days/2026-09-17.html"
   }
 ]
