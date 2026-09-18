@@ -1018,5 +1018,24 @@
       "https://www.federalreserve.gov/monetarypolicy/openmarket.htm"
     ],
     "file": "days/2026-09-17.html"
+  },
+  {
+    "date": "2026-09-18",
+    "title": "Japan hat erstmals über 100'000 Hundertjährige",
+    "lead": "Am 1. September 2026 zählte Japan gemäss Gesundheitsministerium 107'677 Menschen im Alter von 100 Jahren oder älter – 7'914 mehr als im Vorjahr und die 56. Zunahme in Folge seit Beginn der Erhebung 1963. 87,6 Prozent von ihnen sind Frauen.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "japan",
+      "hundertjaehrige",
+      "alterung",
+      "bevoelkerungsstatistik",
+      "mhlw"
+    ],
+    "chartType": "line",
+    "sourceUrls": [
+      "https://www.mhlw.go.jp/stf/houdou/newpage_002341.html",
+      "https://www.nippon.com/ja/japan-data/h02902/"
+    ],
+    "file": "days/2026-09-18.html"
   }
 ]
