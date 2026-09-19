@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nachtragskredit 2026: Fast eine Milliarde Franken für die Luftverteidigung</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-1: #2a78d6; --series-2: #eb6834;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-1: #3987e5; --series-2: #d95926;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 66ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 12px; color: var(--muted); margin: 2px 2px 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Der Bundesrat hat am 18. September 2026 den zweiten Nachtrag zum Voranschlag 2026 verabschiedet:
+    total 1044,7 Millionen Franken zusätzliche Kredite. Davon entfallen 970 Millionen auf Rüstungsaufwand
+    und -investitionen (650 Mio. bodengestützte Luftverteidigung mittlerer Reichweite, 250 Mio. kleinerer
+    Reichweite, 60 Mio. teilmobiles Radar mittlerer Reichweite, 10 Mio. Abwehr von Mini-Drohnen), 54 Millionen
+    auf Betriebshilfe für die Landwirtschaft nach Hitze und Trockenheit im Sommer 2026, 20 Millionen auf
+    ausserordentliche Schutzaufgaben von Kantonen und Städten für den G7-Gipfel in Évian und die
+    OSZE-Ministerkonferenz in Lugano sowie 0,7 Millionen auf hoheitliche Sicherheitsmassnahmen, weil Swiss
+    der Bundesverwaltung Hotelkosten der Sicherheitsbeauftragten Luftverkehr 2016–2024 nicht vollständig
+    verrechnet hatte. Rund 93 Prozent des Nachtragskredits gehen damit an die Armee.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList, ResponsiveContainer } = Recharts;
+
+// Source: Swiss Federal Council press release, "Bundesrat verabschiedet Nachtrag II
+// zum Voranschlag 2026", 18 September 2026:
+// https://www.admin.ch/de/newnsb/c6x2tCSsxAoq
+// Four supplementary credits sum to the stated total (650+250+60+10+54+20+0.7 = 1044.7),
+// cross-checked against VBS press release on the armament sub-items:
+// https://www.vbs.admin.ch/de/newnsb/Wn3HzE-CBSz4isCZfZRs2
+const DATA = [
+  { item: 'Bodluv mittlere Reichweite', amount: 650, group: 'ruestung' },
+  { item: 'Bodluv kleinere Reichweite', amount: 250, group: 'ruestung' },
+  { item: 'Teilmobiles Radar', amount: 60, group: 'ruestung' },
+  { item: 'Trockenheitshilfe Landwirtschaft', amount: 54, group: 'andere' },
+  { item: 'Sicherheit G7 & OSZE-Gipfel', amount: 20, group: 'andere' },
+  { item: 'Mini-Drohnenabwehr', amount: 10, group: 'ruestung' },
+  { item: 'Flugsicherheits-Nachzahlung', amount: 0.7, group: 'andere' }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const S1 = isDark ? '#3987e5' : '#2a78d6';
+const S2 = isDark ? '#d95926' : '#eb6834';
+const COLOR = { ruestung: S1, andere: S2 };
+const LABEL = { ruestung: 'Rüstung', andere: 'Andere Bereiche' };
+
+function fmt(v) {
+  return v.toLocaleString('de-CH', { maximumFractionDigits: 1 }) + ' Mio.';
+}
+
+function ChartTip({ active, payload, label }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 240 }}>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{label}</div>
+      <div>{fmt(row.amount)} Franken</div>
+      <div style={{ color: axis }}>{LABEL[row.group]}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Nachtragskredit 2026: Fast eine Milliarde Franken für die Luftverteidigung</h1>
+      <p className="lead">
+        Der Bundesrat beantragt dem Parlament mit dem zweiten Nachtrag zum Voranschlag 2026 zusätzliche
+        Kredite von total 1044,7 Millionen Franken. Rund 93 Prozent davon – vor allem Anzahlungen für die
+        bodengestützte Luftverteidigung – gehen an die Armee, der Rest an Trockenheitshilfe für die
+        Landwirtschaft, Sicherheitskosten für die G7- und OSZE-Grossanlässe sowie eine Nachzahlung bei der
+        Flugsicherheit.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Nachtrag II total</div><div className="val">1044,7 <small>Mio. Fr.</small></div></div>
+        <div className="kpi"><div className="lab">Anteil Rüstung</div><div className="val">93 <small>%</small></div></div>
+        <div className="kpi"><div className="lab">Grösster Einzelposten</div><div className="val">650 <small>Mio. Fr., Bodluv</small></div></div>
+      </div>
+      <div className="legend">
+        <span><span className="swatch" style={{ background: 'var(--series-1)' }}></span>Rüstung</span>
+        <span><span className="swatch" style={{ background: 'var(--series-2)' }}></span>Andere Bereiche</span>
+      </div>
+      <div role="img" aria-label="Balkendiagramm der sieben Nachtragskredit-Positionen des Bundesrats für 2026, absteigend sortiert: Bodluv mittlere Reichweite 650 Millionen Franken, Bodluv kleinere Reichweite 250 Millionen, Teilmobiles Radar 60 Millionen, Trockenheitshilfe Landwirtschaft 54 Millionen, Sicherheit G7- und OSZE-Gipfel 20 Millionen, Mini-Drohnenabwehr 10 Millionen, Flugsicherheits-Nachzahlung 0,7 Millionen. Total 1044,7 Millionen Franken, davon 970 Millionen bzw. 93 Prozent für Rüstung.">
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={DATA} layout="vertical" margin={{ top: 4, right: 44, bottom: 4, left: 4 }}>
+            <CartesianGrid stroke={grid} horizontal={false} />
+            <XAxis type="number" tick={{ fill: axis, fontSize: 11 }} stroke={grid} tickLine={false} axisLine={{ stroke: grid }}
+              tickFormatter={(v) => v.toLocaleString('de-CH')} />
+            <YAxis
+              type="category"
+              dataKey="item"
+              tick={{ fill: ink, fontSize: 12 }}
+              stroke={grid}
+              tickLine={false}
+              axisLine={false}
+              width={170}
+            />
+            <Tooltip content={<ChartTip />} cursor={{ fill: grid, opacity: 0.4 }} />
+            <Bar dataKey="amount" radius={[0, 4, 4, 0]} isAnimationActive={false}>
+              {DATA.map((d, i) => <Cell key={i} fill={COLOR[d.group]} />)}
+              <LabelList dataKey="amount" position="right" formatter={fmt} style={{ fill: ink, fontSize: 12 }} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: Schweizerischer Bundesrat, Medienmitteilung
+        {' '}<a href="https://www.admin.ch/de/newnsb/c6x2tCSsxAoq" target="_blank" rel="noopener">„Bundesrat verabschiedet Nachtrag II zum Voranschlag 2026", 18. September 2026</a>,
+        {' '}sowie <a href="https://www.vbs.admin.ch/de/newnsb/Wn3HzE-CBSz4isCZfZRs2" target="_blank" rel="noopener">VBS, „Luftverteidigung: Bundesrat beschleunigt Investitionen in die Sicherheit der Schweiz"</a>.
+        {' '}Stand 19. September 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>

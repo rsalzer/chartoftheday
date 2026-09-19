@@ -1037,5 +1037,24 @@
       "https://www.nippon.com/ja/japan-data/h02902/"
     ],
     "file": "days/2026-09-18.html"
+  },
+  {
+    "date": "2026-09-19",
+    "title": "Nachtragskredit 2026: Fast eine Milliarde Franken für die Luftverteidigung",
+    "lead": "Der Bundesrat beantragt dem Parlament mit dem zweiten Nachtrag zum Voranschlag 2026 zusätzliche Kredite von total 1044,7 Millionen Franken. Rund 93 Prozent davon – vor allem Anzahlungen für die bodengestützte Luftverteidigung – gehen an die Armee, der Rest an Trockenheitshilfe für die Landwirtschaft, Sicherheitskosten für die G7- und OSZE-Grossanlässe sowie eine Nachzahlung bei der Flugsicherheit.",
+    "category": "Politik",
+    "keywords": [
+      "nachtragskredit",
+      "bundeshaushalt",
+      "luftverteidigung",
+      "bodluv",
+      "ruestung"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.admin.ch/de/newnsb/c6x2tCSsxAoq",
+      "https://www.vbs.admin.ch/de/newnsb/Wn3HzE-CBSz4isCZfZRs2"
+    ],
+    "file": "days/2026-09-19.html"
   }
 ]
