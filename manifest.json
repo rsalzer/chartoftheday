@@ -1056,5 +1056,24 @@
       "https://www.vbs.admin.ch/de/newnsb/Wn3HzE-CBSz4isCZfZRs2"
     ],
     "file": "days/2026-09-19.html"
+  },
+  {
+    "date": "2026-09-20",
+    "title": "Im Gesundheitswesen verdienen Frauen weniger – vor allem ganz oben",
+    "lead": "Frauen stellen 77% des Personals im Gesundheits- und Pflegesektor der 43 von WHO/Europa untersuchten Länder, aber nur 55% der Topverdienenden. Ihr Stundenlohn liegt insgesamt 19% unter jenem der Männer, unter den Topverdienenden wächst die Lücke auf über 22%.",
+    "category": "Gesundheit",
+    "keywords": [
+      "gesundheitswesen",
+      "lohnluecke",
+      "gleichstellung",
+      "who-bericht",
+      "frauenanteil"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.who.int/europe/publications/i/item/WHO-EURO-2026-13697-53471-83924",
+      "https://unric.org/en/health-workers-earn-less-if-theyre-women/"
+    ],
+    "file": "days/2026-09-20.html"
   }
 ]
