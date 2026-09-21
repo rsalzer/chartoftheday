@@ -1075,5 +1075,27 @@
       "https://unric.org/en/health-workers-earn-less-if-theyre-women/"
     ],
     "file": "days/2026-09-20.html"
+  },
+  {
+    "date": "2026-09-21",
+    "title": "Hitzesommer 2026: Zürich und Bern knacken ihre Badi-Rekorde, Basel bleibt darunter",
+    "lead": "Der Hitzesommer 2026 spülte Rekordzahlen in Schweizer Freibäder: Zürich zählte bis zum 17. September über 3,13 Millionen Eintritte – 28 Prozent mehr als im bisherigen Rekordjahr 2023. Bern übertraf zum Saisonende mit 1'999'813 Eintritten den Rekord von 2025 um rund 12 Prozent. Basel kam mit rund 550'000 Eintritten trotz eines starken Sommers nicht an den Hitzesommer-Rekord von 2003 (über 835'000) heran.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "freibaeder",
+      "badi-rekord",
+      "hitzesommer",
+      "zuerich",
+      "bern",
+      "basel"
+    ],
+    "chartType": "slope",
+    "sourceUrls": [
+      "https://www.srf.ch/news/schweiz/es-lockte-das-kuehle-nass-millionen-suchten-im-rekordsommer-abkuehlung-im-wasser",
+      "https://www.bern.ch/mediencenter/medienmitteilungen/aktuell_ptk/ein-rekordsommer-auch-in-berns-freibaedern",
+      "https://www.bern.ch/mediencenter/medienmitteilungen/aktuell_ptk/badi-saison-2025-neuer-rekord-fuer-berns-freibaeder",
+      "https://tsri.ch/a/zum-ersten-mal-mehr-als-3-millionen-eintritte-in-zuercher-badis"
+    ],
+    "file": "days/2026-09-21.html"
   }
 ]

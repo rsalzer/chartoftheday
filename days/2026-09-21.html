@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Badi-Rekorde im Hitzesommer 2026</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #52514e; --axis: #898781; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #c3c2b7; --axis: #898781; --hair: #2c2c2a; --card: #1a1a19;
+      --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: transparent; color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; }
+  p.lead { font-size: 13.5px; line-height: 1.45; color: var(--muted); margin: 0 0 14px; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .kpi { flex: 1 1 150px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 12px; color: var(--muted); }
+  .kpi .val { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .kpi .delta { font-size: 12px; margin-top: 2px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 12px; color: var(--muted); margin: 2px 2px 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 12px; height: 3px; display: inline-block; border-radius: 2px; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+  .source a { color: var(--muted); text-decoration: underline; }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">Badi-Eintritte im Hitzesommer 2026 gegenüber dem bisherigen Rekord: Zürich 3,13 Millionen (+28% gegenüber Rekordjahr 2023 mit 2,44 Mio.), Bern 1'999'813 (+12% gegenüber Rekordjahr 2025 mit 1'789'479), Basel rund 550'000 (-34% gegenüber dem Hitzesommer-Rekord von 2003 mit 835'000, also weiterhin kein neuer Rekord).</p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ResponsiveContainer } = Recharts;
+
+// Figures verified against primary/official sources (see source line below):
+// Zuerich: Stadt Zuerich Sportamt, Stand 17.9.2026, via TSRI report; record 2023
+//   per SRF and TSRI. Bern: Stadt Bern press releases (16.9.2026 and 17.9.2025)
+//   give exact season totals for 2026 and the 2025 record. Basel: SRF (20.9.2026)
+//   gives the ~550'000 current figure and the un-beaten 2003 heat-summer record
+//   of over 835'000; no verified exact prior-year absolute exists, so only the
+//   2003 record is charted for Basel.
+const DATA = [
+  {
+    period: 'Bisheriger Rekord',
+    zh: 2.44, zhRaw: 2440000, zhYear: '2023',
+    be: 1.789479, beRaw: 1789479, beYear: '2025',
+    bs: 0.835, bsRaw: 835000, bsYear: '2003'
+  },
+  {
+    period: 'Sommer 2026',
+    zh: 3.13, zhRaw: 3130000, zhYear: 'Stand 17.9.2026',
+    be: 1.999813, beRaw: 1999813, beYear: 'Saisonende 13.9.2026',
+    bs: 0.55, bsRaw: 550000, bsYear: 'Stand Mitte Sept. 2026'
+  }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = isDark ? '#898781' : '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+
+const fmtDe = (n) => n.toLocaleString('de-CH');
+
+function EndLabel(props) {
+  // LabelList's `content` only receives filtered SVG-safe props (x, y, value,
+  // index) plus whatever we spread in ourselves below - never the row's
+  // `payload`, which Recharts strips before invoking a custom content fn.
+  const { x, y, index, value, color } = props;
+  if (index !== 1) return null;
+  return (
+    <text x={x} y={y} dy={-12} textAnchor="middle" fill={color} fontSize={13} fontWeight={700}>
+      {Number(value).toFixed(2).replace('.', ',')} Mio.
+    </text>
+  );
+}
+
+function StartYearLabel(props) {
+  const { x, y, index, yearLabel } = props;
+  if (index !== 0) return null;
+  return (
+    <text x={x} y={y} dy={-12} textAnchor="middle" fill={axis} fontSize={11}>
+      {yearLabel}
+    </text>
+  );
+}
+
+function ChartTip({ active, payload, label }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0].payload;
+  const rows = [
+    ['Zürich', row.zhRaw, row.zhYear, 'var(--series-1)'],
+    ['Bern', row.beRaw, row.beYear, 'var(--series-2)'],
+    ['Basel', row.bsRaw, row.bsYear, 'var(--series-3)']
+  ];
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid, borderRadius: 8,
+      padding: '8px 10px', fontSize: 12.5, color: ink }}>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{label}</div>
+      {rows.map(([n, v, y, c]) => (
+        <div key={n} style={{ display: 'flex', gap: 6, alignItems: 'baseline' }}>
+          <span style={{ width: 8, height: 8, borderRadius: 4, background: c, display: 'inline-block' }}></span>
+          <span>{n} ({y}): <strong>{fmtDe(v)}</strong> Eintritte</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Hitzesommer 2026: Zürich und Bern knacken ihre Badi-Rekorde, Basel bleibt darunter</h1>
+      <p className="lead">
+        Der Hitzesommer 2026 spülte Rekordzahlen in Schweizer Freibäder: Zürich zählte bis
+        zum 17. September über 3,13 Millionen Eintritte – 28 Prozent mehr als im bisherigen
+        Rekordjahr 2023. Bern übertraf zum Saisonende mit 1'999'813 Eintritten den Rekord von
+        2025 um rund 12 Prozent. Basel kam mit rund 550'000 Eintritten trotz eines starken
+        Sommers nicht an den Hitzesommer-Rekord von 2003 (über 835'000) heran.
+      </p>
+      <div className="cards">
+        <div className="kpi">
+          <div className="lab">Zürich, Sommerbäder</div>
+          <div className="val">3,13 <small>Mio.</small></div>
+          <div className="delta" style={{ color: 'var(--series-1)' }}>+28% ggü. Rekord 2023</div>
+        </div>
+        <div className="kpi">
+          <div className="lab">Bern, Freibäder</div>
+          <div className="val">2,00 <small>Mio.</small></div>
+          <div className="delta" style={{ color: 'var(--series-2)' }}>+12% ggü. Rekord 2025</div>
+        </div>
+        <div className="kpi">
+          <div className="lab">Basel, Gartenbäder</div>
+          <div className="val">0,55 <small>Mio.</small></div>
+          <div className="delta" style={{ color: 'var(--series-3)' }}>−34% ggü. Rekord 2003</div>
+        </div>
+      </div>
+      <div className="legend">
+        <span><span className="swatch" style={{ background: 'var(--series-1)' }}></span>Zürich</span>
+        <span><span className="swatch" style={{ background: 'var(--series-2)' }}></span>Bern</span>
+        <span><span className="swatch" style={{ background: 'var(--series-3)' }}></span>Basel</span>
+      </div>
+      <div role="img" aria-label="Slope-Chart: Badi-Eintritte 2026 gegenüber dem bisherigen Rekordjahr für Zürich, Bern und Basel. Zürich steigt von 2,44 auf 3,13 Millionen, Bern von 1,79 auf 2,00 Millionen, Basel liegt mit 0,55 Millionen weiterhin unter seinem Rekord von 0,84 Millionen aus dem Jahr 2003.">
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={DATA} margin={{ top: 28, right: 44, bottom: 8, left: 44 }}>
+            <CartesianGrid stroke={grid} horizontal={true} vertical={false} />
+            <XAxis dataKey="period" type="category" tick={{ fill: axis, fontSize: 12 }} stroke={grid} />
+            <YAxis domain={[0, 3.6]} ticks={[0, 1, 2, 3]} tick={{ fill: axis, fontSize: 12 }} stroke={grid}
+              tickFormatter={(v) => v + ' Mio.'} width={56} />
+            <Tooltip content={<ChartTip />} />
+            <Line type="linear" dataKey="zh" name="Zürich" stroke="var(--series-1)" strokeWidth={3}
+              dot={{ r: 5, fill: 'var(--series-1)', stroke: 'var(--series-1)' }} isAnimationActive={false}>
+              <LabelList dataKey="zh" content={(p) => <EndLabel {...p} color="var(--series-1)" />} />
+              <LabelList dataKey="zh" content={(p) => <StartYearLabel {...p} yearLabel="2023" />} />
+            </Line>
+            <Line type="linear" dataKey="be" name="Bern" stroke="var(--series-2)" strokeWidth={3}
+              dot={{ r: 5, fill: 'var(--series-2)', stroke: 'var(--series-2)' }} isAnimationActive={false}>
+              <LabelList dataKey="be" content={(p) => <EndLabel {...p} color="var(--series-2)" />} />
+              <LabelList dataKey="be" content={(p) => <StartYearLabel {...p} yearLabel="2025" />} />
+            </Line>
+            <Line type="linear" dataKey="bs" name="Basel" stroke="var(--series-3)" strokeWidth={3}
+              dot={{ r: 5, fill: 'var(--series-3)', stroke: 'var(--series-3)' }} isAnimationActive={false}>
+              <LabelList dataKey="bs" content={(p) => <EndLabel {...p} color="var(--series-3)" />} />
+              <LabelList dataKey="bs" content={(p) => <StartYearLabel {...p} yearLabel="2003" />} />
+            </Line>
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quellen: <a href="https://www.srf.ch/news/schweiz/es-lockte-das-kuehle-nass-millionen-suchten-im-rekordsommer-abkuehlung-im-wasser" target="_blank" rel="noopener">SRF, 20.9.2026</a>
+        {' · '}
+        <a href="https://www.bern.ch/mediencenter/medienmitteilungen/aktuell_ptk/ein-rekordsommer-auch-in-berns-freibaedern" target="_blank" rel="noopener">Stadt Bern, 16.9.2026</a>
+        {' · '}
+        <a href="https://www.bern.ch/mediencenter/medienmitteilungen/aktuell_ptk/badi-saison-2025-neuer-rekord-fuer-berns-freibaeder" target="_blank" rel="noopener">Stadt Bern, 17.9.2025</a>
+        {' · '}
+        <a href="https://tsri.ch/a/zum-ersten-mal-mehr-als-3-millionen-eintritte-in-zuercher-badis" target="_blank" rel="noopener">TSRI zu Stadt Zürich Sportamt, 17.9.2026</a>
+        {' — Stand 21.9.2026.'}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
