@@ -1097,5 +1097,25 @@
       "https://tsri.ch/a/zum-ersten-mal-mehr-als-3-millionen-eintritte-in-zuercher-badis"
     ],
     "file": "days/2026-09-21.html"
+  },
+  {
+    "date": "2026-09-22",
+    "title": "Importstopp aus Brasilien trifft die Schweiz ausgerechnet beim Geflügel",
+    "lead": "Weil Brasilien keine ausreichenden Garantien zum Antibiotikaeinsatz in der Tierhaltung bietet, importiert die Schweiz seit dem 3. September 2026 kein Fleisch mehr von dort – betroffen ist vor allem Geflügel, wovon rund ein Drittel der Importe aus Brasilien stammte. 2025 sank der Inlandanteil bei Geflügel auf 61,9%, den zweittiefsten Wert aller Fleischarten.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "fleischimport",
+      "brasilien",
+      "gefluegel",
+      "antibiotikaresistenz",
+      "selbstversorgungsgrad",
+      "proviande"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.proviande.ch/sites/proviande/files/2020-05/Der%20Fleischmarkt%20im%20%C3%9Cberblick%20-%20Aktuelle%20Ausgabe.pdf",
+      "https://www.srf.ch/sendungen/kassensturz-espresso/espresso/rindfleisch-und-gefluegel-schweiz-stoppt-fleisch-aus-brasilien-wegen-antibiotika"
+    ],
+    "file": "days/2026-09-22.html"
   }
 ]
