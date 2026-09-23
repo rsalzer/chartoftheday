@@ -1117,5 +1117,28 @@
       "https://www.srf.ch/sendungen/kassensturz-espresso/espresso/rindfleisch-und-gefluegel-schweiz-stoppt-fleisch-aus-brasilien-wegen-antibiotika"
     ],
     "file": "days/2026-09-22.html"
+  },
+  {
+    "date": "2026-09-23",
+    "title": "Googles Datenschutz-Busse reiht sich unter die grössten der DSGVO-Geschichte ein",
+    "lead": "Irlands Datenschutzbehörde DPC hat Google am 21. September 2026 mit 403 Millionen Euro gebüsst – wegen des Umgangs mit Standortdaten zwischen 2018 und 2020. Es ist die viertgrösste Busse, die die Behörde je verhängt hat, nur 2 Millionen Euro hinter jener gegen Instagram.",
+    "category": "Tech",
+    "keywords": [
+      "google",
+      "dpc",
+      "dsgvo",
+      "datenschutzbusse",
+      "standortdaten",
+      "irland"
+    ],
+    "chartType": "lollipop",
+    "sourceUrls": [
+      "https://www.dataprotection.ie/en/news-media/latest-news/data-protection-commission-fines-google-eu403-million-following-inquiry-googles-processing-location",
+      "https://www.dataprotection.ie/en/news-media/press-releases/Data-Protection-Commission-announces-conclusion-of-inquiry-into-Meta-Ireland",
+      "https://www.dataprotection.ie/en/news-media/latest-news/irish-data-protection-commission-fines-tiktok-eu530-million-and-orders-corrective-measures-following",
+      "https://dataprotection.ie/en/news-media/press-releases/data-protection-commission-announces-decision-instagram-inquiry",
+      "https://www.dataprotection.ie/en/news-media/press-releases/data-protection-commission-announces-decision-whatsapp-inquiry"
+    ],
+    "file": "days/2026-09-23.html"
   }
 ]
