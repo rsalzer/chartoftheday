@@ -1140,5 +1140,30 @@
       "https://www.dataprotection.ie/en/news-media/press-releases/data-protection-commission-announces-decision-whatsapp-inquiry"
     ],
     "file": "days/2026-09-23.html"
+  },
+  {
+    "date": "2026-09-24",
+    "title": "Nach Heim-WM-Debakel: Schweizer Mixed-Staffel wieder auf dem Podest",
+    "lead": "Trotz eines Lenkerdefekts von Stefan Küng nach knapp 5 Kilometern raste die Schweizer Mixed-Staffel im Mannschaftszeitfahren am 22. September 2026 in Montreal zu Bronze – 19,90 Sekunden hinter Weltmeister Italien. Es ist die zweite Bronzemedaille in Folge, nach den Titeln 2022 und 2023 und dem enttäuschenden 8. Rang an der Heim-WM 2024 in Zürich.",
+    "category": "Sport",
+    "keywords": [
+      "rad-wm",
+      "mixed-staffel",
+      "montreal",
+      "radsport",
+      "kueng"
+    ],
+    "chartType": "line",
+    "sourceUrls": [
+      "https://www.srf.ch/sport/rad/rad-wm/rad-wm-in-montreal-trotz-kueng-defekt-mixed-staffel-holt-bronze",
+      "https://www.olympics.com/en/news/uci-road-world-championships-2026-all-winners-full-results",
+      "https://en.wikipedia.org/wiki/2019_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay",
+      "https://en.wikipedia.org/wiki/2021_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay",
+      "https://en.wikipedia.org/wiki/2022_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay",
+      "https://en.wikipedia.org/wiki/2023_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay",
+      "https://en.wikipedia.org/wiki/2024_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay",
+      "https://en.wikipedia.org/wiki/2025_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay"
+    ],
+    "file": "days/2026-09-24.html"
   }
 ]

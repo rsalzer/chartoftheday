@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nach Heim-WM-Debakel: Schweizer Mixed-Staffel wieder auf dem Podest</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series: #2a78d6;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series: #3987e5;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 66ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 170px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Platzierungen der Schweizer Mixed-Staffel im Mannschaftszeitfahren an Rad-Weltmeisterschaften seit
+    Einführung der Disziplin: 2019 Harrogate Rang 6; 2021 Flandern Rang 4; 2022 Wollongong Gold; 2023
+    Glasgow Gold; 2024 Zürich (Heim-WM) Rang 8; 2025 Kigali Bronze; 2026 Montreal Bronze, 19,90 Sekunden
+    hinter Weltmeister Italien. Die Ausgabe 2020 fiel coronabedingt aus.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+
+// Sources verified per data point:
+// 2026 Montreal (22.9.2026): SRF (srf.ch/sport) + Olympics.com results roundup + Wikipedia "2026 UCI
+// Road World Championships" (cross-checked against Yahoo Sports / cyclingnews reporting).
+// 2019/2021/2022/2023/2024/2025: Wikipedia per-edition "Mixed team relay" result pages (sourced from
+// official UCI results), cross-checked against Cyclingnews reporting for 2024.
+const DATA = [
+  { year: '2019', place: 6, medal: null, host: 'Harrogate (GBR)', note: '+1:27 Min. hinter Gold (Niederlande)' },
+  { year: '2021', place: 4, medal: null, host: 'Flandern (BEL)', note: '+37,79 Sek. hinter Gold (Deutschland)' },
+  { year: '2022', place: 1, medal: 'gold', host: 'Wollongong (AUS)', note: 'Weltmeister, 2,92 Sek. vor Italien' },
+  { year: '2023', place: 1, medal: 'gold', host: 'Glasgow (GBR)', note: 'Weltmeister, 7,08 Sek. vor Frankreich' },
+  { year: '2024', place: 8, medal: null, host: 'Zürich (SUI, Heim-WM)', note: '+2:51,73 Min. hinter Gold (Australien)' },
+  { year: '2025', place: 3, medal: 'bronze', host: 'Kigali (RWA)', note: '+10,00 Sek. hinter Gold (Australien)' },
+  { year: '2026', place: 3, medal: 'bronze', host: 'Montreal (CAN)', note: '+19,90 Sek. hinter Gold (Italien)' }
+];
+const MAX_PLACE = 8;
+const toPlot = (place) => MAX_PLACE + 1 - place;
+const PLOT_DATA = DATA.map((d) => ({ ...d, plot: toPlot(d.place) }));
+const TICKS = [...new Set(DATA.map((d) => toPlot(d.place)))].sort((a, b) => a - b);
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const seriesColor = isDark ? '#3987e5' : '#2a78d6';
+const mutedDot = '#898781';
+
+function medalLabel(payload) {
+  const tag = payload.medal === 'gold' ? ' Gold' : payload.medal === 'bronze' ? ' Bronze' : '.';
+  return payload.place + (payload.medal ? '.' + tag : '.');
+}
+
+function ChartDot(props) {
+  const { cx, cy, payload } = props;
+  const isCurrent = payload.year === '2026';
+  const r = payload.medal ? 7 : 5;
+  const fill = payload.medal ? seriesColor : mutedDot;
+  return (
+    <g>
+      <circle cx={cx} cy={cy} r={r} fill={fill} stroke={surface} strokeWidth={isCurrent ? 3 : 2} />
+      <text x={cx} y={cy - r - 8} textAnchor="middle" fontSize={12}
+        fontWeight={isCurrent ? 700 : payload.medal ? 600 : 400} fill={ink}>
+        {medalLabel(payload)}
+      </text>
+    </g>
+  );
+}
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 260 }}>
+      <div style={{ fontWeight: 700 }}>{row.year} – {row.host}</div>
+      <div style={{ color: sub }}>Rang {row.place}{row.medal ? ' (' + (row.medal === 'gold' ? 'Gold' : 'Bronze') + ')' : ''}</div>
+      <div style={{ color: axis, marginTop: 2 }}>{row.note}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Nach Heim-WM-Debakel: Schweizer Mixed-Staffel wieder auf dem Podest</h1>
+      <p className="lead">
+        Trotz eines Lenkerdefekts von Stefan Küng nach knapp 5 Kilometern raste die Schweizer Mixed-Staffel
+        im Mannschaftszeitfahren am 22. September 2026 in Montreal zu Bronze – 19,90 Sekunden hinter
+        Weltmeister Italien. Es ist die zweite Bronzemedaille in Folge, nach den Titeln 2022 und 2023 und
+        dem enttäuschenden 8. Rang an der Heim-WM 2024 in Zürich.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Montreal 2026</div><div className="val">3. <small>Bronze, −19,90 Sek. auf Gold</small></div></div>
+        <div className="kpi"><div className="lab">Titel seit 2019</div><div className="val">2× <small>Gold (2022 &amp; 2023)</small></div></div>
+        <div className="kpi"><div className="lab">Heim-WM 2024 (Zürich)</div><div className="val">8. <small>schlechtestes Resultat seit 2019</small></div></div>
+      </div>
+      <div role="img" aria-label="Liniendiagramm: Platzierung der Schweizer Mixed-Staffel im Mannschaftszeitfahren an Rad-Weltmeisterschaften 2019 bis 2026 (Skala umgekehrt, Rang 1 oben). 2019 Harrogate Rang 6. 2021 Flandern Rang 4. 2022 Wollongong Gold. 2023 Glasgow Gold. 2024 Zürich Rang 8. 2025 Kigali Bronze. 2026 Montreal Bronze, 19,90 Sekunden hinter Gold.">
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={PLOT_DATA} margin={{ top: 34, right: 20, bottom: 4, left: 4 }}>
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis dataKey="year" tick={{ fill: axis, fontSize: 11.5 }} stroke={grid} tickLine={false} axisLine={{ stroke: grid }} />
+            <YAxis
+              domain={[1, MAX_PLACE]}
+              ticks={TICKS}
+              tickFormatter={(v) => (MAX_PLACE + 1 - v) + '.'}
+              tick={{ fill: axis, fontSize: 11 }}
+              stroke={grid}
+              tickLine={false}
+              axisLine={false}
+              width={30}
+              label={{ value: 'Rang', angle: -90, position: 'insideLeft', fill: axis, fontSize: 11 }}
+            />
+            <Tooltip content={<ChartTip />} cursor={{ stroke: grid }} />
+            <Line type="monotone" dataKey="plot" stroke={seriesColor} strokeWidth={2} dot={<ChartDot />} isAnimationActive={false} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: SRF Sport,
+        {' '}<a href="https://www.srf.ch/sport/rad/rad-wm/rad-wm-in-montreal-trotz-kueng-defekt-mixed-staffel-holt-bronze" target="_blank" rel="noopener">Rad-WM Montreal 2026</a>,
+        {' '}<a href="https://www.olympics.com/en/news/uci-road-world-championships-2026-all-winners-full-results" target="_blank" rel="noopener">Olympics.com Ergebnisübersicht</a>;
+        historische Resultate: Wikipedia-Ergebnisseiten der UCI-Rad-WM
+        {' '}<a href="https://en.wikipedia.org/wiki/2019_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay" target="_blank" rel="noopener">2019</a>,
+        {' '}<a href="https://en.wikipedia.org/wiki/2021_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay" target="_blank" rel="noopener">2021</a>,
+        {' '}<a href="https://en.wikipedia.org/wiki/2022_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay" target="_blank" rel="noopener">2022</a>,
+        {' '}<a href="https://en.wikipedia.org/wiki/2023_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay" target="_blank" rel="noopener">2023</a>,
+        {' '}<a href="https://en.wikipedia.org/wiki/2024_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay" target="_blank" rel="noopener">2024</a>,
+        {' '}<a href="https://en.wikipedia.org/wiki/2025_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay" target="_blank" rel="noopener">2025</a>.
+        Stand: 24. September 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
