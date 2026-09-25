@@ -1165,5 +1165,25 @@
       "https://en.wikipedia.org/wiki/2025_UCI_Road_World_Championships_%E2%80%93_Mixed_team_relay"
     ],
     "file": "days/2026-09-24.html"
+  },
+  {
+    "date": "2026-09-25",
+    "title": "Wärmepumpen-Boom bei Gebäuden kommt bei den Haushalten langsamer an",
+    "lead": "Ende 2025 hatte in der Schweiz bereits jedes vierte Gebäude eine Wärmepumpe installiert – der Anteil hat sich seit dem Jahr 2000 versechsfacht. Nach Haushalten statt nach Gebäuden gezählt wohnen aber erst 22 Prozent in einem Wärmepumpen-Haus, während 58 Prozent weiterhin fossil mit Öl oder Gas heizen.",
+    "category": "Klima",
+    "keywords": [
+      "waermepumpe",
+      "heizungsart",
+      "gebaeudestatistik",
+      "energiewende",
+      "bfs",
+      "heizoel"
+    ],
+    "chartType": "stackedBar",
+    "sourceUrls": [
+      "https://www.weko.admin.ch/de/newnsb/xrhcMB8jXvge",
+      "https://www.vbs.admin.ch/de/newnsb/xrhcMB8jXvge"
+    ],
+    "file": "days/2026-09-25.html"
   }
 ]
