@@ -1185,5 +1185,26 @@
       "https://www.vbs.admin.ch/de/newnsb/xrhcMB8jXvge"
     ],
     "file": "days/2026-09-25.html"
+  },
+  {
+    "date": "2026-09-26",
+    "title": "Nein-Trend zur Neutralitätsinitiative verstärkt sich vor der Abstimmung",
+    "lead": "Am 27. September 2026 stimmt die Schweiz über die Neutralitätsinitiative ab. In der zweiten SRG-Trendumfrage von gfs.bern lehnen 63 Prozent die Initiative ab, 34 Prozent sind dafür – gegenüber der ersten Umfrage vier Wochen zuvor (54 zu 42 Prozent) hat sich die Ablehnung um neun Prozentpunkte verstärkt.",
+    "category": "Politik",
+    "keywords": [
+      "neutralitaetsinitiative",
+      "volksabstimmung",
+      "srg-trendumfrage",
+      "meinungsumfrage",
+      "neutralitaet"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.gfsbern.ch/de/news/1-srg-trendumfrage-zur-eidg-abstimmung-von-27-september-2026/",
+      "https://www.gfsbern.ch/de/news/2-srg-trendumfrage-zur-eidg-abstimmung-von-27-september-2026/",
+      "https://www.srf.ch/news/schweiz/erste-srg-umfrage-54-prozent-nein-neutralitaetsinitiative-im-gegenwind",
+      "https://www.srf.ch/news/schweiz/2-srg-umfrage-klarer-nein-trend-bei-der-neutralitaetsinitiative"
+    ],
+    "file": "days/2026-09-26.html"
   }
 ]
