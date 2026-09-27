@@ -1206,5 +1206,24 @@
       "https://www.srf.ch/news/schweiz/2-srg-umfrage-klarer-nein-trend-bei-der-neutralitaetsinitiative"
     ],
     "file": "days/2026-09-26.html"
+  },
+  {
+    "date": "2026-09-27",
+    "title": "Ständerat verlangt 90 statt 50 Prozent Eigenkapital von der UBS",
+    "lead": "Im Streit um die Eigenkapitalregeln für die UBS hat sich der Ständerat gegen den Antrag seiner eigenen Wirtschaftskommission (50 Prozent) gestellt und 90 Prozent hartes Kernkapital für ausländische Tochtergesellschaften beschlossen – nahe an der Forderung des Bundesrats von 100 Prozent. Heute gilt eine Quote von 45 Prozent.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "ubs",
+      "eigenkapital",
+      "staenderat",
+      "bankenregulierung",
+      "lex-ubs"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.srf.ch/news/wirtschaft/90-prozent-eigenkapital-was-der-staenderats-entscheid-fuer-die-ubs-bedeutet",
+      "https://www.swissinfo.ch/ger/st%C3%A4nderat-will-90-prozent-eigenkapital-f%C3%BCr-ubs-auslandbeteiligungen/92104124"
+    ],
+    "file": "days/2026-09-27.html"
   }
 ]
