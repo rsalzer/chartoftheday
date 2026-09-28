@@ -1225,5 +1225,26 @@
       "https://www.swissinfo.ch/ger/st%C3%A4nderat-will-90-prozent-eigenkapital-f%C3%BCr-ubs-auslandbeteiligungen/92104124"
     ],
     "file": "days/2026-09-27.html"
+  },
+  {
+    "date": "2026-09-28",
+    "title": "Ebola-Ausbruch im Kongo ist nun der grösste der Landesgeschichte",
+    "lead": "Der seit Mai andauernde Ebola-Ausbruch (Bundibugyo-Virus) in der Demokratischen Republik Kongo hat laut WHO mit 7890 bestätigten Fällen den bisherigen Rekord von 2018–2020 (3317 Fälle) übertroffen. Gleichzeitig ist die Fallsterblichkeit von 10,8 Prozent im Mai auf 48,1 Prozent Ende September gestiegen.",
+    "category": "Gesundheit",
+    "keywords": [
+      "ebola",
+      "kongo",
+      "bundibugyo-virus",
+      "who",
+      "seuchenausbruch"
+    ],
+    "chartType": "area",
+    "sourceUrls": [
+      "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON603",
+      "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON613",
+      "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON614",
+      "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON618"
+    ],
+    "file": "days/2026-09-28.html"
   }
 ]

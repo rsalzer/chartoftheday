@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ebola-Ausbruch im Kongo ist nun der grösste der Landesgeschichte</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-cases: #2a78d6; --series-deaths: #eb6834;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-cases: #3987e5; --series-deaths: #d95926;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 66ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 170px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--sub); margin: 2px 0 6px; }
+  .legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Bestätigte Ebola-Fälle und Todesfälle in der Demokratischen Republik Kongo (Bundibugyo-Virus-Ausbruch
+    seit Mai 2026), laut WHO: 21. Mai 83 Fälle / 9 Todesfälle (Fallsterblichkeit 10,8%); 15. Juli 2124
+    Fälle / 828 Todesfälle (39%); 1. August 3605 Fälle / 1587 Todesfälle (44%); 23. September 7890 Fälle /
+    3799 Todesfälle (48,1%). Die WHO bezeichnet dies als den grössten je in der DR Kongo registrierten
+    Ebola-Ausbruch, vor dem bisherigen Rekord 2018–2020 mit 3317 bestätigten Fällen.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
+
+// Every figure verified directly against WHO primary sources (WHO Disease Outbreak News items),
+// DRC-only counts for the Bundibugyo virus disease outbreak:
+// 21 May 2026:  WHO DON 2026-DON603 (83 confirmed cases, 9 deaths in DRC)
+// 15 Jul 2026:  WHO DON 2026-DON613 (2124 confirmed cases, 828 deaths, CFR 39%)
+// 1 Aug 2026:   WHO DON 2026-DON614 (3605 confirmed cases, 1587 deaths, CFR 44%; states this
+//               surpasses the 2018-2020 DRC outbreak's 3317 confirmed cases)
+// 23 Sep 2026:  WHO DON 2026-DON618 (7890 confirmed cases, 3799 deaths, CFR 48.1%)
+const DATA = [
+  { label: '21. Mai', cases: 83, deaths: 9 },
+  { label: '15. Jul.', cases: 2124, deaths: 828 },
+  { label: '1. Aug.', cases: 3605, deaths: 1587 },
+  { label: '23. Sep.', cases: 7890, deaths: 3799 }
+];
+
+function swissNum(n) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+}
+function cfr(row) {
+  return (row.deaths / row.cases * 100).toFixed(1).replace('.', ',');
+}
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const casesColor = isDark ? '#3987e5' : '#2a78d6';
+const deathsColor = isDark ? '#d95926' : '#eb6834';
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 240 }}>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{row.label} 2026</div>
+      <div style={{ color: casesColor }}>Fälle: {swissNum(row.cases)}</div>
+      <div style={{ color: deathsColor }}>Todesfälle: {swissNum(row.deaths)}</div>
+      <div style={{ color: sub, marginTop: 2 }}>Fallsterblichkeit: {cfr(row)}%</div>
+    </div>
+  );
+}
+
+function App() {
+  const last = DATA[DATA.length - 1];
+  const first = DATA[0];
+  return (
+    <div>
+      <h1>Ebola-Ausbruch im Kongo ist nun der grösste der Landesgeschichte</h1>
+      <p className="lead">
+        Der seit Mai andauernde Ebola-Ausbruch (Bundibugyo-Virus) in der Demokratischen Republik Kongo hat
+        laut WHO mit 7890 bestätigten Fällen den bisherigen Rekord von 2018–2020 (3317 Fälle) übertroffen.
+        Gleichzeitig ist die Fallsterblichkeit von 10,8 Prozent im Mai auf 48,1 Prozent Ende September
+        gestiegen.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Bestätigte Fälle (23.9.)</div><div className="val">{swissNum(last.cases)} <small>Rekord für die DR Kongo</small></div></div>
+        <div className="kpi"><div className="lab">Todesfälle (23.9.)</div><div className="val">{swissNum(last.deaths)} <small>seit Mai 2026</small></div></div>
+        <div className="kpi"><div className="lab">Fallsterblichkeit</div><div className="val">{cfr(last)}% <small>vs. {cfr(first)}% im Mai</small></div></div>
+      </div>
+      <div className="legend">
+        <span><span className="dot" style={{ background: casesColor }} />Bestätigte Fälle</span>
+        <span><span className="dot" style={{ background: deathsColor }} />Todesfälle</span>
+      </div>
+      <div role="img" aria-label="Flächendiagramm: kumulierte bestätigte Ebola-Fälle und Todesfälle in der DR Kongo, 21. Mai bis 23. September 2026. Fälle steigen von 83 auf 7890, Todesfälle von 9 auf 3799; die Fallsterblichkeit steigt dabei von 10,8 auf 48,1 Prozent.">
+        <ResponsiveContainer width="100%" height={300}>
+          <AreaChart data={DATA} margin={{ top: 10, right: 20, bottom: 4, left: 4 }}>
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis dataKey="label" tick={{ fill: axis, fontSize: 11.5 }} stroke={grid} tickLine={false} axisLine={{ stroke: grid }} />
+            <YAxis
+              tickFormatter={swissNum}
+              tick={{ fill: axis, fontSize: 11 }}
+              stroke={grid}
+              tickLine={false}
+              axisLine={false}
+              width={52}
+            />
+            <Tooltip content={<ChartTip />} cursor={{ stroke: grid }} />
+            <Area type="monotone" dataKey="cases" name="Bestätigte Fälle" stroke={casesColor} strokeWidth={2}
+              fill={casesColor} fillOpacity={0.12} dot={{ r: 4, fill: casesColor, stroke: surface, strokeWidth: 2 }}
+              isAnimationActive={false} />
+            <Area type="monotone" dataKey="deaths" name="Todesfälle" stroke={deathsColor} strokeWidth={2}
+              fill={deathsColor} fillOpacity={0.16} dot={{ r: 4, fill: deathsColor, stroke: surface, strokeWidth: 2 }}
+              isAnimationActive={false} />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: WHO Disease Outbreak News,
+        {' '}<a href="https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON603" target="_blank" rel="noopener">21. Mai 2026</a>,
+        {' '}<a href="https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON613" target="_blank" rel="noopener">17. Juli 2026</a>,
+        {' '}<a href="https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON614" target="_blank" rel="noopener">1. August 2026</a>,
+        {' '}<a href="https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON618" target="_blank" rel="noopener">25. September 2026</a>.
+        Stand: 28. September 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
