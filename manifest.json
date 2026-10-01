@@ -1246,5 +1246,25 @@
       "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON618"
     ],
     "file": "days/2026-09-28.html"
+  },
+  {
+    "date": "2026-10-01",
+    "title": "US-Umfrage zu Künstlicher Intelligenz: Skepsis bleibt nach starkem Anstieg hoch",
+    "lead": "Der Anteil der US-Amerikanerinnen und Amerikaner, die glauben, Künstliche Intelligenz schade ihrem Alltag mehr, als sie nütze, ist von 44 Prozent im April 2025 auf 55 Prozent im März 2026 gesprungen und liegt in der jüngsten Erhebung von Ende September 2026 bei 53 Prozent. Gemäss derselben Quinnipiac-Umfrage sind zudem 73 Prozent besorgt, dass künftige KI-Systeme das Überleben der Menschheit bedrohen könnten.",
+    "category": "Tech",
+    "keywords": [
+      "kuenstliche-intelligenz",
+      "ki-skepsis",
+      "quinnipiac-umfrage",
+      "ai-vertrauen",
+      "usa"
+    ],
+    "chartType": "groupedBar",
+    "sourceUrls": [
+      "https://poll.qu.edu/poll-release?releaseid=3923",
+      "https://poll.qu.edu/poll-release?releaseid=3955",
+      "https://poll.qu.edu/poll-release?releaseid=3969"
+    ],
+    "file": "days/2026-10-01.html"
   }
 ]

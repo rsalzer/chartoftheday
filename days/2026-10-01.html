@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>US-Umfrage zu Künstlicher Intelligenz: Skepsis bleibt nach starkem Anstieg hoch</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-harm: #2a78d6; --series-good: #eb6834; --series-unsure: #1baf7a;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-harm: #3987e5; --series-good: #d95926; --series-unsure: #199e70;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 66ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 170px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Quinnipiac-Universitätsumfrage, Frage "Schadet oder nützt Künstliche Intelligenz im Alltag mehr?":
+    3.–7. April 2025 (n=1562) 44% mehr Schaden, 38% mehr Nutzen, 18% unentschlossen;
+    19.–23. März 2026 (n=1397) 55% mehr Schaden, 34% mehr Nutzen, 11% unentschlossen;
+    24.–27. September 2026 (n=1202) 53% mehr Schaden, 34% mehr Nutzen, 13% unentschlossen.
+    Zusätzlich gaben in der September-Erhebung 73% an, besorgt zu sein, dass künftige KI-Systeme
+    das Überleben der Menschheit bedrohen könnten.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList, ResponsiveContainer } = Recharts;
+
+// Every figure verified directly against the Quinnipiac University poll release pages (poll.qu.edu),
+// the same tracking question asked in each wave: "When it comes to your day-to-day life, do you think
+// AI will do more good than harm or do more harm than good?"
+// 3-7 Apr 2025  (n=1562, MoE +/-2.5, released 16 Apr 2025, releaseid=3923): harm 44%, good 38%, DK/NA 18%
+// 19-23 Mar 2026 (n=1397, MoE +/-3.3, released 30 Mar 2026, releaseid=3955): harm 55%, good 34%, DK/NA 11%
+// 24-27 Sep 2026 (n=1202, MoE +/-3.5, released 30 Sep 2026, releaseid=3969): harm 53%, good 34%, DK/NA 13%
+// Same Sep 2026 release also found 73% "very" or "somewhat" concerned future AI systems could threaten
+// human survival (38% + 35%), cited in the lead text only (not charted, to keep one measure per chart).
+const DATA = [
+  { wave: 'Apr. 2025', date: '3.–7. April 2025', n: 1562, harm: 44, good: 38, unsure: 18 },
+  { wave: 'Mär. 2026', date: '19.–23. März 2026', n: 1397, harm: 55, good: 34, unsure: 11 },
+  { wave: 'Sep. 2026', date: '24.–27. September 2026', n: 1202, harm: 53, good: 34, unsure: 13 }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const harmColor = isDark ? '#3987e5' : '#2a78d6';
+const goodColor = isDark ? '#d95926' : '#eb6834';
+const unsureColor = isDark ? '#199e70' : '#1baf7a';
+
+function pct(v) { return v.toString().replace('.', ',') + '%'; }
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 260 }}>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{row.date}</div>
+      <div style={{ color: sub, marginBottom: 4 }}>n = {row.n} US-Erwachsene</div>
+      <div style={{ color: harmColor }}>Mehr Schaden als Nutzen: {pct(row.harm)}</div>
+      <div style={{ color: goodColor }}>Mehr Nutzen als Schaden: {pct(row.good)}</div>
+      <div style={{ color: unsureColor }}>Unentschlossen: {pct(row.unsure)}</div>
+    </div>
+  );
+}
+
+function App() {
+  const first = DATA[0];
+  const last = DATA[DATA.length - 1];
+  return (
+    <div>
+      <h1>US-Umfrage zu Künstlicher Intelligenz: Skepsis bleibt nach starkem Anstieg hoch</h1>
+      <p className="lead">
+        Der Anteil der US-Amerikanerinnen und Amerikaner, die glauben, Künstliche Intelligenz schade ihrem
+        Alltag mehr, als sie nütze, ist von 44 Prozent im April 2025 auf 55 Prozent im März 2026 gesprungen
+        und liegt in der jüngsten Erhebung von Ende September 2026 bei 53 Prozent. Gemäss derselben
+        Quinnipiac-Umfrage sind zudem 73 Prozent besorgt, dass künftige KI-Systeme das Überleben der
+        Menschheit bedrohen könnten.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Mehr Schaden als Nutzen (Sep. 2026)</div><div className="val">{pct(last.harm)} <small>vs. {pct(first.harm)} im April 2025</small></div></div>
+        <div className="kpi"><div className="lab">Mehr Nutzen als Schaden (Sep. 2026)</div><div className="val">{pct(last.good)} <small>vs. {pct(first.good)} im April 2025</small></div></div>
+        <div className="kpi"><div className="lab">Besorgt um Überleben der Menschheit</div><div className="val">73% <small>Sep.-Erhebung 2026</small></div></div>
+      </div>
+      <div role="img" aria-label="Gruppiertes Balkendiagramm: Anteil der US-Erwachsenen, die sagen, Künstliche Intelligenz schade ihrem Alltag mehr als sie nütze, nütze mehr als sie schade, oder unentschlossen sind, über drei Quinnipiac-Umfragewellen. April 2025: 44 Prozent mehr Schaden, 38 Prozent mehr Nutzen, 18 Prozent unentschlossen. März 2026: 55 Prozent mehr Schaden, 34 Prozent mehr Nutzen, 11 Prozent unentschlossen. September 2026: 53 Prozent mehr Schaden, 34 Prozent mehr Nutzen, 13 Prozent unentschlossen.">
+        <ResponsiveContainer width="100%" height={320}>
+          <BarChart data={DATA} margin={{ top: 20, right: 20, bottom: 4, left: 4 }} barGap={2} barCategoryGap="28%">
+            <CartesianGrid stroke={grid} vertical={false} />
+            <XAxis dataKey="wave" tick={{ fill: axis, fontSize: 11.5 }} stroke={grid} tickLine={false} axisLine={{ stroke: grid }} />
+            <YAxis
+              domain={[0, 60]}
+              ticks={[0, 20, 40, 60]}
+              tickFormatter={(v) => v + '%'}
+              tick={{ fill: axis, fontSize: 11 }}
+              stroke={grid}
+              tickLine={false}
+              axisLine={false}
+              width={40}
+            />
+            <Tooltip content={<ChartTip />} cursor={{ fill: grid, fillOpacity: 0.3 }} />
+            <Legend
+              verticalAlign="top"
+              align="left"
+              height={28}
+              iconType="circle"
+              iconSize={8}
+              wrapperStyle={{ fontSize: 12, color: sub }}
+            />
+            <Bar dataKey="harm" name="Mehr Schaden als Nutzen" fill={harmColor} radius={[4, 4, 0, 0]} maxBarSize={24} isAnimationActive={false}>
+              <LabelList dataKey="harm" position="top" formatter={pct} style={{ fill: sub, fontSize: 11 }} />
+            </Bar>
+            <Bar dataKey="good" name="Mehr Nutzen als Schaden" fill={goodColor} radius={[4, 4, 0, 0]} maxBarSize={24} isAnimationActive={false}>
+              <LabelList dataKey="good" position="top" formatter={pct} style={{ fill: sub, fontSize: 11 }} />
+            </Bar>
+            <Bar dataKey="unsure" name="Unentschlossen" fill={unsureColor} radius={[4, 4, 0, 0]} maxBarSize={24} isAnimationActive={false}>
+              <LabelList dataKey="unsure" position="top" formatter={pct} style={{ fill: sub, fontSize: 11 }} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: Quinnipiac University Poll,
+        {' '}<a href="https://poll.qu.edu/poll-release?releaseid=3923" target="_blank" rel="noopener">16. April 2025</a>,
+        {' '}<a href="https://poll.qu.edu/poll-release?releaseid=3955" target="_blank" rel="noopener">30. März 2026</a>,
+        {' '}<a href="https://poll.qu.edu/poll-release?releaseid=3969" target="_blank" rel="noopener">30. September 2026</a>.
+        Stand: 1. Oktober 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>
