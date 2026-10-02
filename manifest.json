@@ -1266,5 +1266,28 @@
       "https://poll.qu.edu/poll-release?releaseid=3969"
     ],
     "file": "days/2026-10-01.html"
+  },
+  {
+    "date": "2026-10-02",
+    "title": "Bundesrat erhöht AHV-Minimalrente 2027 um 20 statt wie zuvor um 35 Franken",
+    "lead": "Der Bundesrat hat die periodische Anpassung der AHV/IV-Renten an die Mischindex-Teuerung beschlossen: Die Minimalrente steigt per 1. Januar 2027 von 1260 auf 1280 Franken pro Monat (+1,59 Prozent), die Maximalrente von 2520 auf 2560 Franken. Nach den kräftigeren Schritten 2023 (+30) und 2025 (+35 Franken) fällt die Erhöhung damit kleiner aus; sie kostet AHV und IV zusammen rund 1055 Millionen Franken pro Jahr zusätzlich.",
+    "category": "Politik",
+    "keywords": [
+      "ahv",
+      "iv-rente",
+      "minimalrente",
+      "bundesrat",
+      "mischindex",
+      "rentenanpassung"
+    ],
+    "chartType": "line",
+    "sourceUrls": [
+      "https://www.edi.admin.ch/de/newnsb/BqB41FVYi5FB",
+      "https://www.admin.ch/de/nsb?id=102235",
+      "https://www.admin.ch/de/nsb?id=90661",
+      "https://www.bsv.admin.ch/de/nsb?id=80648",
+      "https://www.bsv.admin.ch/de/nsb?id=72247"
+    ],
+    "file": "days/2026-10-02.html"
   }
 ]
