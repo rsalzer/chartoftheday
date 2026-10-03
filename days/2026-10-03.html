@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Schweizer Gletscher: 2026 der zweithöchste Eisverlust seit Messbeginn</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --bar-1: #86b6ef; --bar-2: #3987e5; --bar-3: #184f95;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --bar-1: #9ec5f4; --bar-2: #5598e7; --bar-3: #256abf;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 66ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 140px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Die Schweizer Gletscher haben gemäss Glamos (Glacier Monitoring Switzerland) im Jahr 2026 5,5 Prozent ihres
+    Eisvolumens verloren – der zweithöchste Jahresverlust seit Messbeginn, nur das Rekordjahr 2022 war schlimmer.
+    In den letzten fünf Jahren (2021–2026) sind es fast 20 Prozent, in den letzten zehn Jahren (2016–2026) rund
+    27 Prozent des gesamten Eisvolumens. Quelle: Glamos/SCNAT, Medienmitteilung vom 1. Oktober 2026.
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, LabelList, ResponsiveContainer } = Recharts;
+
+// Figures verified against the official Glamos/SCNAT (Swiss Commission for Cryosphere Observation)
+// press release of 1 October 2026, hosted by SLF and by the University of Zurich's Geography
+// Institute (both Glamos partner institutions), and cross-checked against 20 Minuten's reporting,
+// which cites Glamos for the more granular figures (5.5%, the 2.86 m w.e. mass balance, the
+// remaining 42.6 km3 of ice) used here:
+// https://www.slf.ch/de/news/die-schweizer-gletscher-verlieren-weitere-fuenf-prozent-ihres-volumens/
+// https://www.geo.uzh.ch/de/news/2026/glamos-2026.html
+// https://www.20min.ch/story/schweizer-gletscher-schrumpfen-25-kubikkilometer-eis-verschwanden-2026-103638723
+// Internal consistency check: 2.5 km3 melted in 2026 out of ~45.1 km3 (42.6 km3 remaining + 2.5 km3
+// melted) is 5.5% — matches the reported headline figure exactly.
+// The 5-year and 10-year cumulative figures are reported as "fast 20 Prozent" and "rund 27 Prozent"
+// (i.e. approximate, not exact); chart values reflect that rounding and are labelled as such.
+const CHART_DATA = [
+  { name: '2026 (1 Jahr)', value: 5.5, label: '5,5%', exact: true },
+  { name: '2021–2026 (5 Jahre)', value: 20, label: '≈20%', exact: false },
+  { name: '2016–2026 (10 Jahre)', value: 27, label: '≈27%', exact: false }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const muted = '#898781';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const BARS = isDark ? ['#9ec5f4', '#5598e7', '#256abf'] : ['#86b6ef', '#3987e5', '#184f95'];
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 260 }}>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{d.name}</div>
+      <div style={{ color: sub }}>
+        {d.exact ? 'exakt ' : 'rund '}{d.label} des Eisvolumens verloren
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Schweizer Gletscher: 2026 der zweithöchste Eisverlust seit Messbeginn</h1>
+      <p className="lead">
+        Die Schweizer Gletscher haben 2026 gemäss Glamos 5,5 Prozent ihres Eisvolumens verloren – nach dem
+        Rekordjahr 2022 der zweithöchste Jahresverlust seit Messbeginn. Allein in den letzten fünf Jahren
+        schmolzen fast 20 Prozent, in den letzten zehn Jahren rund 27 Prozent des gesamten Eisvolumens ab.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">2026</div><div className="val">5,5<small>%</small></div></div>
+        <div className="kpi"><div className="lab">2021–2026</div><div className="val">≈20<small>%</small></div></div>
+        <div className="kpi"><div className="lab">2016–2026</div><div className="val">≈27<small>%</small></div></div>
+        <div className="kpi"><div className="lab">Rekordjahr</div><div className="val">2022<small> (schlimmer als 2026)</small></div></div>
+      </div>
+      <div role="img" aria-label="Balkendiagramm zum kumulierten Verlust an Gletschereisvolumen in der Schweiz, gemessen bis Ende 2026: im Jahr 2026 allein 5,5 Prozent, in den letzten fünf Jahren (2021–2026) rund 20 Prozent, in den letzten zehn Jahren (2016–2026) rund 27 Prozent des gesamten Eisvolumens.">
+        <ResponsiveContainer width="100%" height={240}>
+          <BarChart data={CHART_DATA} layout="vertical" margin={{ top: 4, right: 34, bottom: 4, left: 8 }}>
+            <CartesianGrid stroke={grid} horizontal={false} />
+            <XAxis
+              type="number"
+              domain={[0, 30]}
+              ticks={[0, 10, 20, 30]}
+              tickFormatter={(v) => v + '%'}
+              stroke={muted}
+              tick={{ fill: muted, fontSize: 11.5 }}
+              axisLine={{ stroke: grid }}
+              tickLine={false}
+            />
+            <YAxis
+              type="category"
+              dataKey="name"
+              width={150}
+              stroke={muted}
+              tick={{ fill: sub, fontSize: 11.5 }}
+              axisLine={{ stroke: grid }}
+              tickLine={false}
+            />
+            <Tooltip content={<ChartTip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(11,11,11,0.03)' }} />
+            <Bar dataKey="value" radius={[4, 4, 4, 4]} maxBarSize={26} isAnimationActive={false}>
+              {CHART_DATA.map((d, i) => (
+                <Cell key={i} fill={BARS[i]} />
+              ))}
+              <LabelList dataKey="label" position="right" fill={ink} fontSize={12} fontWeight={700} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: <a href="https://www.slf.ch/de/news/die-schweizer-gletscher-verlieren-weitere-fuenf-prozent-ihres-volumens/" target="_blank" rel="noopener">Glamos/SCNAT</a>
+        {' '}(Medienmitteilung, via SLF), ergänzt um Detailzahlen von{' '}
+        <a href="https://www.20min.ch/story/schweizer-gletscher-schrumpfen-25-kubikkilometer-eis-verschwanden-2026-103638723" target="_blank" rel="noopener">20 Minuten</a>.
+        {' '}Stand 3. Oktober 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>

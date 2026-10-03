@@ -1289,5 +1289,25 @@
       "https://www.bsv.admin.ch/de/nsb?id=72247"
     ],
     "file": "days/2026-10-02.html"
+  },
+  {
+    "date": "2026-10-03",
+    "title": "Schweizer Gletscher: 2026 der zweithöchste Eisverlust seit Messbeginn",
+    "lead": "Die Schweizer Gletscher haben 2026 gemäss Glamos 5,5 Prozent ihres Eisvolumens verloren – nach dem Rekordjahr 2022 der zweithöchste Jahresverlust seit Messbeginn. Allein in den letzten fünf Jahren schmolzen fast 20 Prozent, in den letzten zehn Jahren rund 27 Prozent des gesamten Eisvolumens ab.",
+    "category": "Klima",
+    "keywords": [
+      "gletscher",
+      "glamos",
+      "eisvolumen",
+      "klimawandel",
+      "gletscherschmelze"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.slf.ch/de/news/die-schweizer-gletscher-verlieren-weitere-fuenf-prozent-ihres-volumens/",
+      "https://www.geo.uzh.ch/de/news/2026/glamos-2026.html",
+      "https://www.20min.ch/story/schweizer-gletscher-schrumpfen-25-kubikkilometer-eis-verschwanden-2026-103638723"
+    ],
+    "file": "days/2026-10-03.html"
   }
 ]
