@@ -1309,5 +1309,25 @@
       "https://www.20min.ch/story/schweizer-gletscher-schrumpfen-25-kubikkilometer-eis-verschwanden-2026-103638723"
     ],
     "file": "days/2026-10-03.html"
+  },
+  {
+    "date": "2026-10-04",
+    "title": "148 Millionen Spamanrufe: Swisscom blockiert, Sunrise markiert",
+    "lead": "Schweizer Telekomanbieter haben 2026 bereits über 148 Millionen unerwünschte Anrufe abgewehrt. Allein Swisscom blockierte, anonymisierte oder versah 102 Millionen Spoofing- und Spamanrufe mit einem Warnhinweis; Sunrise kam von Januar bis August auf 46 Millionen – ein Fünftel mehr als im Vorjahreszeitraum.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "spamanrufe",
+      "spoofing",
+      "swisscom",
+      "sunrise",
+      "callfilter",
+      "telekomanbieter"
+    ],
+    "chartType": "treemap",
+    "sourceUrls": [
+      "https://www.swissinfo.ch/eng/various/more-than-148-million-unwanted-telephone-calls-in-2026/92161029",
+      "https://www.laregione.ch/svizzera/svizzera/1954460/gia-148-milioni-le-chiamate-indesiderate-trattate-da-inizio-anno"
+    ],
+    "file": "days/2026-10-04.html"
   }
 ]
