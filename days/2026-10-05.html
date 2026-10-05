@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Brasilien: Bolsonaro-Lager überholt Lula im ersten Wahlgang</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --muted: #898781; --sub: #52514e; --hair: #e1e0d9; --card: #fcfcfb;
+    --series-main: #2a78d6; --series-new: #eb6834;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ffffff; --muted: #898781; --sub: #c3c2b7; --hair: #2c2c2a; --card: #1a1a19;
+      --series-main: #3987e5; --series-new: #d95926;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--card); color: var(--ink); font-family: var(--sans); }
+  #root { padding: 14px 16px 18px; }
+  h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.01em; }
+  p.lead { font-size: 13.5px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; max-width: 70ch; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .kpi { flex: 1 1 170px; border: 1px solid var(--hair); border-radius: 10px; padding: 10px 12px; }
+  .kpi .lab { font-size: 11.5px; color: var(--muted); }
+  .kpi .val { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .val small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .legend-note { display: flex; gap: 16px; font-size: 12px; color: var(--sub); margin: 2px 0 10px; }
+  .legend-note span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-note i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .source { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .source a { color: var(--sub); }
+  .fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div id="root">
+  <p class="fallback">
+    Stimmenanteile im ersten Wahlgang der brasilianischen Präsidentschaftswahl, Vergleich 2022 zu 2026.
+    Lula (PT): 2022 48,42 Prozent, 2026 45,15 Prozent.
+    Bolsonaro-Lager (PL): 2022 43,21 Prozent (Jair Bolsonaro), 2026 47,04 Prozent (Flávio Bolsonaro, Sohn und Nachfolgekandidat).
+    2022 lag Lula noch 5,21 Punkte vorn, 2026 liegt das Bolsonaro-Lager 1,89 Punkte vorn - eine Verschiebung von 7,10 Punkten.
+    Keine Seite erreichte die nötigen 50 Prozent; Stichwahl zwischen Flávio Bolsonaro und Lula am 25. Oktober 2026
+    (Stand erster Wahlgang: 99,97 Prozent der Stimmen ausgezählt).
+  </p>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, ResponsiveContainer } = Recharts;
+
+// Every figure verified directly against primary/reputable reporting (fetched 2026-10-05):
+// 2022 first round (TSE, via bpb.de = Bundeszentrale fuer politische Bildung, DE):
+//   Lula (PT) 48.42% / Jair Bolsonaro (PL) 43.21% -> bpb.de/kurz-knapp/hintergrund-aktuell/513251/
+// 2026 first round, ~99.97% counted (amerika21.de, Latin-America specialist outlet):
+//   Flavio Bolsonaro (PL) 47.04% / Lula (PT) 45.15% -> amerika21.de/2026/10/290824/
+// Cross-checked against SRF (47.18/44.99, "almost all votes counted") and Al Jazeera
+// (~47% / 44.9%, ~99% counted) - all three converge on the same lead and order; amerika21's
+// figures are used as the primary number since that source states the most complete count (99.97%).
+// Jair Bolsonaro did not run in 2026: in September 2025 the STF sentenced him to prison over the
+// 2022/2023 coup attempt and the TSE barred him from running for eight years; his son, senator
+// Flavio Bolsonaro, ran as the PL candidate in his place.
+const DATA = [
+  { category: 'Lula / PT', v2022: 48.42, v2026: 45.15, max: 48.42 },
+  { category: 'Bolsonaro / PL', v2022: 43.21, v2026: 47.04, max: 47.04 }
+];
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const axis = '#898781';
+const grid = isDark ? '#2c2c2a' : '#e1e0d9';
+const ink = isDark ? '#ffffff' : '#0b0b0b';
+const sub = isDark ? '#c3c2b7' : '#52514e';
+const surface = isDark ? '#1a1a19' : '#fcfcfb';
+const mainColor = isDark ? '#3987e5' : '#2a78d6'; // 2022
+const newColor = isDark ? '#d95926' : '#eb6834'; // 2026
+
+function pct(v) { return v.toFixed(2).replace('.', ',') + ' %'; }
+
+function ChartTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0].payload;
+  return (
+    <div style={{ background: surface, border: '1px solid ' + grid,
+      borderRadius: 8, padding: '8px 11px', fontSize: 12.5, color: ink, maxWidth: 260 }}>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{row.category}</div>
+      <div style={{ color: mainColor }}>Erster Wahlgang 2022: {pct(row.v2022)}</div>
+      <div style={{ color: newColor }}>Erster Wahlgang 2026: {pct(row.v2026)}</div>
+    </div>
+  );
+}
+
+// Custom "dumbbell" mark: Bar's dataKey ("max") only drives the invisible
+// 0->max span Recharts lays out; the shape itself computes both dot positions
+// from the row's actual v2022/v2026 values and draws a connector + two dots.
+function DumbbellShape(props) {
+  const { x, y, width, height, payload } = props;
+  const pxPerUnit = width / (payload.max || 1);
+  const x2022 = x + pxPerUnit * payload.v2022;
+  const x2026 = x + pxPerUnit * payload.v2026;
+  const cy = y + height / 2;
+  const left = Math.min(x2022, x2026);
+  const right = Math.max(x2022, x2026);
+  return (
+    <g>
+      <line x1={left} y1={cy} x2={right} y2={cy} stroke={axis} strokeWidth={3} strokeLinecap="round" opacity={0.55} />
+      <circle cx={x2022} cy={cy} r={7} fill={mainColor} stroke={surface} strokeWidth={2} />
+      <circle cx={x2026} cy={cy} r={7} fill={newColor} stroke={surface} strokeWidth={2} />
+      <text x={x2022} y={cy - 14} textAnchor="middle" style={{ fontSize: 11.5, fill: mainColor, fontWeight: 600 }}>{pct(payload.v2022)}</text>
+      <text x={x2026} y={cy + 22} textAnchor="middle" style={{ fontSize: 11.5, fill: newColor, fontWeight: 700 }}>{pct(payload.v2026)}</text>
+    </g>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Brasilien: Bolsonaro-Lager überholt Lula im ersten Wahlgang</h1>
+      <p className="lead">
+        Im ersten Wahlgang der brasilianischen Präsidentschaftswahl vom 4. Oktober 2026 liegt der
+        PL-Kandidat Flávio Bolsonaro mit 47,04 Prozent erstmals vor dem amtierenden Lula (PT, 45,15
+        Prozent; Stand 99,97 Prozent ausgezählt) - 2022 hatte Lula den ersten Wahlgang noch mit 48,42
+        zu 43,21 Prozent gegen dessen mittlerweile wegen des Putschversuchs verurteilten und gesperrten
+        Vater Jair Bolsonaro gewonnen. Die Stichwahl zwischen Flávio Bolsonaro und Lula findet am
+        25. Oktober 2026 statt.
+      </p>
+      <div className="cards">
+        <div className="kpi"><div className="lab">Vorsprung 2022</div><div className="val">Lula <small>+5,21 Punkte</small></div></div>
+        <div className="kpi"><div className="lab">Vorsprung 2026</div><div className="val">Bolsonaro-Lager <small>+1,89 Punkte</small></div></div>
+        <div className="kpi"><div className="lab">Stichwahl</div><div className="val">25.10.2026 <small>Flávio Bolsonaro vs. Lula</small></div></div>
+      </div>
+      <div className="legend-note">
+        <span><i style={{ background: mainColor }}></i>Erster Wahlgang 2022</span>
+        <span><i style={{ background: newColor }}></i>Erster Wahlgang 2026</span>
+      </div>
+      <div role="img" aria-label="Dumbbell-Diagramm: Stimmenanteile im ersten Wahlgang 2022 gegen 2026. Lula/PT: 48,42 Prozent (2022) zu 45,15 Prozent (2026). Bolsonaro-Lager/PL: 43,21 Prozent (2022, Jair Bolsonaro) zu 47,04 Prozent (2026, Flávio Bolsonaro). 50-Prozent-Marke zur Einordnung der absoluten Mehrheit eingezeichnet.">
+        <ResponsiveContainer width="100%" height={260}>
+          <BarChart data={DATA} layout="vertical" margin={{ top: 24, right: 24, bottom: 8, left: 4 }}>
+            <CartesianGrid stroke={grid} horizontal={false} />
+            <XAxis type="number" domain={[0, 55]} ticks={[0, 10, 20, 30, 40, 50]}
+              tickFormatter={(v) => v + ' %'} tick={{ fill: axis, fontSize: 11 }}
+              stroke={grid} tickLine={false} axisLine={{ stroke: grid }} />
+            <YAxis type="category" dataKey="category" tick={{ fill: ink, fontSize: 12.5 }}
+              stroke={grid} tickLine={false} axisLine={false} width={116} />
+            <ReferenceLine x={50} stroke={axis} strokeDasharray="4 4"
+              label={{ value: '50 % (absolute Mehrheit)', position: 'insideTopRight', fill: sub, fontSize: 10.5 }} />
+            <Tooltip content={<ChartTip />} cursor={{ fill: grid, opacity: 0.3 }} />
+            <Bar dataKey="max" fill="transparent" shape={<DumbbellShape />} barSize={64} isAnimationActive={false} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="source">
+        Quelle: Tribunal Superior Eleitoral (TSE) via Bundeszentrale für politische Bildung (2022-Zahlen)
+        und amerika21.de (2026-Zahlen, Stand 99,97 % ausgezählt), gegengeprüft mit SRF und Al Jazeera:
+        {' '}<a href="https://www.bpb.de/kurz-knapp/hintergrund-aktuell/513251/lula-gewinnt-wahl-in-brasilien/" target="_blank" rel="noopener">bpb.de, 2022</a>,
+        {' '}<a href="https://amerika21.de/2026/10/290824/praesidentschaftswahlen-brasilien-2026" target="_blank" rel="noopener">amerika21.de, 5.10.2026</a>,
+        {' '}<a href="https://www.srf.ch/news/international/stichwahl-in-brasilien-lula-oder-bolsonaro-ein-land-zwei-lager-eine-offene-stichwahl" target="_blank" rel="noopener">SRF, 4.10.2026</a>,
+        {' '}<a href="https://www.aljazeera.com/news/2026/10/5/brazils-presidential-race-three-key-takeaways-from-the-first-round" target="_blank" rel="noopener">Al Jazeera, 5.10.2026</a>.
+        Stand: 5. Oktober 2026.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+// Report height to the gallery so the surrounding iframe fits exactly.
+function postHeight() {
+  const h = document.documentElement.scrollHeight;
+  if (window.parent !== window) window.parent.postMessage({ type: 'chart-height', height: h }, '*');
+}
+requestAnimationFrame(() => setTimeout(postHeight, 120));
+window.addEventListener('resize', () => setTimeout(postHeight, 120));
+</script>
+</body>
+</html>

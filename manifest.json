@@ -1329,5 +1329,26 @@
       "https://www.laregione.ch/svizzera/svizzera/1954460/gia-148-milioni-le-chiamate-indesiderate-trattate-da-inizio-anno"
     ],
     "file": "days/2026-10-04.html"
+  },
+  {
+    "date": "2026-10-05",
+    "title": "Brasilien: Bolsonaro-Lager überholt Lula im ersten Wahlgang",
+    "lead": "Im ersten Wahlgang der brasilianischen Präsidentschaftswahl vom 4. Oktober 2026 liegt der PL-Kandidat Flávio Bolsonaro mit 47,04 Prozent erstmals vor dem amtierenden Lula (PT, 45,15 Prozent; Stand 99,97 Prozent ausgezählt) – 2022 hatte Lula den ersten Wahlgang noch mit 48,42 zu 43,21 Prozent gegen dessen mittlerweile wegen des Putschversuchs verurteilten und gesperrten Vater Jair Bolsonaro gewonnen. Die Stichwahl zwischen Flávio Bolsonaro und Lula findet am 25. Oktober 2026 statt.",
+    "category": "International",
+    "keywords": [
+      "brasilien",
+      "praesidentschaftswahl",
+      "bolsonaro",
+      "lula",
+      "stichwahl"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.bpb.de/kurz-knapp/hintergrund-aktuell/513251/lula-gewinnt-wahl-in-brasilien/",
+      "https://amerika21.de/2026/10/290824/praesidentschaftswahlen-brasilien-2026",
+      "https://www.srf.ch/news/international/stichwahl-in-brasilien-lula-oder-bolsonaro-ein-land-zwei-lager-eine-offene-stichwahl",
+      "https://www.aljazeera.com/news/2026/10/5/brazils-presidential-race-three-key-takeaways-from-the-first-round"
+    ],
+    "file": "days/2026-10-05.html"
   }
 ]
