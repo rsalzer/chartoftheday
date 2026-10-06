@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arbeitslosigkeit: Ältere und Stellensuchende trifft es stärker</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body { margin: 0; padding: 16px; font-family: system-ui, sans-serif; background: transparent; color: CanvasText; }
+  h1 { font-size: 1.4rem; margin: 0 0 8px; }
+  p.lead { margin: 0 0 12px; line-height: 1.4; }
+  .src, .fallback { font-size: .8rem; opacity: .8; margin-top: 8px; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Cell } = Recharts;
+
+// SECO, Lage auf dem Arbeitsmarkt, September 2026 (Sept 2026 vs. Sept 2025)
+const data = [
+  { name: "Jugendliche (15–24)", now: 14346, prev: 13861, pct: 3.5 },
+  { name: "Alle Arbeitslosen", now: 140480, prev: 133233, pct: 5.4 },
+  { name: "Ältere (50–64)", now: 38482, prev: 36191, pct: 6.3 },
+  { name: "Stellensuchende", now: 227592, prev: 213750, pct: 6.5 },
+];
+const fmt = n => n.toLocaleString("de-CH").replace(/’|'/g, "’");
+
+function Tip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: "Canvas", color: "CanvasText", border: "1px solid #8888", padding: 8, fontSize: 13 }}>
+      <b>{d.name}</b><br />
+      September 2026: {fmt(d.now)}<br />
+      September 2025: {fmt(d.prev)}<br />
+      Veränderung: +{d.pct.toFixed(1)} %
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Arbeitslosigkeit: Ältere und Stellensuchende trifft es stärker</h1>
+      <p className="lead">Die Arbeitslosenquote liegt im September 2026 unverändert bei 3,0 %. Gegenüber dem Vorjahr hat die Zahl der Arbeitslosen aber um 5,4 % zugenommen – bei den 50- bis 64-Jährigen um 6,3 %, bei den Jugendlichen nur um 3,5 %.</p>
+      <div role="img" aria-label="Balkendiagramm: Veränderung gegenüber September 2025 in Prozent. Jugendliche plus 3,5, alle Arbeitslosen plus 5,4, Ältere plus 6,3, Stellensuchende plus 6,5.">
+        <ResponsiveContainer width="100%" height={340}>
+          <BarChart data={data} layout="vertical" margin={{ left: 10, right: 40, top: 8, bottom: 24 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#8884" horizontal={false} />
+            <XAxis type="number" domain={[0, 8]} tickFormatter={v => v + " %"} stroke="currentColor" label={{ value: "Veränderung gegenüber September 2025", position: "insideBottom", offset: -14, fill: "currentColor", fontSize: 12 }} />
+            <YAxis type="category" dataKey="name" width={140} stroke="currentColor" />
+            <Tooltip content={<Tip />} cursor={{ fill: "#8882" }} />
+            <Bar dataKey="pct" isAnimationActive={false}>
+              {data.map((d, i) => <Cell key={i} fill={d.name === "Alle Arbeitslosen" ? "#2a6fdb" : "#e08a1e"} />)}
+              <LabelList dataKey="pct" position="right" formatter={v => "+" + v.toFixed(1).replace(".", ",") + " %"} fill="currentColor" />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="fallback">Arbeitslose September 2026: 140’480 (+7’247 gegenüber Vorjahr); Jugendliche 14’346; Ältere 38’482; Stellensuchende 227’592.</div>
+      <div className="src">Quelle: <a href="https://www.seco.admin.ch/de/newnsb/Cdju9-o8WGML" target="_blank" rel="noopener">SECO, «Die Lage auf dem Arbeitsmarkt September 2026»</a>, abgerufen am 6. Oktober 2026.</div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

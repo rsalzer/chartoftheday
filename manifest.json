@@ -1350,5 +1350,23 @@
       "https://www.aljazeera.com/news/2026/10/5/brazils-presidential-race-three-key-takeaways-from-the-first-round"
     ],
     "file": "days/2026-10-05.html"
+  },
+  {
+    "date": "2026-10-06",
+    "title": "Arbeitslosigkeit: Ältere und Stellensuchende trifft es stärker",
+    "lead": "Die Arbeitslosenquote liegt im September 2026 unverändert bei 3,0 %. Gegenüber dem Vorjahr hat die Zahl der Arbeitslosen aber um 5,4 % zugenommen – bei den 50- bis 64-Jährigen um 6,3 %, bei den Jugendlichen nur um 3,5 %.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "arbeitslosenquote",
+      "arbeitsmarkt",
+      "seco",
+      "stellensuchende",
+      "altersgruppen"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.seco.admin.ch/de/newnsb/Cdju9-o8WGML"
+    ],
+    "file": "days/2026-10-06.html"
   }
 ]
