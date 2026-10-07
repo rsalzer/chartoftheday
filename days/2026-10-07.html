@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>August 2026: Weltweit gleich heiss wie der Rekordmonat Juli 2023</title>
+<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit}
+h1{font-size:1.4rem;margin:0 0 8px}
+p{margin:0 0 12px;line-height:1.45}
+.src{font-size:.8rem;opacity:.8;margin-top:8px}
+.fb{font-size:.85rem;opacity:.85;margin-top:8px}
+a{color:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const {ResponsiveContainer,ScatterChart,Scatter,XAxis,YAxis,Tooltip,ReferenceLine,Cell,LabelList,CartesianGrid}=Recharts;
+const data=[
+ {name:"Welt vs. 1850–1900",v:1.65,c:"#d95f02"},
+ {name:"Europa vs. 1991–2020",v:1.10,c:"#1b9e77"},
+ {name:"Welt vs. 1991–2020",v:0.85,c:"#7570b3"}
+];
+function App(){
+ return (
+  <div>
+   <h1>August 2026: Weltweit gleich heiss wie der Rekordmonat Juli 2023</h1>
+   <p>Mit 16,96 °C Durchschnitt der Luft nahe der Oberfläche war der August laut Copernicus so warm wie noch nie ein Monat. Er lag 1,65 °C über dem vorindustriellen Niveau – der erste Monat über 1,5 °C seit November 2025.</p>
+   <div role="img" aria-label="Abweichung der Temperatur im August 2026: weltweit 1,65 Grad über vorindustriell, Europa 1,10 Grad und weltweit 0,85 Grad über dem Mittel 1991–2020" style={{width:"100%",height:300}}>
+    <ResponsiveContainer>
+     <ScatterChart margin={{left:10,right:40,top:20}}>
+      <CartesianGrid strokeDasharray="3 3" opacity={0.3}/>
+      <XAxis type="number" dataKey="v" name="Abweichung" domain={[0,2]} unit=" °C" tickFormatter={v=>String(v).replace(".",",")}/>
+      <YAxis type="category" dataKey="name" width={140} allowDuplicatedCategory={false}/>
+      <Tooltip formatter={v=>String(v).replace(".",",")+" °C"}/>
+      <ReferenceLine x={1.5} stroke="#c0392b" strokeDasharray="5 4" label={{value:"1,5 °C",position:"top",fill:"currentColor",fontSize:12}}/>
+      <Scatter data={data} shape={(p)=><g><line x1={p.xAxis.x} x2={p.cx} y1={p.cy} y2={p.cy} stroke={p.payload.c} strokeWidth={3}/><circle cx={p.cx} cy={p.cy} r={9} fill={p.payload.c}/><text x={p.cx+14} y={p.cy+4} fill="currentColor" fontSize="13">{String(p.payload.v.toFixed(2)).replace(".",",")}</text></g>}/>
+     </ScatterChart>
+    </ResponsiveContainer>
+   </div>
+   <div className="fb">Kurz: Welt +1,65 °C gegenüber 1850–1900; +0,85 °C gegenüber 1991–2020; Europa +1,10 °C gegenüber 1991–2020 (August 2026).</div>
+   <div className="src">Quelle: <a href="https://climate.copernicus.eu/copernicus-august-was-worlds-joint-hottest-month-record-pushing-global-temperatures-back-above" target="_blank" rel="noopener">Copernicus Climate Change Service (C3S)</a>, Klimabulletin August 2026, abgerufen am 07.10.2026.</div>
+  </div>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
