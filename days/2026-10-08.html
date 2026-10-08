@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Krankenkassenprämien 2027</title>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script crossorigin src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body { margin: 0; padding: 12px; background: transparent; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: CanvasText; color-scheme: light dark; }
+  h1 { font-size: 1.4rem; margin: 0 0 6px; line-height: 1.25; }
+  p.lead { margin: 0 0 12px; font-size: 1rem; line-height: 1.4; }
+  .legend { display: flex; gap: 16px; font-size: .85rem; margin: 4px 0 6px; flex-wrap: wrap; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .fallback, .source { font-size: .8rem; opacity: .8; margin-top: 8px; line-height: 1.4; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ResponsiveContainer, ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } = Recharts;
+
+// 2027 values and increases as published by the BAG (29.09.2026); 2026 = 2027 minus increase.
+const DATA = [
+  { name: "Alle Versicherten (Durchschnitt)", y27: 412.0, inc: 19.7, pct: "5.0" },
+  { name: "Erwachsene", y27: 487.6, inc: 22.8, pct: "4.9" },
+  { name: "Junge Erwachsene", y27: 338.8, inc: 15.4, pct: "4.8" },
+  { name: "Kinder", y27: 128.1, inc: 5.7, pct: "4.6" },
+].map(d => ({ ...d, y26: Math.round((d.y27 - d.inc) * 10) / 10, range: [Math.round((d.y27 - d.inc) * 10) / 10, d.y27] }));
+
+const C26 = "#8a8a8a", C27 = "#d1495b";
+const fmt = v => v.toFixed(2);
+
+const Dumbbell = (props) => {
+  const { x, y, width, height, payload } = props;
+  const cy = y + height / 2;
+  return (
+    <g>
+      <line x1={x} x2={x + width} y1={cy} y2={cy} stroke={C27} strokeWidth={3} opacity={0.5} />
+      <circle cx={x} cy={cy} r={7} fill={C26} />
+      <circle cx={x + width} cy={cy} r={7} fill={C27} />
+      <text x={x + width + 14} y={cy + 4} fontSize={12} fill="currentColor">+{payload.pct}%</text>
+    </g>
+  );
+};
+
+const Tip = ({ active, payload }) => {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: "Canvas", color: "CanvasText", border: "1px solid #888", padding: "6px 10px", fontSize: 13 }}>
+      <strong>{d.name}</strong><br />
+      2026: Fr. {fmt(d.y26)}<br />
+      2027: Fr. {fmt(d.y27)}<br />
+      Zuwachs: Fr. {fmt(d.inc)} ({d.pct}%)
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <div>
+      <h1>Krankenkassenprämien 2027: Erwachsene zahlen im Schnitt knapp 23 Franken mehr pro Monat</h1>
+      <p className="lead">Die Prämien steigen 2027 im Mittel um 5.0 Prozent auf 412 Franken pro Monat. Für Kinder fällt der Aufschlag in Franken am kleinsten aus, für Erwachsene am grössten.</p>
+      <div className="legend">
+        <span><i className="dot" style={{ background: C26 }}></i>2026 (Prämie minus Zuwachs)</span>
+        <span><i className="dot" style={{ background: C27 }}></i>2027</span>
+      </div>
+      <div role="img" aria-label="Hantelgrafik: durchschnittliche monatliche Krankenkassenprämie 2026 und 2027 in Franken nach Versichertengruppe. Alle 412 Franken (+5.0 %), Erwachsene 487.60 (+4.9 %), junge Erwachsene 338.80 (+4.8 %), Kinder 128.10 (+4.6 %).">
+        <ResponsiveContainer width="100%" height={300}>
+          <ComposedChart data={DATA} layout="vertical" margin={{ top: 10, right: 50, bottom: 24, left: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#888" strokeOpacity={0.3} horizontal={false} />
+            <XAxis type="number" domain={[0, 550]} tick={{ fill: "currentColor", fontSize: 12 }} label={{ value: "Durchschnittsprämie pro Monat (Franken)", position: "insideBottom", offset: -12, fill: "currentColor", fontSize: 12 }} />
+            <YAxis type="category" dataKey="name" width={130} tick={{ fill: "currentColor", fontSize: 12 }} />
+            <Tooltip content={<Tip />} cursor={false} />
+            <Bar dataKey="range" shape={<Dumbbell />} barSize={20} isAnimationActive={false} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="fallback">Kernzahlen: Durchschnitt 392.30 → 412.00 Fr. (+5.0 %); Erwachsene 464.80 → 487.60 (+4.9 %); junge Erwachsene 323.40 → 338.80 (+4.8 %); Kinder 122.40 → 128.10 (+4.6 %). Die 2026-Werte sind aus Prämie 2027 minus publiziertem Zuwachs berechnet.</div>
+      <div className="source">Quelle: <a href="https://www.bag.admin.ch/de/newnsb/BfuGvedj0OOX" target="_blank" rel="noopener">Bundesamt für Gesundheit (BAG), Medienmitteilung vom 29. September 2026</a>. Abgerufen am 8. Oktober 2026.</div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

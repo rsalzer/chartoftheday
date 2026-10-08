@@ -1385,5 +1385,22 @@
       "https://climate.copernicus.eu/copernicus-august-was-worlds-joint-hottest-month-record-pushing-global-temperatures-back-above"
     ],
     "file": "days/2026-10-07.html"
+  },
+  {
+    "date": "2026-10-08",
+    "title": "Krankenkassenprämien 2027: Erwachsene zahlen im Schnitt knapp 23 Franken mehr pro Monat",
+    "lead": "Die Prämien steigen 2027 im Mittel um 5.0 Prozent auf 412 Franken pro Monat. Für Kinder fällt der Aufschlag in Franken am kleinsten aus, für Erwachsene am grössten.",
+    "category": "Gesundheit",
+    "keywords": [
+      "krankenkassenpraemien",
+      "praemien-2027",
+      "grundversicherung",
+      "baume-schneider"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.bag.admin.ch/de/newnsb/BfuGvedj0OOX"
+    ],
+    "file": "days/2026-10-08.html"
   }
 ]
