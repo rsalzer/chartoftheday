@@ -1402,5 +1402,23 @@
       "https://www.bag.admin.ch/de/newnsb/BfuGvedj0OOX"
     ],
     "file": "days/2026-10-08.html"
+  },
+  {
+    "date": "2026-10-09",
+    "title": "Deutscher Aussenhandel: Importe aus China wachsen, Exporte dorthin brechen ein",
+    "lead": "Von Januar bis August 2026 lieferte Deutschland 12,9 Prozent weniger nach China als im Vorjahreszeitraum, importierte von dort aber 10,1 Prozent mehr. Insgesamt stiegen die Exporte im August gegenüber dem Vorjahresmonat um 6,2 Prozent.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "aussenhandel",
+      "deutschland",
+      "exporte",
+      "china",
+      "destatis"
+    ],
+    "chartType": "groupedBar",
+    "sourceUrls": [
+      "https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/10/PD26_356_51.html"
+    ],
+    "file": "days/2026-10-09.html"
   }
 ]
