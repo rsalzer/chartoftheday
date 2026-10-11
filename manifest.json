@@ -1420,5 +1420,25 @@
       "https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/10/PD26_356_51.html"
     ],
     "file": "days/2026-10-09.html"
+  },
+  {
+    "date": "2026-10-11",
+    "title": "Schweizer Gletscher: Im letzten Jahrzehnt ging über ein Viertel des Eises verloren",
+    "lead": "Allein 2026 schmolzen die Gletscher um 5,5 Prozent ihres Volumens – nach 2022 der zweithöchste Jahresverlust. Der Verlust pro Jahrzehnt hat sich seit 1990 stark beschleunigt.",
+    "category": "Klima",
+    "keywords": [
+      "gletscher",
+      "glamos",
+      "eisverlust",
+      "gletscherschmelze",
+      "schweiz"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://doi.glamos.ch/pubs/annualrep/annualrep_2026.html",
+      "https://doi.glamos.ch/pubs/annualrep/annualrep_2025.html",
+      "https://www.unifr.ch/unicom/de/news-events/news/35266/die-schweizer-gletscher-verlieren-weitere-funf-prozent-ihres-volumens"
+    ],
+    "file": "days/2026-10-11.html"
   }
 ]
