@@ -1440,5 +1440,24 @@
       "https://www.unifr.ch/unicom/de/news-events/news/35266/die-schweizer-gletscher-verlieren-weitere-funf-prozent-ihres-volumens"
     ],
     "file": "days/2026-10-11.html"
+  },
+  {
+    "date": "2026-10-12",
+    "title": "Österreich: Inflation steigt im September auf 3,6 Prozent",
+    "lead": "Nach 3,2 Prozent im August liegt die Teuerung laut Schnellschätzung von Statistik Austria so hoch wie zuletzt im Mai. Seit Jahresbeginn hat sie sich fast verdoppelt.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "inflation",
+      "österreich",
+      "statistik-austria",
+      "teuerung",
+      "vpi"
+    ],
+    "chartType": "line",
+    "sourceUrls": [
+      "https://www.statistik.at/medien/pressemitteilungen",
+      "https://www.statistik.at/fileadmin/announcement/2026/10/20261002VPIFlashEstimateSeptember2026.pdf"
+    ],
+    "file": "days/2026-10-12.html"
   }
 ]
