@@ -1459,5 +1459,24 @@
       "https://www.statistik.at/fileadmin/announcement/2026/10/20261002VPIFlashEstimateSeptember2026.pdf"
     ],
     "file": "days/2026-10-12.html"
+  },
+  {
+    "date": "2026-10-15",
+    "title": "US-Defizit 2026: Zinsen und Sozialausgaben treiben es",
+    "lead": "Das US-Haushaltsdefizit stieg im Haushaltsjahr 2026 auf rund 2,0 Billionen Dollar, 218 Milliarden mehr als im Vorjahr. Die Grafik zeigt, welche Posten es vergrössert oder verkleinert haben.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "usa",
+      "haushaltsdefizit",
+      "cbo",
+      "staatsschulden",
+      "zinsen"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.cbo.gov/publication/61985",
+      "https://www.americanactionforum.org/insight/cbo-fy-2026-budget-deficit-totaled-2-trillion/"
+    ],
+    "file": "days/2026-10-15.html"
   }
 ]

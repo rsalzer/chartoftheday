@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>US-Defizit 2026: Zinsen und Sozialausgaben treiben es</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body { margin: 0; padding: 16px; font-family: system-ui, sans-serif; background: transparent; color: inherit; }
+  h1 { font-size: 1.4rem; margin: 0 0 8px; }
+  p.lead { margin: 0 0 12px; line-height: 1.4; }
+  .src, .fallback { font-size: .8rem; opacity: .8; margin-top: 10px; }
+  a { color: inherit; }
+  .legend { display: flex; gap: 16px; font-size: .85rem; margin-bottom: 4px; flex-wrap: wrap; }
+  .sw { display: inline-block; width: 10px; height: 10px; margin-right: 4px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, LabelList } = Recharts;
+
+// Contribution to the change in the deficit, FY2026 vs FY2025, in billion USD.
+// Spending increases add to the deficit; revenue increases reduce it.
+const DATA = [
+  { name: "Nettozinsen", v: 115 },
+  { name: "Sozialversicherung", v: 86 },
+  { name: "Medicare", v: 77 },
+  { name: "Medicaid", v: 55 },
+  { name: "Verteidigung", v: 48 },
+  { name: "Veteranen", v: 39 },
+  { name: "Übrige Programme", v: -33 },
+  { name: "Zölle (Einnahmen)", v: 22 },
+  { name: "Unternehmenssteuern", v: 70 },
+  { name: "Übrige Einnahmen", v: -6 },
+  { name: "Lohnsteuern", v: -67 },
+  { name: "Einkommenssteuern", v: -188 },
+];
+const UP = "#c0392b", DOWN = "#2874a6";
+const fmt = (v) => (v > 0 ? "+" : "") + v;
+
+function App() {
+  return (
+    <div>
+      <h1>US-Defizit 2026: Zinsen und Sozialausgaben treiben es</h1>
+      <p className="lead">Das US-Haushaltsdefizit stieg im Haushaltsjahr 2026 laut Congressional Budget Office auf rund 2,0 Billionen Dollar (6,2 % des BIP), 218 Milliarden mehr als im Vorjahr. Die Grafik zeigt, welche Posten das Defizit gegenüber 2025 vergrössert oder verkleinert haben.</p>
+      <div className="legend">
+        <span><span className="sw" style={{background: UP}}></span>vergrössert das Defizit</span>
+        <span><span className="sw" style={{background: DOWN}}></span>verkleinert das Defizit</span>
+      </div>
+      <div role="img" aria-label="Balkendiagramm: Beitrag einzelner Ausgaben- und Einnahmeposten zur Veränderung des US-Defizits 2026 gegenüber 2025, in Milliarden Dollar. Grösster Treiber: Nettozinsen mit plus 115, grösste Entlastung: Einkommenssteuern mit minus 188.">
+        <ResponsiveContainer width="100%" height={480}>
+          <BarChart data={DATA} layout="vertical" margin={{ left: 10, right: 40, top: 5, bottom: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.15} />
+            <XAxis type="number" domain={[-220, 150]} tick={{ fill: "currentColor", fontSize: 12 }} label={{ value: "Mrd. US-Dollar, Veränderung des Defizits 2026 vs. 2025", position: "insideBottom", offset: -10, fill: "currentColor", fontSize: 12 }} />
+            <YAxis type="category" dataKey="name" width={140} tick={{ fill: "currentColor", fontSize: 12 }} />
+            <Tooltip formatter={(v) => [fmt(v) + " Mrd. $", "Beitrag"]} />
+            <ReferenceLine x={0} stroke="currentColor" />
+            <Bar dataKey="v" isAnimationActive={false}>
+              {DATA.map((d) => <Cell key={d.name} fill={d.v > 0 ? UP : DOWN} />)}
+              <LabelList dataKey="v" position="right" formatter={fmt} fill="currentColor" fontSize={12} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="fallback">Kernzahlen: Defizit 2026 ca. 2,0 Bio. $ (2025: 1,8 Bio.); Ausgaben +386 Mrd., Einnahmen +169 Mrd.; Nettozinsen +115 Mrd., Einkommenssteuern +188 Mrd. Einnahmen.</div>
+      <div className="src">Quelle: Congressional Budget Office, <a href="https://www.cbo.gov/publication/61985" target="_blank" rel="noopener">Monthly Budget Review: Summary for Fiscal Year 2026</a>, wiedergegeben nach <a href="https://www.americanactionforum.org/insight/cbo-fy-2026-budget-deficit-totaled-2-trillion/" target="_blank" rel="noopener">American Action Forum</a> (die CBO-Seite war nicht direkt abrufbar). Stand: 15.10.2026. Rundungsdifferenzen möglich; Posten ergeben ±1 Mrd. die Gesamtveränderung.</div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
