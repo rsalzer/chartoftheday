@@ -1478,5 +1478,23 @@
       "https://www.americanactionforum.org/insight/cbo-fy-2026-budget-deficit-totaled-2-trillion/"
     ],
     "file": "days/2026-10-15.html"
+  },
+  {
+    "date": "2026-10-16",
+    "title": "Zweitwärmster September: Westeuropa so heiss wie nie",
+    "lead": "Laut Copernicus war der September 2026 weltweit 0,82 °C wärmer als im Mittel 1991–2020, in Westeuropa sogar 2,51 °C – gleichauf mit dem Rekord von 2023.",
+    "category": "Klima",
+    "keywords": [
+      "copernicus",
+      "september",
+      "temperatur",
+      "westeuropa",
+      "el niño"
+    ],
+    "chartType": "dot",
+    "sourceUrls": [
+      "https://climate.copernicus.eu/copernicus-second-warmest-september-global-temperatures-stay-above-15degc"
+    ],
+    "file": "days/2026-10-16.html"
   }
 ]

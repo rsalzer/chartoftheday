@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zweitwärmster September: Westeuropa so heiss wie nie</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15.8.1/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body { margin: 0; padding: 16px; background: transparent; font-family: system-ui, sans-serif; color: CanvasText; }
+  h1 { font-size: 1.4rem; margin: 0 0 8px; }
+  p.lead { margin: 0 0 12px; line-height: 1.4; }
+  p.src { font-size: 0.8rem; opacity: 0.8; margin-top: 8px; }
+  p.fallback { font-size: 0.85rem; margin: 8px 0 0; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, LabelList } = Recharts;
+
+// Anomalies vs 1991–2020, September 2026 (Copernicus C3S / ERA5)
+const data = [
+  { name: "Westeuropa", y: 3, v: 2.51 },
+  { name: "Europa gesamt", y: 2, v: 1.54 },
+  { name: "Welt (September 2026)", y: 1, v: 0.82 },
+];
+const names = { 1: "Welt", 2: "Europa", 3: "Westeuropa" };
+const COLOR = "#e8743b";
+
+function App() {
+  return (
+    <div>
+      <h1>Zweitwärmster September: Westeuropa so heiss wie nie</h1>
+      <p className="lead">Laut Copernicus war der September 2026 weltweit 0,82 °C wärmer als im Mittel 1991–2020 und damit der zweitwärmste seit Messbeginn, 0,11 °C kühler als 2023. In Westeuropa lag die Abweichung bei 2,51 °C – gleichauf mit dem Rekord von 2023.</p>
+      <div role="img" aria-label="Punktdiagramm: Temperaturabweichung im September 2026 gegenüber 1991–2020: Welt +0,82 Grad, Europa +1,54 Grad, Westeuropa +2,51 Grad." style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ScatterChart margin={{ top: 10, right: 40, bottom: 30, left: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+            <XAxis type="number" dataKey="v" domain={[0, 3]} tickFormatter={(t) => t.toLocaleString("de-CH")} stroke="currentColor"
+              label={{ value: "Abweichung vom Mittel 1991–2020 (°C)", position: "insideBottom", offset: -15, fill: "currentColor" }} />
+            <YAxis type="number" dataKey="y" domain={[0.5, 3.5]} ticks={[1, 2, 3]} tickFormatter={(t) => names[t]} width={90} stroke="currentColor" />
+            <ReferenceLine x={0} stroke="currentColor" />
+            <Tooltip formatter={(val, n) => n === "v" ? [String(val).replace(".", ",") + " °C", "Abweichung"] : null} cursor={{ strokeDasharray: "3 3" }} />
+            <Scatter data={data} fill={COLOR} shape="circle">
+              <LabelList dataKey="v" position="right" formatter={(x) => "+" + String(x).replace(".", ",") + " °C"} fill="currentColor" />
+            </Scatter>
+          </ScatterChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Kennzahlen: Welt +0,82 °C, Europa +1,54 °C, Westeuropa +2,51 °C (jeweils gegenüber 1991–2020); weltweit +1,63 °C gegenüber vorindustriell; Meeresoberfläche 21,05 °C, Septemberrekord (bisher 20,92 °C, 2023).</p>
+      <p className="src">Quelle: <a href="https://climate.copernicus.eu/copernicus-second-warmest-september-global-temperatures-stay-above-15degc" target="_blank" rel="noopener">Copernicus Climate Change Service (ERA5)</a>, Stand: 16. Oktober 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
