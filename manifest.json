@@ -1496,5 +1496,24 @@
       "https://climate.copernicus.eu/copernicus-second-warmest-september-global-temperatures-stay-above-15degc"
     ],
     "file": "days/2026-10-16.html"
+  },
+  {
+    "date": "2026-10-17",
+    "title": "Hochschulen wachsen, Primarschulen schrumpfen",
+    "lead": "Laut dem Referenzszenario des Bundesamts für Statistik steigt die Zahl der Bachelor- und Master-Studierenden von 246 000 (2025) auf 305 000 (2035). Auf der Primarstufe sinkt die Schülerzahl bis 2035 dagegen um 8 %.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "bildung",
+      "studierende",
+      "hochschulen",
+      "bildungsszenarien",
+      "geburtenrückgang"
+    ],
+    "chartType": "lollipop",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/news/de/2026-0120",
+      "https://www.admin.ch/de/newnsb/W-G-02vJ62K8"
+    ],
+    "file": "days/2026-10-17.html"
   }
 ]

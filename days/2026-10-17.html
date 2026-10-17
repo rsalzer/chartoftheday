@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hochschulen wachsen, Primarschulen schrumpfen</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15.8.1/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body { margin: 0; padding: 16px; background: transparent; font-family: system-ui, sans-serif; color: CanvasText; }
+  h1 { font-size: 1.4rem; margin: 0 0 8px; }
+  p.lead { margin: 0 0 12px; line-height: 1.4; }
+  p.src { font-size: 0.8rem; opacity: 0.8; margin-top: 8px; }
+  p.fallback { font-size: 0.85rem; margin: 8px 0 0; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ComposedChart, Bar, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, LabelList, Cell } = Recharts;
+
+// BFS reference scenario: change 2026-2035 in %
+const data = [
+  { name: "Pädagogische Hochschulen", v: 23 },
+  { name: "Universitäten", v: 21 },
+  { name: "Fachhochschulen", v: 19 },
+  { name: "Höhere Berufsbildung", v: 17 },
+  { name: "Gymnasial/Fachmittelschulen", v: 12 },
+  { name: "Berufliche Grundbildung", v: 10 },
+  { name: "Primarstufe (3–8)", v: -8 },
+];
+const UP = "#2a7fb8", DOWN = "#e8743b";
+const fmt = (x) => (x > 0 ? "+" : "−") + Math.abs(x) + " %";
+
+function Lollipop(props) {
+  const { cx, cy, payload, xAxis } = props;
+  if (cx == null) return null;
+  const x0 = xAxis.scale(0);
+  const c = payload.v >= 0 ? UP : DOWN;
+  return (
+    <g>
+      <line x1={x0} x2={cx} y1={cy} y2={cy} stroke={c} strokeWidth={3} />
+      <circle cx={cx} cy={cy} r={7} fill={c} />
+    </g>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Hochschulen wachsen, Primarschulen schrumpfen</h1>
+      <p className="lead">Laut dem Referenzszenario des Bundesamts für Statistik steigt die Zahl der Bachelor- und Master-Studierenden von 246 000 (2025) auf 305 000 (2035). Auf der Primarstufe sinkt die Schülerzahl bis 2035 dagegen um 8 %, weil weniger Kinder geboren werden.</p>
+      <div role="img" aria-label="Lollipop-Diagramm: Veränderung der Lernenden- und Studierendenzahlen 2026 bis 2035 nach Bildungsstufe im Referenzszenario. Pädagogische Hochschulen plus 23 Prozent, Universitäten plus 21, Fachhochschulen plus 19, Höhere Berufsbildung plus 17, Gymnasial plus 12, Berufliche Grundbildung plus 10, Primarstufe minus 8 Prozent." style={{ width: "100%", height: 340 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart layout="vertical" data={data} margin={{ top: 10, right: 40, bottom: 30, left: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" opacity={0.3} horizontal={false} />
+            <XAxis type="number" domain={[-12, 28]} tickFormatter={(t) => t + " %"} stroke="currentColor"
+              label={{ value: "Veränderung 2026–2035, Referenzszenario", position: "insideBottom", offset: -15, fill: "currentColor" }} />
+            <YAxis type="category" dataKey="name" width={170} stroke="currentColor" />
+            <ReferenceLine x={0} stroke="currentColor" />
+            <Tooltip formatter={(val) => [fmt(val), "Veränderung"]} cursor={false} />
+            <Scatter dataKey="v" shape={<Lollipop />} isAnimationActive={false}>
+              <LabelList dataKey="v" position="right" formatter={fmt} fill="currentColor" offset={12} />
+            </Scatter>
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Kennzahlen: Studierende 137 000 (2005), 246 000 (2025), 305 000 (2035); Primarstufe 566 900 (2025) auf 527 000 (2035). Sekundarstufe I: bis 2033 +5 % gegenüber 2026, danach −2 % bis 2035 (nicht abgebildet).</p>
+      <p className="src">Quelle: <a href="https://www.bfs.admin.ch/news/de/2026-0120" target="_blank" rel="noopener">Bundesamt für Statistik, Szenarien 2026–2035 für das Bildungssystem</a> (Medienmitteilung vom 12. Oktober 2026, auch publiziert auf <a href="https://www.admin.ch/de/newnsb/W-G-02vJ62K8" target="_blank" rel="noopener">admin.ch</a>), Stand: 17. Oktober 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
