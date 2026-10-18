@@ -1515,5 +1515,23 @@
       "https://www.admin.ch/de/newnsb/W-G-02vJ62K8"
     ],
     "file": "days/2026-10-17.html"
+  },
+  {
+    "date": "2026-10-18",
+    "title": "Asylgesuche: Afghanistan bleibt wichtigstes Herkunftsland",
+    "lead": "Im September 2026 hat das Staatssekretariat für Migration 2122 Asylgesuche registriert, 18 % weniger als im Vorjahresmonat. Aus Afghanistan kamen mit 530 Gesuchen die meisten, gefolgt von Eritrea und Algerien.",
+    "category": "Politik",
+    "keywords": [
+      "asyl",
+      "asylgesuche",
+      "sem",
+      "schweiz",
+      "afghanistan"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.admin.ch/de/newnsb/7K7ruIJJ7dL5"
+    ],
+    "file": "days/2026-10-18.html"
   }
 ]

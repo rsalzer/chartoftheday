@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asylgesuche: Afghanistan bleibt wichtigstes Herkunftsland</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15.8.1/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body { margin: 0; padding: 16px; background: transparent; font-family: system-ui, sans-serif; color: CanvasText; }
+  h1 { font-size: 1.4rem; margin: 0 0 8px; }
+  p.lead { margin: 0 0 12px; line-height: 1.4; }
+  p.src { font-size: 0.8rem; opacity: 0.8; margin-top: 8px; }
+  p.fallback { font-size: 0.85rem; margin: 8px 0 0; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Cell } = Recharts;
+
+// SEM Asylstatistik September 2026: applications by origin; "Übrige" = 2122 minus the five named countries
+const data = [
+  { name: "Afghanistan", v: 530 },
+  { name: "Eritrea", v: 321 },
+  { name: "Algerien", v: 247 },
+  { name: "Somalia", v: 202 },
+  { name: "Türkei", v: 112 },
+  { name: "Übrige Herkunftsländer", v: 710 },
+];
+const MAIN = "#2a7fb8", REST = "#8a8f98";
+const fmt = (x) => x.toLocaleString("de-CH").replace(/,/g, "’");
+
+function App() {
+  return (
+    <div>
+      <h1>Asylgesuche: Afghanistan bleibt wichtigstes Herkunftsland</h1>
+      <p className="lead">Im September 2026 hat das Staatssekretariat für Migration 2122 Asylgesuche registriert, 18 % weniger als im Vorjahresmonat. Aus Afghanistan kamen mit 530 Gesuchen die meisten, gefolgt von Eritrea und Algerien.</p>
+      <div role="img" aria-label="Balkendiagramm: Asylgesuche in der Schweiz im September 2026 nach Herkunftsland. Afghanistan 530, Eritrea 321, Algerien 247, Somalia 202, Türkei 112, übrige Länder 710, total 2122." style={{ width: "100%", height: 340 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart layout="vertical" data={data} margin={{ top: 10, right: 40, bottom: 30, left: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" opacity={0.3} horizontal={false} />
+            <XAxis type="number" domain={[0, 800]} stroke="currentColor"
+              label={{ value: "Asylgesuche im September 2026", position: "insideBottom", offset: -15, fill: "currentColor" }} />
+            <YAxis type="category" dataKey="name" width={160} stroke="currentColor" />
+            <Tooltip formatter={(val) => [fmt(val), "Gesuche"]} cursor={{ opacity: 0.1 }} />
+            <Bar dataKey="v" isAnimationActive={false}>
+              {data.map((d, i) => <Cell key={i} fill={i === data.length - 1 ? REST : MAIN} />)}
+              <LabelList dataKey="v" position="right" fill="currentColor" />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Kennzahlen: 2122 Gesuche im September 2026 (−449 gegenüber September 2025, +226 gegenüber August); Januar bis September 15 667 Gesuche, 17 % weniger als im Vorjahr (18 877). «Übrige» = Total minus die fünf genannten Länder.</p>
+      <p className="src">Quelle: <a href="https://www.admin.ch/de/newnsb/7K7ruIJJ7dL5" target="_blank" rel="noopener">Staatssekretariat für Migration SEM, Asylstatistik September 2026</a> (Medienmitteilung vom 15. Oktober 2026), Stand: 18. Oktober 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
