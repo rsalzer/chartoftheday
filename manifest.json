@@ -1533,5 +1533,23 @@
       "https://www.admin.ch/de/newnsb/7K7ruIJJ7dL5"
     ],
     "file": "days/2026-10-18.html"
+  },
+  {
+    "date": "2026-10-19",
+    "title": "Energie treibt die Teuerung im Euroraum auf 3,8 Prozent",
+    "lead": "Die Inflation im Euroraum stieg im September 2026 auf 3,8 Prozent. Energie steuert 1,71 Prozentpunkte bei, vor einem Jahr war ihr Beitrag leicht negativ.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "inflation",
+      "euroraum",
+      "energiepreise",
+      "eurostat",
+      "hicp"
+    ],
+    "chartType": "stackedBar",
+    "sourceUrls": [
+      "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-16102026-ap"
+    ],
+    "file": "days/2026-10-19.html"
   }
 ]

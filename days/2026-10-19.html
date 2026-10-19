@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Energie treibt die Teuerung im Euroraum auf 3,8 Prozent</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15.8.1/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body { margin: 0; padding: 16px; background: transparent; font-family: system-ui, sans-serif; color: CanvasText; }
+  h1 { font-size: 1.4rem; margin: 0 0 8px; }
+  p.lead { margin: 0 0 12px; line-height: 1.4; }
+  p.src { font-size: 0.8rem; opacity: 0.8; margin-top: 8px; }
+  p.fallback { font-size: 0.85rem; margin: 8px 0 0; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } = Recharts;
+
+// Eurostat flash/final HICP, euro area: contributions to annual rate in percentage points
+const data = [
+  { name: "Sep 2025", total: 2.2, energie: -0.03, nahrung: 0.58, industrie: 0.19, dienste: 1.49 },
+  { name: "Aug 2026", total: 3.2, energie: 1.29, nahrung: 0.22, industrie: 0.30, dienste: 1.43 },
+  { name: "Sep 2026", total: 3.8, energie: 1.71, nahrung: 0.25, industrie: 0.29, dienste: 1.52 },
+];
+const series = [
+  { key: "dienste", label: "Dienstleistungen", color: "#2a7fb8" },
+  { key: "industrie", label: "Industriegüter (ohne Energie)", color: "#8a6bbf" },
+  { key: "nahrung", label: "Nahrung, Alkohol, Tabak", color: "#5aa469" },
+  { key: "energie", label: "Energie", color: "#e8743b" },
+];
+const f = (x) => x.toFixed(2).replace(".", ",") + " Pp.";
+
+function App() {
+  return (
+    <div>
+      <h1>Energie treibt die Teuerung im Euroraum auf 3,8 Prozent</h1>
+      <p className="lead">Die jährliche Inflationsrate im Euroraum stieg im September 2026 auf 3,8 Prozent (August: 3,2; September 2025: 2,2). Energie steuert mit 1,71 Prozentpunkten fast die Hälfte bei – vor einem Jahr war ihr Beitrag leicht negativ.</p>
+      <div role="img" aria-label="Gestapeltes Balkendiagramm: Beiträge der Komponenten zur jährlichen Inflationsrate im Euroraum in Prozentpunkten. September 2025: gesamt 2,2, Energie minus 0,03. August 2026: gesamt 3,2, Energie 1,29. September 2026: gesamt 3,8, Energie 1,71, Dienstleistungen 1,52, Nahrung 0,25, Industriegüter 0,29." style={{ width: "100%", height: 380 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" opacity={0.3} vertical={false} />
+            <XAxis dataKey="name" stroke="currentColor" />
+            <YAxis stroke="currentColor" domain={[-0.5, 4]} tickFormatter={(t) => String(t).replace(".", ",")}
+              label={{ value: "Beitrag zur Jahresteuerung (Prozentpunkte)", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: "middle" }, fill: "currentColor" }} />
+            <ReferenceLine y={0} stroke="currentColor" />
+            <Tooltip formatter={(v, n) => [f(v), n]} />
+            <Legend />
+            {series.map((s) => <Bar key={s.key} dataKey={s.key} name={s.label} stackId="a" fill={s.color} isAnimationActive={false} />)}
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Jahresteuerung Euroraum: 2,2 % (Sep 2025), 3,2 % (Aug 2026), 3,8 % (Sep 2026). Energie: −0,4 %, +14,3 %, +18,9 %. Beiträge Sep 2026: Dienstleistungen 1,52, Energie 1,71, Industriegüter 0,29, Nahrung 0,25 Prozentpunkte (Summe rundungsbedingt ca. 3,8).</p>
+      <p className="src">Quelle: <a href="https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-16102026-ap" target="_blank" rel="noopener">Eurostat, Euro indicators: Annual inflation up to 3.8% in the euro area</a> (16. Oktober 2026), Stand: 19. Oktober 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
