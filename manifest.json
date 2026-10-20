@@ -1551,5 +1551,24 @@
       "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-16102026-ap"
     ],
     "file": "days/2026-10-19.html"
+  },
+  {
+    "date": "2026-10-20",
+    "title": "Selbstständigkeit nimmt mit dem Alter stark zu",
+    "lead": "2025 war jede siebte erwerbstätige Person selbstständig (13,9 %). Bei den 15- bis 24-Jährigen sind es 4,2 %, bei Erwerbstätigen über dem Rentenalter 41,2 %.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "selbstständigkeit",
+      "erwerbstätige",
+      "arbeitsmarkt",
+      "altersgruppen",
+      "bfs"
+    ],
+    "chartType": "area",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/news/de/2025-0578",
+      "https://www.admin.ch/de/newnsb/59hcWCII11Fp"
+    ],
+    "file": "days/2026-10-20.html"
   }
 ]
