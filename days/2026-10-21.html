@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ebola in der DR Kongo: Zwei Provinzen tragen fast 95 Prozent der Fälle</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15.8.1/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body { margin: 0; padding: 16px; background: transparent; font-family: system-ui, sans-serif; color: CanvasText; }
+  h1 { font-size: 1.4rem; margin: 0 0 8px; }
+  p.lead { margin: 0 0 12px; line-height: 1.4; }
+  p.src { font-size: 0.8rem; opacity: 0.8; margin-top: 8px; }
+  p.fallback { font-size: 0.85rem; margin: 8px 0 0; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } = Recharts;
+
+// ECDC, status 19 Oct 2026 (data to 18 Oct): confirmed Ebola cases and deaths among confirmed cases, DRC, by province
+const data = [
+  { name: "Ituri", cases: 6960, deaths: 3217 },
+  { name: "Nord-Kivu", cases: 2084, deaths: 1176 },
+  { name: "Haut-Uélé", cases: 415, deaths: 177 },
+  { name: "Tshopo", cases: 73, deaths: 25 },
+  { name: "Bas-Uélé", cases: 13, deaths: 4 },
+  { name: "Sud-Kivu", cases: 3, deaths: 1 },
+  { name: "Sud-Ubangi", cases: 2, deaths: 1 },
+  { name: "Nord-Ubangi", cases: 2, deaths: 1 },
+];
+const C1 = "#2a7fb8", C2 = "#d9822b";
+const fmt = (x) => x.toLocaleString("de-CH");
+
+function App() {
+  return (
+    <div>
+      <h1>Ebola in der DR Kongo: Zwei Provinzen tragen fast 95 Prozent der Fälle</h1>
+      <p className="lead">Die europäische Seuchenbehörde ECDC zählt in der DR Kongo 9552 bestätigte Ebola-Fälle und 4602 Todesfälle unter bestätigten Fällen. Ituri (6960) und Nord-Kivu (2084) machen zusammen 9044 Fälle aus; seit dem letzten Update kamen 97 Fälle hinzu.</p>
+      <div role="img" aria-label="Gruppiertes Balkendiagramm: Bestätigte Ebola-Fälle und Todesfälle in der DR Kongo nach Provinz, Stand 19. Oktober 2026. Ituri 6960 Fälle und 3217 Todesfälle, Nord-Kivu 2084 und 1176, Haut-Uélé 415 und 177, Tshopo 73 und 25, Bas-Uélé 13 und 4, Sud-Kivu 3 und 1, Sud-Ubangi 2 und 1, Nord-Ubangi 2 und 1." style={{ width: "100%", height: 440 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} layout="vertical" margin={{ top: 10, right: 50, bottom: 10, left: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" opacity={0.3} horizontal={false} />
+            <XAxis type="number" stroke="currentColor" tickFormatter={fmt}
+              label={{ value: "Anzahl Personen", position: "insideBottom", offset: -3, fill: "currentColor" }} />
+            <YAxis type="category" dataKey="name" stroke="currentColor" width={90} />
+            <Tooltip formatter={(v, n) => [fmt(v), n]} />
+            <Legend verticalAlign="top" />
+            <Bar dataKey="cases" name="Bestätigte Fälle" fill={C1} isAnimationActive={false}>
+              <LabelList dataKey="cases" position="right" formatter={fmt} fill="currentColor" fontSize={12} />
+            </Bar>
+            <Bar dataKey="deaths" name="Todesfälle (bestätigte Fälle)" fill={C2} isAnimationActive={false}>
+              <LabelList dataKey="deaths" position="right" formatter={fmt} fill="currentColor" fontSize={12} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Kennzahlen DR Kongo (Stand 19. Oktober 2026, Daten bis 18. Oktober): 9552 bestätigte Fälle, 4602 Todesfälle, 937 Personen in Isolation, 66 von 178 Gesundheitszonen betroffen. Die ECDC überprüft und harmonisiert die Zahlen laufend.</p>
+      <p className="src">Quelle: <a href="https://www.ecdc.europa.eu/en/ebola-outbreak-democratic-republic-congo-and-uganda" target="_blank" rel="noopener">ECDC, Ebola disease outbreak in the Democratic Republic of the Congo and Uganda</a>, Stand: 21. Oktober 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

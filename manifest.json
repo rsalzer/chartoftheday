@@ -1570,5 +1570,23 @@
       "https://www.admin.ch/de/newnsb/59hcWCII11Fp"
     ],
     "file": "days/2026-10-20.html"
+  },
+  {
+    "date": "2026-10-21",
+    "title": "Ebola in der DR Kongo: Zwei Provinzen tragen fast 95 Prozent der Fälle",
+    "lead": "Die ECDC zählt in der DR Kongo 9552 bestätigte Ebola-Fälle und 4602 Todesfälle. Ituri und Nord-Kivu machen zusammen 9044 Fälle aus.",
+    "category": "Gesundheit",
+    "keywords": [
+      "ebola",
+      "dr kongo",
+      "ituri",
+      "nord-kivu",
+      "ausbruch"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.ecdc.europa.eu/en/ebola-outbreak-democratic-republic-congo-and-uganda"
+    ],
+    "file": "days/2026-10-21.html"
   }
 ]
