@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Staatsfinanzen in der EU: Nur wenige Länder halten beide Maastricht-Grenzen ein</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15.8.1/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body { margin: 0; padding: 16px; background: transparent; font-family: system-ui, sans-serif; color: CanvasText; }
+  h1 { font-size: 1.4rem; margin: 0 0 8px; }
+  p.lead { margin: 0 0 12px; line-height: 1.4; }
+  p.src { font-size: 0.8rem; opacity: 0.8; margin-top: 8px; }
+  p.fallback { font-size: 0.85rem; margin: 8px 0 0; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, ResponsiveContainer, LabelList } = Recharts;
+
+// Eurostat euro indicators, 21 Oct 2026: government debt (end 2025, % of GDP) and balance (2025, % of GDP)
+const data = [
+  { code: "BE", name: "Belgien", debt: 108.1, bal: -5.2 },
+  { code: "BG", name: "Bulgarien", debt: 29.9, bal: -4.0 },
+  { code: "CZ", name: "Tschechien", debt: 44.2, bal: -2.2 },
+  { code: "DK", name: "Dänemark", debt: 27.2, bal: 2.9 },
+  { code: "DE", name: "Deutschland", debt: 62.8, bal: -2.9 },
+  { code: "EE", name: "Estland", debt: 24.0, bal: -2.0 },
+  { code: "IE", name: "Irland", debt: 34.8, bal: 1.8 },
+  { code: "EL", name: "Griechenland", debt: 145.4, bal: 2.0 },
+  { code: "ES", name: "Spanien", debt: 100.5, bal: -2.4 },
+  { code: "FR", name: "Frankreich", debt: 115.7, bal: -5.1 },
+  { code: "HR", name: "Kroatien", debt: 55.7, bal: -3.0 },
+  { code: "IT", name: "Italien", debt: 136.7, bal: -3.1 },
+  { code: "CY", name: "Zypern", debt: 52.3, bal: 3.6 },
+  { code: "LV", name: "Lettland", debt: 46.2, bal: -2.5 },
+  { code: "LT", name: "Litauen", debt: 39.3, bal: -1.8 },
+  { code: "LU", name: "Luxemburg", debt: 26.0, bal: -1.8 },
+  { code: "HU", name: "Ungarn", debt: 74.4, bal: -4.7 },
+  { code: "MT", name: "Malta", debt: 46.3, bal: -2.1 },
+  { code: "NL", name: "Niederlande", debt: 44.7, bal: -1.6 },
+  { code: "AT", name: "Österreich", debt: 80.7, bal: -4.1 },
+  { code: "PL", name: "Polen", debt: 59.6, bal: -7.2 },
+  { code: "PT", name: "Portugal", debt: 89.2, bal: 0.7 },
+  { code: "RO", name: "Rumänien", debt: 58.9, bal: -7.8 },
+  { code: "SI", name: "Slowenien", debt: 65.1, bal: -2.5 },
+  { code: "SK", name: "Slowakei", debt: 60.5, bal: -4.4 },
+  { code: "FI", name: "Finnland", debt: 88.4, bal: -3.8 },
+  { code: "SE", name: "Schweden", debt: 35.1, bal: -1.6 },
+];
+const C1 = "#2a7fb8";
+const f1 = (x) => x.toLocaleString("de-CH", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+function Tip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: "Canvas", color: "CanvasText", border: "1px solid currentColor", padding: "6px 10px", fontSize: 13 }}>
+      <strong>{d.name}</strong><br />
+      Schuldenquote: {f1(d.debt)} % des BIP<br />
+      Defizit/Überschuss: {f1(d.bal)} % des BIP
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Staatsfinanzen in der EU: Nur wenige Länder halten beide Maastricht-Grenzen ein</h1>
+      <p className="lead">Das Defizit lag 2025 im Euroraum wie in der EU unverändert bei 3,0 % bzw. 3,1 % des BIP. Rumänien (-7,8 %), Polen (-7,2 %), Belgien (-5,2 %) und Frankreich (-5,1 %) weisen die höchsten Defizite aus, Griechenland (145,4 %) und Italien (136,7 %) die höchsten Schuldenquoten.</p>
+      <div role="img" aria-label="Streudiagramm: Staatsschuldenquote Ende 2025 (horizontal) und Staatsdefizit bzw. Überschuss 2025 (vertikal) in Prozent des BIP für die 27 EU-Länder. Referenzlinien bei 60 % Schulden und 3 % Defizit. Rumänien und Polen haben die höchsten Defizite, Griechenland und Italien die höchsten Schulden." style={{ width: "100%", height: 480 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ScatterChart margin={{ top: 10, right: 30, bottom: 30, left: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+            <XAxis type="number" dataKey="debt" domain={[0, 160]} ticks={[0, 20, 40, 60, 80, 100, 120, 140, 160]} stroke="currentColor"
+              label={{ value: "Staatsschulden Ende 2025 (% des BIP)", position: "insideBottom", offset: -15, fill: "currentColor" }} />
+            <YAxis type="number" dataKey="bal" domain={[-10, 6]} ticks={[-10, -8, -6, -4, -3, -2, 0, 2, 4, 6]} stroke="currentColor"
+              label={{ value: "Defizit (-) / Überschuss (+) 2025 (% des BIP)", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: "middle" }, fill: "currentColor" }} />
+            <ReferenceLine x={60} stroke="#d9822b" strokeDasharray="5 4" label={{ value: "60 %", position: "top", fill: "currentColor", fontSize: 12 }} />
+            <ReferenceLine y={-3} stroke="#d9822b" strokeDasharray="5 4" label={{ value: "-3 %", position: "right", fill: "currentColor", fontSize: 12 }} />
+            <Tooltip content={<Tip />} />
+            <Scatter data={data} fill={C1} isAnimationActive={false}>
+              <LabelList dataKey="code" position="top" fill="currentColor" fontSize={11} />
+            </Scatter>
+          </ScatterChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Kennzahlen 2025: Euroraum (EA20) Defizit 3,0 % und Schuldenquote 87,7 %; EU Defizit 3,1 % und Schuldenquote 81,5 %. Referenzwerte der Maastricht-Kriterien: 3 % Defizit, 60 % Schulden (orange Linien).</p>
+      <p className="src">Quelle: <a href="https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-21102026-ap" target="_blank" rel="noopener">Eurostat, Euro indicators: Government deficit and debt 2025 (zweite Meldung)</a>, Stand: 22. Oktober 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

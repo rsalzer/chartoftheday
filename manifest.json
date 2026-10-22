@@ -1588,5 +1588,23 @@
       "https://www.ecdc.europa.eu/en/ebola-outbreak-democratic-republic-congo-and-uganda"
     ],
     "file": "days/2026-10-21.html"
+  },
+  {
+    "date": "2026-10-22",
+    "title": "Staatsfinanzen in der EU: Nur wenige Länder halten beide Maastricht-Grenzen ein",
+    "lead": "Das Defizit lag 2025 im Euroraum bei 3,0 % und in der EU bei 3,1 % des BIP. Rumänien, Polen, Belgien und Frankreich weisen die höchsten Defizite aus, Griechenland und Italien die höchsten Schuldenquoten.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "staatsschulden",
+      "defizit",
+      "maastricht",
+      "eu-länder",
+      "haushalt"
+    ],
+    "chartType": "scatter",
+    "sourceUrls": [
+      "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-21102026-ap"
+    ],
+    "file": "days/2026-10-22.html"
   }
 ]
