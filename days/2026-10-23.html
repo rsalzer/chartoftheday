@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meere so warm wie nie</title>
+<style>
+  body { margin: 0; padding: 16px; background: transparent; font-family: system-ui, sans-serif; color: CanvasText; }
+  h1 { font-size: 1.4rem; margin: 0 0 8px; }
+  p.lead { margin: 0 0 12px; line-height: 1.4; }
+  p.fallback { font-size: .85rem; opacity: .8; margin: 8px 0; }
+  p.source { font-size: .8rem; opacity: .85; margin: 8px 0 0; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ResponsiveContainer, ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } = Recharts;
+
+// Copernicus Climate Change Service, extra-polar (60°S–60°N) sea surface temperature, °C
+const DATA = [
+  { monat: 'August', alt: 20.98, neu: 21.07 },
+  { monat: 'September', alt: 20.92, neu: 21.05 },
+].map(d => ({ ...d, spanne: [d.alt, d.neu] }));
+
+const C_OLD = '#2a7ab0', C_NEW = '#d95f02';
+
+function App() {
+  return (
+    <div>
+      <h1>Meere so warm wie nie: Rekord im August und September 2026</h1>
+      <p className="lead">Die mittlere Meeresoberflächentemperatur zwischen 60°S und 60°N lag im August bei 21,07 °C und im September bei 21,05 °C. Beide Werte übertreffen die bisherigen Monatsrekorde von 2023, im Zeichen eines sich verstärkenden El Niño.</p>
+      <div role="img" aria-label="Vergleichsdiagramm: Meeresoberflächentemperatur im August und September, bisheriger Rekord 2023 gegenüber 2026. August 20,98 auf 21,07 Grad, September 20,92 auf 21,05 Grad." style={{ width: '100%', height: 340 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={DATA} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.3} />
+            <XAxis dataKey="monat" stroke="currentColor" />
+            <YAxis domain={[20.8, 21.2]} tickFormatter={v => v.toFixed(1)} stroke="currentColor" label={{ value: 'Meerestemperatur (°C)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: 'currentColor' } }} />
+            <Tooltip formatter={(v, n) => Array.isArray(v) ? null : [v.toFixed(2) + ' °C', n]} />
+            <Legend />
+            <Bar dataKey="spanne" name="Zunahme" fill="#888" fillOpacity={0.6} barSize={4} legendType="none" tooltipType="none" />
+            <Line dataKey="alt" name="Bisheriger Rekord (2023)" stroke="none" dot={{ r: 8, fill: C_OLD, stroke: C_OLD }} activeDot={{ r: 9 }} isAnimationActive={false} />
+            <Line dataKey="neu" name="2026" stroke="none" dot={{ r: 8, fill: C_NEW, stroke: C_NEW }} activeDot={{ r: 9 }} isAnimationActive={false} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">August: 20,98 °C (2023) → 21,07 °C (2026), +0,09 °C. September: 20,92 °C (2023) → 21,05 °C (2026), +0,13 °C.</p>
+      <p className="source">Quelle: Copernicus Climate Change Service (C3S), Monatsbulletins vom 10. September und 12. Oktober 2026: <a href="https://climate.copernicus.eu/copernicus-august-was-worlds-joint-hottest-month-record-pushing-global-temperatures-back-above" target="_blank" rel="noopener">August</a>, <a href="https://climate.copernicus.eu/copernicus-second-warmest-september-global-temperatures-stay-above-15degc" target="_blank" rel="noopener">September</a>. Stand: 23. Oktober 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

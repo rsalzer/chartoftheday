@@ -1606,5 +1606,24 @@
       "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-21102026-ap"
     ],
     "file": "days/2026-10-22.html"
+  },
+  {
+    "date": "2026-10-23",
+    "title": "Meere so warm wie nie: Rekord im August und September 2026",
+    "lead": "Die mittlere Meeresoberflächentemperatur zwischen 60°S und 60°N lag im August bei 21,07 °C und im September bei 21,05 °C. Beide Werte übertreffen die bisherigen Monatsrekorde von 2023.",
+    "category": "Klima",
+    "keywords": [
+      "meerestemperatur",
+      "copernicus",
+      "el niño",
+      "rekord",
+      "ozean"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://climate.copernicus.eu/copernicus-august-was-worlds-joint-hottest-month-record-pushing-global-temperatures-back-above",
+      "https://climate.copernicus.eu/copernicus-second-warmest-september-global-temperatures-stay-above-15degc"
+    ],
+    "file": "days/2026-10-23.html"
   }
 ]
