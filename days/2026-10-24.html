@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Formel 1: Antonelli enteilt der Konkurrenz</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit}
+  h1{font-size:1.4rem;margin:0 0 8px}
+  p.lead{margin:0 0 16px;line-height:1.4}
+  p.src{font-size:.8rem;opacity:.8;margin-top:12px}
+  a{color:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Cell, LabelList } = Recharts;
+
+// Source: formula1.com drivers' standings 2026, after 17 races (Singapore), 2026-10-24
+const data = [
+  { name: "Antonelli", team: "Mercedes", pts: 340 },
+  { name: "Russell", team: "Mercedes", pts: 238 },
+  { name: "Hamilton", team: "Ferrari", pts: 229 },
+  { name: "Verstappen", team: "Red Bull", pts: 221 },
+  { name: "Leclerc", team: "Ferrari", pts: 215 },
+  { name: "Norris", team: "McLaren", pts: 201 },
+  { name: "Piastri", team: "McLaren", pts: 138 },
+  { name: "Hadjar", team: "Red Bull", pts: 97 },
+];
+
+function App() {
+  return (
+    <div>
+      <h1>Formel 1: Antonelli enteilt der Konkurrenz</h1>
+      <p className="lead">Nach 17 Rennen der Saison 2026 führt Kimi Antonelli die WM mit 340 Punkten an – 102 Punkte vor seinem Mercedes-Teamkollegen George Russell. Dahinter liegen Platz 3 bis 6 nur 28 Punkte auseinander.</p>
+      <div role="img" aria-label="Balkendiagramm der Fahrerwertung der Formel 1 2026 nach 17 Rennen: Antonelli 340 Punkte, Russell 238, Hamilton 229, Verstappen 221, Leclerc 215, Norris 201, Piastri 138, Hadjar 97." style={{width:"100%",height:380}}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} layout="vertical" margin={{top:5,right:40,left:10,bottom:20}}>
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#888" strokeOpacity={0.3} />
+            <XAxis type="number" domain={[0,360]} stroke="#888" tick={{fill:"#888"}} label={{value:"WM-Punkte", position:"insideBottom", offset:-10, fill:"#888"}} />
+            <YAxis type="category" dataKey="name" width={90} stroke="#888" tick={{fill:"#888"}} />
+            <Tooltip formatter={(v)=>[v+" Punkte","Punkte"]} labelFormatter={(l)=>l} />
+            <Bar dataKey="pts" isAnimationActive={false}>
+              {data.map((d,i)=><Cell key={i} fill={i===0?"#1f77b4":"#8a9bb0"} />)}
+              <LabelList dataKey="pts" position="right" fill="#888" />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="src" style={{marginTop:8}}>Antonelli 340, Russell 238, Hamilton 229, Verstappen 221, Leclerc 215, Norris 201, Piastri 138, Hadjar 97 Punkte.</p>
+      <p className="src">Quelle: <a href="https://www.formula1.com/en/results/2026/drivers" target="_blank" rel="noopener">Formula1.com, Fahrerwertung 2026</a> und <a href="https://www.formula1.com/en/results/2026/races" target="_blank" rel="noopener">Rennergebnisse 2026</a>, Stand 24. Oktober 2026 (nach dem Grand Prix von Singapur).</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

@@ -1625,5 +1625,24 @@
       "https://climate.copernicus.eu/copernicus-second-warmest-september-global-temperatures-stay-above-15degc"
     ],
     "file": "days/2026-10-23.html"
+  },
+  {
+    "date": "2026-10-24",
+    "title": "Formel 1: Antonelli enteilt der Konkurrenz",
+    "lead": "Nach 17 Rennen der Saison 2026 führt Kimi Antonelli die WM mit 340 Punkten an – 102 Punkte vor seinem Mercedes-Teamkollegen George Russell. Dahinter liegen Platz 3 bis 6 nur 28 Punkte auseinander.",
+    "category": "Sport",
+    "keywords": [
+      "formel 1",
+      "antonelli",
+      "fahrerwertung",
+      "mercedes",
+      "russell"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.formula1.com/en/results/2026/drivers",
+      "https://www.formula1.com/en/results/2026/races"
+    ],
+    "file": "days/2026-10-24.html"
   }
 ]
