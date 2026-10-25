@@ -1644,5 +1644,28 @@
       "https://www.formula1.com/en/results/2026/races"
     ],
     "file": "days/2026-10-24.html"
+  },
+  {
+    "date": "2026-10-25",
+    "title": "Hotellerie: Im September endlich wieder deutlich im Plus",
+    "lead": "Die Schweizer Hotels verbuchten im September 5,5 % mehr Logiernächte als im Vorjahresmonat – erstmals seit Beginn des Irankriegs legten auch die ausländischen Gäste zu (+6,4 %). Von April bis August lagen sie jeden Monat im Minus.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "tourismus",
+      "hotellerie",
+      "logiernächte",
+      "irankrieg",
+      "gäste"
+    ],
+    "chartType": "line",
+    "sourceUrls": [
+      "https://www.cash.ch/news/schweizer-hotellerie-im-september-mit-deutlich-mehr-ubernachtungen-977010",
+      "https://www.cash.ch/news/schweizer-hotels-spuren-weiterhin-die-folgen-des-nahost-konflikts-974177",
+      "https://www.moneycab.com/style/hotellerie-im-juli-dank-schweizer-gaesten-wieder-im-plus/amp/",
+      "https://www.cash.ch/news/schweizer-hotellerie-auch-im-juni-mit-weniger-ubernachtungen-953365",
+      "https://www.cash.ch/news/schweizer-hotellerie-mit-weniger-ubernachtungen-im-mai-945396",
+      "https://www.cash.ch/news/schweizer-hotellerie-mit-weniger-ubernachtungen-im-april-938266"
+    ],
+    "file": "days/2026-10-25.html"
   }
 ]
