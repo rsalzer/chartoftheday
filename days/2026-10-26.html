@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brasilien: Lula gewinnt die Stichwahl dank 10 Millionen zusätzlicher Stimmen</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body { margin: 0; padding: 16px; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: transparent; color: inherit; }
+  h1 { font-size: 1.5rem; line-height: 1.2; margin: 0 0 8px; }
+  p.lead { margin: 0 0 16px; font-size: 1rem; line-height: 1.45; }
+  p.fallback { font-size: .85rem; opacity: .8; margin: 8px 0; }
+  p.source { font-size: .8rem; opacity: .85; margin: 8px 0 0; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } = Recharts;
+
+// Votes in millions (TSE counts). Round 1: 4 Oct 2026, round 2: 25 Oct 2026.
+const CANDS = [
+  { y: 2, name: "Lula (PT)", r1: 53.879538, r2: 64.256232, color: "#d97b29" },
+  { y: 1, name: "Flávio Bolsonaro (PL)", r1: 56.104503, r2: 59.826041, color: "#3b82c4" },
+];
+const nf = (v) => v.toFixed(1).replace(".", ",") + " Mio.";
+const link = (c) => [{ x: c.r1, y: c.y, name: c.name, runde: "1. Runde (4. Okt.)", v: c.r1 }, { x: c.r2, y: c.y, name: c.name, runde: "Stichwahl (25. Okt.)", v: c.r2 }];
+
+const Dot = (fill, hollow) => (p) => (
+  <circle cx={p.cx} cy={p.cy} r={9} fill={hollow ? "none" : fill} stroke={fill} strokeWidth={3} />
+);
+
+const Tip = ({ active, payload }) => {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: "Canvas", color: "CanvasText", border: "1px solid currentColor", padding: "6px 10px", fontSize: 13 }}>
+      <b>{d.name}</b><br />{d.runde}: {nf(d.v)} Stimmen
+    </div>
+  );
+};
+
+function App() {
+  const title = "Brasilien: Lula gewinnt die Stichwahl dank 10 Millionen zusätzlicher Stimmen";
+  return (
+    <>
+      <h1>{title}</h1>
+      <p className="lead">
+        Lula da Silva siegt in der Stichwahl vom 25. Oktober mit 51,8 % gegen Flávio Bolsonaro (48,2 %). Gegenüber der ersten Runde legte er um 10,4 Millionen Stimmen zu, Bolsonaro, der damals vorne lag, nur um 3,7 Millionen.
+      </p>
+      <div role="img" aria-label="Hantel-Diagramm: Stimmen in Millionen in der ersten Runde und der Stichwahl in Brasilien 2026. Lula steigt von 53,9 auf 64,3 Millionen, Flávio Bolsonaro von 56,1 auf 59,8 Millionen." style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ScatterChart margin={{ top: 20, right: 30, bottom: 30, left: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} horizontal={false} />
+            <XAxis type="number" dataKey="x" domain={[50, 66]} ticks={[50, 52, 54, 56, 58, 60, 62, 64, 66]} stroke="currentColor" tick={{ fill: "currentColor" }} tickFormatter={(v) => v + " Mio."} label={{ value: "Stimmen in Millionen", position: "insideBottom", offset: -15, fill: "currentColor", style: { fontSize: 12 } }} />
+            <YAxis type="number" dataKey="y" domain={[0.4, 2.6]} ticks={[1, 2]} stroke="currentColor" tick={{ fill: "currentColor", fontSize: 12 }} width={130} tickFormatter={(v) => (v === 2 ? "Lula (PT)" : "Flávio Bolsonaro (PL)")} />
+            <Tooltip content={<Tip />} />
+            {CANDS.map((c) => (
+              <Scatter key={"l" + c.name} data={link(c)} line={{ stroke: c.color, strokeWidth: 4 }} lineType="joint" shape={() => null} legendType="none" isAnimationActive={false} />
+            ))}
+            {CANDS.map((c) => (
+              <Scatter key={"a" + c.name} name="1. Runde (4. Okt.)" data={[link(c)[0]]} shape={Dot(c.color, true)} legendType="none" isAnimationActive={false} />
+            ))}
+            {CANDS.map((c) => (
+              <Scatter key={"b" + c.name} name="Stichwahl (25. Okt.)" data={[link(c)[1]]} shape={Dot(c.color, false)} legendType="none" isAnimationActive={false} />
+            ))}
+          </ScatterChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Hohler Kreis: 1. Runde (4. Oktober), voller Kreis: Stichwahl (25. Oktober). Lula 53,9 → 64,3 Mio. Stimmen (45,16 % → 51,79 %), Flávio Bolsonaro 56,1 → 59,8 Mio. (47,03 % → 48,21 %). Prozentwerte: Anteil der gültigen Stimmen; in der 1. Runde traten weitere Kandidaten an.</p>
+      <p className="source">
+        Quelle: Oberstes Wahlgericht Brasiliens (TSE), wiedergegeben von
+        {" "}<a href="https://www.riotimesonline.com/brazil-election-results-2026/" target="_blank" rel="noopener">Rio Times</a> (Stichwahl, 100 % der Urnen ausgezählt),
+        {" "}<a href="https://www.folhape.com.br/politica/com-100-das-secoes-totalizadas-flavio-tem-4703-lula-tem-4516-e/516549/" target="_blank" rel="noopener">Folha de Pernambuco</a> (1. Runde, 100 %) und
+        {" "}<a href="https://www.aljazeera.com/news/liveblog/2026/10/25/brazil-election-results-2026-live-polls-close-in-lula-bolsonaro-face-off" target="_blank" rel="noopener">Al Jazeera</a> (Ergebnis).
+        Hinweis: Die formelle Verkündung des Endergebnisses durch das TSE steht noch aus. Stand: 26. Oktober 2026.
+      </p>
+    </>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

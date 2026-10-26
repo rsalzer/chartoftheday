@@ -1667,5 +1667,25 @@
       "https://www.cash.ch/news/schweizer-hotellerie-mit-weniger-ubernachtungen-im-april-938266"
     ],
     "file": "days/2026-10-25.html"
+  },
+  {
+    "date": "2026-10-26",
+    "title": "Brasilien: Lula gewinnt die Stichwahl dank 10 Millionen zusätzlicher Stimmen",
+    "lead": "Lula da Silva siegt in der Stichwahl vom 25. Oktober mit 51,8 % gegen Flávio Bolsonaro (48,2 %). Gegenüber der ersten Runde legte er um 10,4 Millionen Stimmen zu, Bolsonaro, der damals vorne lag, nur um 3,7 Millionen.",
+    "category": "International",
+    "keywords": [
+      "brasilien",
+      "stichwahl",
+      "lula",
+      "flávio bolsonaro",
+      "präsidentschaftswahl"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.riotimesonline.com/brazil-election-results-2026/",
+      "https://www.folhape.com.br/politica/com-100-das-secoes-totalizadas-flavio-tem-4703-lula-tem-4516-e/516549/",
+      "https://www.aljazeera.com/news/liveblog/2026/10/25/brazil-election-results-2026-live-polls-close-in-lula-bolsonaro-face-off"
+    ],
+    "file": "days/2026-10-26.html"
   }
 ]
