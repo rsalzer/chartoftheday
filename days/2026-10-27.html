@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abstimmung vom 29. November: Feuerwerk-Initiative klar vorn, AHV-Finanzierung im Patt</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit}
+  h1{font-size:1.4rem;margin:0 0 8px}
+  p.lead{margin:0 0 16px;line-height:1.4}
+  p.src{font-size:.8rem;opacity:.8;margin-top:12px}
+  a{color:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, LabelList, Legend } = Recharts;
+
+// Source: gfs.bern / SRG 1st trend survey, fieldwork 5-18 Oct 2026, published 2026-10-23.
+// "Rest" = 100 - Ja - Nein (undecided / no answer); AHV 5% confirmed by SRF, others stated or derived.
+const data = [
+  { name: "Feuerwerks-Initiative", ja: 69, rest: 2, nein: 29 },
+  { name: "Initiative für faire Besteuerung von Ehepaaren", ja: 55, rest: 11, nein: 34 },
+  { name: "Änderung Kriegsmaterialgesetz", ja: 49, rest: 10, nein: 41 },
+  { name: "Zusatzfinanzierung AHV (Mehrwertsteuer)", ja: 46, rest: 5, nein: 49 },
+];
+
+function App() {
+  return (
+    <div>
+      <h1>Abstimmung vom 29. November: Feuerwerk-Initiative klar vorn, AHV-Finanzierung im Patt</h1>
+      <p className="lead">In der ersten SRG-Umfrage liegen die Feuerwerks-Initiative (69 % Ja) und die Initiative für faire Besteuerung von Ehepaaren (55 % Ja) vorn. Bei der AHV-Zusatzfinanzierung führt das Nein mit 49 zu 46 Prozent, innerhalb der Fehlermarge von ±2,8 Punkten.</p>
+      <div role="img" aria-label="Gestapeltes Balkendiagramm der ersten SRG-Umfrage zu den vier Vorlagen vom 29. November 2026: Feuerwerks-Initiative 69 Prozent Ja, 29 Nein; Ehepaar-Besteuerung 55 Ja, 34 Nein; Kriegsmaterialgesetz 49 Ja, 41 Nein; AHV-Zusatzfinanzierung 46 Ja, 49 Nein." style={{width:"100%",height:340}}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} layout="vertical" stackOffset="expand" margin={{top:5,right:20,left:10,bottom:20}}>
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#888" strokeOpacity={0.3} />
+            <XAxis type="number" tickFormatter={(v)=>Math.round(v*100)+" %"} stroke="#888" tick={{fill:"#888"}} />
+            <YAxis type="category" dataKey="name" width={150} stroke="#888" tick={{fill:"#888",fontSize:12}} />
+            <Tooltip formatter={(v,n)=>[v+" %",n]} />
+            <Legend verticalAlign="bottom" />
+            <Bar dataKey="ja" name="Ja" stackId="a" fill="#1f77b4" isAnimationActive={false}>
+              <LabelList dataKey="ja" position="center" fill="#fff" formatter={(v)=>v+" %"} />
+            </Bar>
+            <Bar dataKey="rest" name="Weiss nicht / keine Angabe" stackId="a" fill="#9aa5b1" isAnimationActive={false} />
+            <Bar dataKey="nein" name="Nein" stackId="a" fill="#d9822b" isAnimationActive={false}>
+              <LabelList dataKey="nein" position="center" fill="#000" formatter={(v)=>v+" %"} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="src" style={{marginTop:8}}>Ja/Nein: Feuerwerk 69/29, Ehepaar-Besteuerung 55/34, Kriegsmaterialgesetz 49/41, AHV-Finanzierung 46/49 Prozent.</p>
+      <p className="src">Befragung 5.–18. Oktober 2026, 14&#39;874 Stimmberechtigte, Fehlermarge ±2,8 Punkte; Momentaufnahme, keine Prognose. «Weiss nicht» = Rest auf 100 % (bei Feuerwerk rechnerisch 2 %), Rundungsdifferenzen möglich.</p>
+      <p className="src">Quelle: <a href="https://www.gfsbern.ch/en/news/1st-srg-trend-survey-on-the-federal-vote-of-29-november-2026/" target="_blank" rel="noopener">gfs.bern / SRG, 1. SRG-Trendumfrage</a> und <a href="https://www.srf.ch/news/erste-srg-umfrage-finanzierung-13-ahv-pattsituation-mit-leichtem-nein-vorsprung" target="_blank" rel="noopener">SRF</a>, Stand 27. Oktober 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

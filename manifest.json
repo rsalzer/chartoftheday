@@ -1687,5 +1687,24 @@
       "https://www.aljazeera.com/news/liveblog/2026/10/25/brazil-election-results-2026-live-polls-close-in-lula-bolsonaro-face-off"
     ],
     "file": "days/2026-10-26.html"
+  },
+  {
+    "date": "2026-10-27",
+    "title": "Abstimmung vom 29. November: Feuerwerk-Initiative klar vorn, AHV-Finanzierung im Patt",
+    "lead": "In der ersten SRG-Umfrage liegen die Feuerwerks-Initiative (69 % Ja) und die Initiative für faire Besteuerung von Ehepaaren (55 % Ja) vorn. Bei der AHV-Zusatzfinanzierung führt das Nein mit 49 zu 46 Prozent, innerhalb der Fehlermarge.",
+    "category": "Politik",
+    "keywords": [
+      "abstimmung",
+      "srg-umfrage",
+      "feuerwerks-initiative",
+      "ahv",
+      "kriegsmaterialgesetz"
+    ],
+    "chartType": "stackedBar",
+    "sourceUrls": [
+      "https://www.gfsbern.ch/en/news/1st-srg-trend-survey-on-the-federal-vote-of-29-november-2026/",
+      "https://www.srf.ch/news/erste-srg-umfrage-finanzierung-13-ahv-pattsituation-mit-leichtem-nein-vorsprung"
+    ],
+    "file": "days/2026-10-27.html"
   }
 ]
