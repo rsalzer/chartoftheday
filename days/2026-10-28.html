@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sozialhilfequote 2025 nach Gruppen</title>
+<style>
+  body { margin: 0; padding: 12px; background: transparent; font-family: system-ui, sans-serif; color: CanvasText; color-scheme: light dark; }
+  h1 { font-size: 1.35rem; margin: 0 0 6px; line-height: 1.25; }
+  p.lead { margin: 0 0 12px; font-size: 0.95rem; line-height: 1.4; }
+  p.fallback, p.source { font-size: 0.8rem; opacity: 0.8; margin: 8px 0 0; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, Cell, LabelList, CartesianGrid } = Recharts;
+
+const AVG = 2.9;
+// Sozialhilfequote 2025 in %, source: BFS press release of 2026-10-27
+const data = [
+  { group: "Ausländische Personen", rate: 5.4 },
+  { group: "Kinder und Jugendliche", rate: 4.8 },
+  { group: "Geschieden", rate: 4.2 },
+  { group: "Ledig", rate: 3.7 },
+  { group: "Schweizer Staatsangehörige", rate: 1.9 },
+  { group: "Verheiratet", rate: 1.4 },
+  { group: "Verwitwet", rate: 0.8 },
+];
+
+function App() {
+  return (
+    <div>
+      <h1>Sozialhilfe: Ausländer und Kinder am häufigsten betroffen</h1>
+      <p className="lead">2025 bezogen 267'300 Personen wirtschaftliche Sozialhilfe, die Quote liegt bei 2,9 Prozent. Ausländische Personen sind fast dreimal so oft betroffen wie Schweizer, Verwitwete am seltensten.</p>
+      <div role="img" aria-label="Balkendiagramm: Sozialhilfequote 2025 nach Gruppen in Prozent. Ausländer 5,4, Kinder und Jugendliche 4,8, Geschiedene 4,2, Ledige 3,7, Schweizer 1,9, Verheiratete 1,4, Verwitwete 0,8. Gesamtquote 2,9.">
+        <ResponsiveContainer width="100%" height={380}>
+          <BarChart data={data} layout="vertical" margin={{ top: 16, right: 40, left: 8, bottom: 24 }}>
+            <CartesianGrid horizontal={false} strokeOpacity={0.2} />
+            <XAxis type="number" domain={[0, 6]} tickFormatter={(v) => v + " %"} label={{ value: "Sozialhilfequote 2025 (Anteil der Bevölkerung in %)", position: "insideBottom", offset: -12, fontSize: 12, fill: "currentColor" }} tick={{ fill: "currentColor", fontSize: 12 }} />
+            <YAxis type="category" dataKey="group" width={150} tick={{ fill: "currentColor", fontSize: 12 }} />
+            <Tooltip formatter={(v) => [String(v).replace(".", ",") + " %", "Quote"]} />
+            <ReferenceLine x={AVG} stroke="currentColor" strokeDasharray="4 4" label={{ value: "Schweiz: 2,9 %", position: "top", fontSize: 12, fill: "currentColor" }} />
+            <Bar dataKey="rate" isAnimationActive={false}>
+              {data.map((d) => <Cell key={d.group} fill={d.rate > AVG ? "#D55E00" : "#0072B2"} />)}
+              <LabelList dataKey="rate" position="right" formatter={(v) => String(v).replace(".", ",") + " %"} fill="currentColor" fontSize={12} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Kennzahlen: Gesamtquote 2,9 %; Ausländer 5,4 %; Kinder und Jugendliche 4,8 %; Geschiedene 4,2 %; Ledige 3,7 %; Schweizer 1,9 %; Verheiratete 1,4 %; Verwitwete 0,8 %. Hinweis: Wegen der neuen Erhebungsmethode sind Vergleiche mit Vorjahren nur eingeschränkt möglich. Gruppen überschneiden sich (z. B. Alter und Zivilstand).</p>
+      <p className="source">Quelle: <a href="https://www.bfs.admin.ch/bfs/de/home/statistiken/soziale-sicherheit/sozialhilfe/sozialhilfebeziehende/wirtschaftliche-sozialhilfe.html" target="_blank" rel="noopener">Bundesamt für Statistik (BFS)</a>, Medienmitteilung vom 27.10.2026 (<a href="https://www.aktuellenews.ch/bfs-sozialhilfestatistik-2025-modernisiert-2026/1830250" target="_blank" rel="noopener">Wortlaut</a>). Stand: 28.10.2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
