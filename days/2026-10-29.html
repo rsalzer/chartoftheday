@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arbeitsmarkt September 2026: Offene Stellen legen am stärksten zu</title>
+<style>
+  body { margin: 0; padding: 12px; background: transparent; font-family: system-ui, sans-serif; color: CanvasText; color-scheme: light dark; }
+  h1 { font-size: 1.35rem; margin: 0 0 6px; line-height: 1.25; }
+  p.lead { margin: 0 0 12px; font-size: 0.95rem; line-height: 1.4; }
+  p.fallback, p.source { font-size: 0.8rem; opacity: 0.8; margin: 8px 0 0; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } = Recharts;
+
+// Veränderung gegenüber September 2025 in %, source: SECO Medienmitteilung "Arbeitsmarkt September 2026" vom 6.10.2026
+const data = [
+  { group: "Offene Stellen (RAV)", pct: 18.3, color: "#0072B2" },
+  { group: "Stellensuchende", pct: 6.5, color: "#D55E00" },
+  { group: "Arbeitslose 50–64 Jahre", pct: 6.3, color: "#D55E00" },
+  { group: "Arbeitslose insgesamt", pct: 5.4, color: "#D55E00" },
+  { group: "Arbeitslose 15–24 Jahre", pct: 3.5, color: "#D55E00" },
+];
+const fmt = (v) => v.toFixed(1).replace(".", ",");
+
+// Lollipop: thin stem plus dot, drawn as a custom bar shape
+const Lollipop = (props) => {
+  const { x, y, width, height, payload } = props;
+  const cy = y + height / 2;
+  return (
+    <g>
+      <line x1={x} x2={x + width} y1={cy} y2={cy} stroke={payload.color} strokeWidth={3} />
+      <circle cx={x + width} cy={cy} r={7} fill={payload.color} />
+      <text x={x + width + 14} y={cy + 4} fontSize={12} fill="currentColor">{"+" + fmt(payload.pct) + " %"}</text>
+    </g>
+  );
+};
+
+function App() {
+  return (
+    <div>
+      <h1>Arbeitsmarkt: Mehr Arbeitslose, aber deutlich mehr offene Stellen</h1>
+      <p className="lead">Ende September 2026 waren 140'480 Personen arbeitslos (Quote 3,0 %), 5,4 % mehr als vor einem Jahr. Die bei den RAV gemeldeten offenen Stellen stiegen im gleichen Zeitraum um 18,3 %.</p>
+      <div role="img" aria-label="Lollipop-Diagramm: Veränderung gegenüber September 2025 in Prozent. Offene Stellen +18,3, Stellensuchende +6,5, Arbeitslose 50 bis 64 Jahre +6,3, Arbeitslose insgesamt +5,4, Arbeitslose 15 bis 24 Jahre +3,5.">
+        <ResponsiveContainer width="100%" height={320}>
+          <BarChart data={data} layout="vertical" margin={{ top: 12, right: 60, left: 8, bottom: 28 }}>
+            <CartesianGrid horizontal={false} strokeOpacity={0.2} />
+            <XAxis type="number" domain={[0, 20]} tickFormatter={(v) => "+" + v + " %"} label={{ value: "Veränderung gegenüber September 2025 (in %)", position: "insideBottom", offset: -14, fontSize: 12, fill: "currentColor" }} tick={{ fill: "currentColor", fontSize: 12 }} />
+            <YAxis type="category" dataKey="group" width={160} tick={{ fill: "currentColor", fontSize: 12 }} />
+            <Tooltip formatter={(v) => ["+" + fmt(v) + " %", "Veränderung zum Vorjahr"]} />
+            <Bar dataKey="pct" shape={<Lollipop />} isAnimationActive={false} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Kennzahlen (Veränderung zu September 2025): offene Stellen +18,3 % (44'199); Stellensuchende +6,5 % (227'592); Arbeitslose 50–64 Jahre +6,3 % (38'482); Arbeitslose insgesamt +5,4 % (140'480); Arbeitslose 15–24 Jahre +3,5 % (14'346). Arbeitslosenquote 3,0 %, saisonbereinigt 3,1 %. Hinweis: Die Daten stammen von der SECO-Medienmitteilung vom 6.10.2026; die Oktober-Zahlen erscheinen Anfang November.</p>
+      <p className="source">Quelle: <a href="https://www.seco.admin.ch/de/newnsb/Cdju9-o8WGML" target="_blank" rel="noopener">SECO, Die Lage auf dem Arbeitsmarkt im September 2026</a>. Stand: 29.10.2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

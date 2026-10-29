@@ -1725,5 +1725,23 @@
       "https://www.aktuellenews.ch/bfs-sozialhilfestatistik-2025-modernisiert-2026/1830250"
     ],
     "file": "days/2026-10-28.html"
+  },
+  {
+    "date": "2026-10-29",
+    "title": "Arbeitsmarkt: Mehr Arbeitslose, aber deutlich mehr offene Stellen",
+    "lead": "Ende September 2026 waren 140'480 Personen arbeitslos (Quote 3,0 %), 5,4 % mehr als vor einem Jahr. Die bei den RAV gemeldeten offenen Stellen stiegen im gleichen Zeitraum um 18,3 %.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "arbeitslosigkeit",
+      "seco",
+      "arbeitsmarkt",
+      "offene stellen",
+      "stellensuchende"
+    ],
+    "chartType": "lollipop",
+    "sourceUrls": [
+      "https://www.seco.admin.ch/de/newnsb/Cdju9-o8WGML"
+    ],
+    "file": "days/2026-10-29.html"
   }
 ]
