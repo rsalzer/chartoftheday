@@ -1743,5 +1743,23 @@
       "https://www.seco.admin.ch/de/newnsb/Cdju9-o8WGML"
     ],
     "file": "days/2026-10-29.html"
+  },
+  {
+    "date": "2026-10-30",
+    "title": "September 2026: Westeuropa so heiss wie nie – gleichauf mit 2023",
+    "lead": "Weltweit war der September 2026 mit +0,82 °C gegenüber 1991–2020 der zweitwärmste seit Messbeginn, 0,11 °C kühler als 2023. In Westeuropa dagegen erreichte er mit +2,51 °C den Rekordwert von 2023.",
+    "category": "Klima",
+    "keywords": [
+      "copernicus",
+      "september 2026",
+      "temperaturrekord",
+      "westeuropa",
+      "el niño"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://climate.copernicus.eu/surface-air-temperature-september-2026"
+    ],
+    "file": "days/2026-10-30.html"
   }
 ]

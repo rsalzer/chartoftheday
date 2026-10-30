@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>September 2026: Westeuropa so heiss wie nie</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit;line-height:1.45}
+h1{font-size:1.4rem;margin:0 0 8px}
+p.lead{margin:0 0 12px}
+.src{font-size:.8rem;margin-top:10px;opacity:.85}
+.fb{font-size:.85rem;margin:6px 0}
+a{color:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const {ScatterChart,Scatter,XAxis,YAxis,CartesianGrid,Tooltip,Legend,ResponsiveContainer,ReferenceLine}=Recharts;
+const C23="#E69F00", C26="#0072B2";
+// Anomalies vs 1991-2020 (°C), Copernicus C3S bulletin, September 2026
+const rows=[
+ {y:3,label:"Welt",a23:0.93,a26:0.82},
+ {y:2,label:"Westeuropa",a23:2.51,a26:2.51},
+ {y:1,label:"Europa (Land)",a23:null,a26:1.54},
+];
+const p23=rows.filter(r=>r.a23!=null).map(r=>({x:r.a23,y:r.y,label:r.label}));
+const p26=rows.map(r=>({x:r.a26,y:r.y,label:r.label}));
+const links=rows.filter(r=>r.a23!=null).map(r=>[{x:r.a23,y:r.y},{x:r.a26,y:r.y}]);
+const names={3:"Welt",2:"Westeuropa",1:"Europa (Land)"};
+const Tip=({active,payload})=>{
+  if(!active||!payload||!payload.length)return null;
+  const d=payload[0].payload; if(!d.label)return null;
+  return <div style={{background:"#fff",color:"#111",padding:"6px 10px",border:"1px solid #999",fontSize:13}}>{d.label}: +{d.x.toFixed(2)} °C</div>;
+};
+function App(){
+  return <div>
+    <h1>September 2026: Westeuropa so heiss wie nie – gleichauf mit 2023</h1>
+    <p className="lead">Weltweit war der September 2026 mit +0,82 °C gegenüber 1991–2020 der zweitwärmste seit Messbeginn, 0,11 °C kühler als 2023. In Westeuropa dagegen erreichte er mit +2,51 °C den Rekordwert von 2023.</p>
+    <div role="img" aria-label="Punktdiagramm der Temperaturabweichung im September 2023 und 2026 gegenüber 1991–2020: Welt 0,93 und 0,82 Grad, Westeuropa je 2,51 Grad, Europa Land 2026 1,54 Grad." style={{width:"100%",height:300}}>
+      <ResponsiveContainer width="100%" height="100%">
+        <ScatterChart margin={{top:10,right:20,bottom:30,left:10}}>
+          <CartesianGrid strokeDasharray="3 3" opacity={0.3}/>
+          <XAxis type="number" dataKey="x" domain={[0,3]} ticks={[0,0.5,1,1.5,2,2.5,3]} tickFormatter={v=>"+"+String(v).replace(".",",")} stroke="currentColor" label={{value:"Abweichung vom Mittel 1991–2020 (°C)",position:"bottom",offset:10,fill:"currentColor"}}/>
+          <YAxis type="number" dataKey="y" domain={[0.5,3.5]} ticks={[1,2,3]} tickFormatter={v=>names[v]} width={110} stroke="currentColor"/>
+          <Tooltip content={<Tip/>}/>
+          <Legend verticalAlign="top" payload={[{value:"September 2023",type:"circle",color:C23},{value:"September 2026",type:"circle",color:C26}]}/>
+          {links.map((l,i)=><Scatter key={i} data={l} line={{stroke:"#888",strokeWidth:3}} shape={()=>null} legendType="none" isAnimationActive={false}/>)}
+          <Scatter name="September 2023" data={p23} fill={C23} isAnimationActive={false}/>
+          <Scatter name="September 2026" data={p26} fill={C26} isAnimationActive={false}/>
+        </ScatterChart>
+      </ResponsiveContainer>
+    </div>
+    <p className="fb">Kernzahlen: Welt 2023 +0,93 °C, 2026 +0,82 °C; Westeuropa 2023 und 2026 je +2,51 °C; Europa (Land) 2026 +1,54 °C (Rang 3). Für Europa insgesamt 2023 liegt im Bulletin kein Wert vor.</p>
+    <div className="src">Quelle: <a href="https://climate.copernicus.eu/surface-air-temperature-september-2026" target="_blank" rel="noopener">Copernicus Climate Change Service (C3S), Klimabulletin September 2026</a>, ERA5-Daten; abgerufen am 30.10.2026.</div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
