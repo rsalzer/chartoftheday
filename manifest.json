@@ -1761,5 +1761,23 @@
       "https://climate.copernicus.eu/surface-air-temperature-september-2026"
     ],
     "file": "days/2026-10-30.html"
+  },
+  {
+    "date": "2026-10-31",
+    "title": "Masern in den USA: 2026 schon mehr als doppelt so viele Fälle wie 2025",
+    "lead": "Bis zum 29. Oktober 2026 meldet die US-Gesundheitsbehörde CDC 4'852 bestätigte Masernfälle, nach 2'289 im ganzen Jahr 2025. Die Zahlen für 2025 und 2026 sind vorläufig.",
+    "category": "Gesundheit",
+    "keywords": [
+      "masern",
+      "usa",
+      "cdc",
+      "impfung",
+      "ausbruch"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.cdc.gov/measles/data-research/index.html"
+    ],
+    "file": "days/2026-10-31.html"
   }
 ]
