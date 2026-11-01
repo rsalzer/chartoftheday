@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teuerung im Euroraum: Schweiz bleibt deutlich darunter</title>
+<style>
+  body { margin:0; padding:16px; font-family: system-ui, sans-serif; background:transparent; color:inherit; }
+  h1 { font-size:1.4rem; margin:0 0 8px; line-height:1.25; }
+  p.lead { margin:0 0 12px; font-size:1rem; line-height:1.45; }
+  .src { font-size:.8rem; margin-top:10px; opacity:.85; }
+  .src a { color:inherit; }
+  .fallback { font-size:.8rem; margin:6px 0 0; opacity:.85; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } = Recharts;
+
+// HICP annual rate in %, Eurostat euro indicators, 16 Oct 2026
+const DATA = [
+  { name: 'Euroraum', aug: 3.2, sep: 3.8, color: '#6b7280', w: 3 },
+  { name: 'Schweiz', aug: 0.9, sep: 1.2, color: '#d62728', w: 3 },
+  { name: 'Deutschland', aug: 2.9, sep: 3.3, color: '#1f77b4', w: 1.5 },
+  { name: 'Frankreich', aug: 2.6, sep: 3.4, color: '#9467bd', w: 1.5 },
+  { name: 'Italien', aug: 3.2, sep: 4.2, color: '#2ca02c', w: 1.5 },
+  { name: 'Spanien', aug: 4.6, sep: 5.0, color: '#ff7f0e', w: 1.5 },
+  { name: 'Österreich', aug: 2.9, sep: 3.6, color: '#17becf', w: 1.5 },
+  { name: 'Griechenland', aug: 3.7, sep: 5.1, color: '#8c564b', w: 1.5 },
+  { name: 'Schweden', aug: 0.3, sep: 1.0, color: '#e377c2', w: 1.5 },
+];
+const fmt = (v) => v.toFixed(1).replace('.', ',');
+const rows = [
+  { m: 'August 2026', ...Object.fromEntries(DATA.map(d => [d.name, d.aug])) },
+  { m: 'September 2026', ...Object.fromEntries(DATA.map(d => [d.name, d.sep])) },
+];
+
+const label = (d, idx) => (props) => {
+  const { x, y, value, index } = props;
+  if (index !== idx) return null;
+  const left = idx === 0;
+  return <text x={left ? x - 8 : x + 8} y={y} dy={4} textAnchor={left ? 'end' : 'start'}
+    fontSize={11} fill={d.color} fontWeight={d.w > 2 ? 700 : 400}>
+    {left ? `${d.name} ${fmt(value)}` : `${fmt(value)} ${d.name}`}</text>;
+};
+
+function App() {
+  const summary = 'Teuerung August auf September 2026: Euroraum 3,2 auf 3,8 Prozent, Schweiz 0,9 auf 1,2 Prozent, Deutschland 2,9 auf 3,3, Frankreich 2,6 auf 3,4, Italien 3,2 auf 4,2, Spanien 4,6 auf 5,0, Österreich 2,9 auf 3,6, Griechenland 3,7 auf 5,1, Schweden 0,3 auf 1,0.';
+  return (
+    <div>
+      <h1>Teuerung im Euroraum auf 3,8 Prozent gestiegen – die Schweiz bleibt bei 1,2</h1>
+      <p className="lead">Die Inflation im Euroraum stieg im September 2026 gegenüber August von 3,2 auf 3,8 Prozent; in allen gezeigten Ländern zog sie an. Die Schweiz liegt nach dem harmonisierten Preisindex (HVPI) von Eurostat mit 1,2 Prozent weit darunter.</p>
+      <div role="img" aria-label={summary} style={{ width: '100%', height: 440 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={rows} margin={{ top: 10, right: 120, bottom: 10, left: 120 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#888" strokeOpacity={0.3} vertical={false} />
+            <XAxis dataKey="m" tick={{ fill: 'currentColor', fontSize: 12 }} padding={{ left: 0, right: 0 }} />
+            <YAxis domain={[0, 6]} unit=" %" tick={{ fill: 'currentColor', fontSize: 12 }} width={0} hide />
+            <Tooltip formatter={(v, n) => [fmt(v) + ' %', n]} />
+            {DATA.map(d => (
+              <Line key={d.name} type="linear" dataKey={d.name} stroke={d.color} strokeWidth={d.w}
+                dot={{ r: d.w > 2 ? 4 : 3 }} isAnimationActive={false}
+                label={(p) => (label(d, 0)(p) || label(d, 1)(p))} />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Jährliche Teuerung (HVPI), August → September 2026: Euroraum 3,2 → 3,8 %; Schweiz 0,9 → 1,2 %; Deutschland 2,9 → 3,3 %; Italien 3,2 → 4,2 %; Griechenland 3,7 → 5,1 %.</p>
+      <p className="src">Quelle: <a href="https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-16102026-ap" target="_blank" rel="noopener">Eurostat, Euro indicators, 16. Oktober 2026</a>. Stand: 1. November 2026. Zahlen für September: endgültige Werte; Auswahl von 9 der verfügbaren Länder.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
