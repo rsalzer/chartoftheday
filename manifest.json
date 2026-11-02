@@ -1797,5 +1797,23 @@
       "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-16102026-ap"
     ],
     "file": "days/2026-11-01.html"
+  },
+  {
+    "date": "2026-11-02",
+    "title": "Männer verunglücken häufiger und schwerer im Strassenverkehr",
+    "lead": "Bei Unfällen mit Personenschaden in Deutschland 2025 waren 58,2 Prozent der Verunglückten Männer, bei den Getöteten 73,6 Prozent. Frauen verunglücken öfter im Auto, Männer öfter auf Motorrad und Velo.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "strassenverkehr",
+      "verkehrsunfälle",
+      "geschlechterunterschied",
+      "destatis",
+      "weltmännertag"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.presseportal.de/pm/32102/6381984"
+    ],
+    "file": "days/2026-11-02.html"
   }
 ]

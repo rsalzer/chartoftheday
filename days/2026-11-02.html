@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Männer verunglücken häufiger und schwerer im Strassenverkehr</title>
+<style>
+  html,body{margin:0;padding:0;background:transparent;color-scheme:light dark;}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px;line-height:1.45;}
+  h1{font-size:1.5rem;margin:0 0 8px;line-height:1.2;}
+  p.lead{margin:0 0 14px;font-size:1rem;opacity:.9;}
+  .legend{display:flex;gap:16px;font-size:.85rem;margin:0 0 6px;}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+  .fallback{font-size:.85rem;opacity:.85;margin:8px 0;}
+  .source{font-size:.8rem;opacity:.8;margin-top:10px;}
+  a{color:inherit;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script crossorigin src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script crossorigin src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ResponsiveContainer, ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } = Recharts;
+
+const MEN = "#3B82C4", WOMEN = "#E07B1F";
+// Share of casualties by mode of transport, Germany 2025 (Destatis, 2 Nov 2026)
+const DATA = [
+  { mode: "Auto", men: 40.6, women: 55.2 },
+  { mode: "Velo", men: 28.3, women: 23.0 },
+  { mode: "Motorrad/Moped", men: 10.8, women: 3.0 },
+  { mode: "Zu Fuss", men: 6.4, women: 8.9 },
+].map(d => ({ ...d, range: [Math.min(d.men, d.women), Math.max(d.men, d.women)] }));
+
+const Dumbbell = (props) => {
+  const { x, y, width, height, payload } = props;
+  const cy = y + height / 2;
+  const menRight = payload.men > payload.women;
+  const xl = x, xr = x + width;
+  return (
+    <g>
+      <line x1={xl} x2={xr} y1={cy} y2={cy} stroke="currentColor" strokeOpacity="0.35" strokeWidth="3" />
+      <circle cx={xl} cy={cy} r="8" fill={menRight ? WOMEN : MEN} />
+      <circle cx={xr} cy={cy} r="8" fill={menRight ? MEN : WOMEN} />
+    </g>
+  );
+};
+
+const Tip = ({ active, payload }) => {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: "Canvas", color: "CanvasText", border: "1px solid #8886", padding: "6px 10px", fontSize: 13 }}>
+      <strong>{d.mode}</strong><br />
+      Männer: {d.men.toFixed(1).replace(".", ",")} %<br />
+      Frauen: {d.women.toFixed(1).replace(".", ",")} %
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <div>
+      <h1>Männer verunglücken häufiger und schwerer im Strassenverkehr</h1>
+      <p className="lead">Bei Unfällen mit Personenschaden in Deutschland 2025 waren 58,2 Prozent der Verunglückten Männer, bei den Getöteten 73,6 Prozent. Die Wahl des Verkehrsmittels unterscheidet sich deutlich: Frauen verunglücken öfter im Auto, Männer öfter auf Motorrad und Velo.</p>
+      <div className="legend">
+        <span><span className="dot" style={{ background: MEN }}></span>Männer</span>
+        <span><span className="dot" style={{ background: WOMEN }}></span>Frauen</span>
+      </div>
+      <div role="img" aria-label="Hantel-Diagramm: Anteil der Verunglückten nach Verkehrsmittel, Männer und Frauen, Deutschland 2025. Auto: Männer 40,6 %, Frauen 55,2 %. Velo: 28,3 % und 23,0 %. Motorrad oder Moped: 10,8 % und 3,0 %. Zu Fuss: 6,4 % und 8,9 %.">
+        <ResponsiveContainer width="100%" height={300}>
+          <ComposedChart layout="vertical" data={DATA} margin={{ top: 10, right: 24, bottom: 24, left: 24 }}>
+            <CartesianGrid strokeOpacity={0.2} horizontal={false} />
+            <XAxis type="number" domain={[0, 60]} tickFormatter={v => v + " %"} stroke="currentColor"
+              label={{ value: "Anteil an allen verunglückten Männern bzw. Frauen", position: "insideBottom", offset: -14, fill: "currentColor", fontSize: 12 }} />
+            <YAxis type="category" dataKey="mode" width={110} stroke="currentColor" />
+            <Tooltip content={<Tip />} cursor={{ fill: "#8882" }} />
+            <Bar dataKey="range" shape={<Dumbbell />} isAnimationActive={false} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Kennzahlen: Verunglückte 2025 – Männer 58,2 % (rund 217 000), Frauen 41,8 % (rund 156 100); Getötete: Männer 73,6 %. Pro 100 000 Einwohner: 526 Männer, 369 Frauen.</p>
+      <p className="source">Quelle: <a href="https://www.presseportal.de/pm/32102/6381984" target="_blank" rel="noopener">Statistisches Bundesamt (Destatis), Medienmitteilung vom 2. November 2026</a> (Daten Deutschland 2025; Anteile bezogen auf Verunglückte mit erfasstem Geschlecht). Stand: 2. November 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
