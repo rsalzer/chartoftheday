@@ -1815,5 +1815,23 @@
       "https://www.presseportal.de/pm/32102/6381984"
     ],
     "file": "days/2026-11-02.html"
+  },
+  {
+    "date": "2026-11-04",
+    "title": "Wohneigentum wird weiter teurer: Einfamilienhäuser legen am stärksten zu",
+    "lead": "Die Preise für Wohneigentum sind im 3. Quartal 2026 gegenüber dem Vorquartal um 1,7 Prozent gestiegen. Einfamilienhäuser verteuerten sich mit 2,1 Prozent stärker als Stockwerkeigentum mit 1,3 Prozent.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "wohneigentum",
+      "immobilienpreise",
+      "bfs",
+      "einfamilienhäuser",
+      "impi"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/de/newnsb/zEeBMwJlPOBh"
+    ],
+    "file": "days/2026-11-04.html"
   }
 ]
