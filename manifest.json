@@ -1833,5 +1833,24 @@
       "https://www.bfs.admin.ch/de/newnsb/zEeBMwJlPOBh"
     ],
     "file": "days/2026-11-04.html"
+  },
+  {
+    "date": "2026-11-05",
+    "title": "Pensionskassen: Bundesrat hebt Mindestzins auf 2 Prozent",
+    "lead": "Der Bundesrat erhöht den BVG-Mindestzinssatz per 2027 von 1,25 auf 2 Prozent – mehr als die Kommission mit 1,75 Prozent empfohlen hatte. Gestiegene Kapitalmarktrenditen und gut finanzierte Kassen sind die Begründung.",
+    "category": "Politik",
+    "keywords": [
+      "bvg",
+      "mindestzinssatz",
+      "pensionskassen",
+      "bundesrat",
+      "altersvorsorge"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.admin.ch/de/newnsb/8DF8zxcfvu7l",
+      "https://www.admin.ch/de/newnsb/0OLsO33MmzIC"
+    ],
+    "file": "days/2026-11-05.html"
   }
 ]

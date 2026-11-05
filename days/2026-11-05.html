@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pensionskassen: Bundesrat hebt Mindestzins auf 2 Prozent</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit}
+  h1{font-size:1.4rem;margin:0 0 8px;line-height:1.25}
+  p{margin:0 0 12px;line-height:1.45}
+  .src{font-size:.8rem;opacity:.8;margin-top:8px}
+  .src a{color:inherit}
+  .leg{font-size:.85rem;display:flex;gap:16px;margin:0 0 4px}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ScatterChart, Scatter, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, LabelList } = Recharts;
+const C1 = "#E69F00", C2 = "#0072B2";
+// y: row position (top = 4). a = earlier value, b = later value, all in percent.
+const rows = [
+  { y: 4, name: "Mindestzinssatz BVG", a: 1.25, b: 2.0, la: "bisher", lb: "ab 2027" },
+  { y: 3, name: "Rendite 10-jährige Bundesanleihe", a: 0.33, b: 0.59, la: "Ende 2025", lb: "Ende Sep. 2026" },
+  { y: 2, name: "Rendite Pensionskassen (geschätzt)", a: 6.1, b: 5.4, la: "2025", lb: "bis Aug. 2026" },
+  { y: 1, name: "Swiss Performance Index", a: 17.8, b: 7.6, la: "2025", lb: "bis Sep. 2026" },
+];
+const fmt = (n) => n.toFixed(2).replace(/0$/, "").replace(".", ",") + " %";
+const fmtv = (n) => String(n).replace(".", ",");
+const pa = rows.map((r) => ({ x: r.a, y: r.y, name: r.name, per: r.la }));
+const pb = rows.map((r) => ({ x: r.b, y: r.y, name: r.name, per: r.lb }));
+const Tip = ({ active, payload }) => {
+  if (!active || !payload || !payload.length) return null;
+  const p = payload[0].payload;
+  return (
+    <div style={{ background: "#fff", color: "#111", border: "1px solid #999", padding: "6px 8px", fontSize: 13 }}>
+      <b>{p.name}</b><br />{p.per}: {fmt(p.x)}
+    </div>
+  );
+};
+const App = () => (
+  <div>
+    <h1>Pensionskassen: Bundesrat hebt Mindestzins auf 2 Prozent</h1>
+    <p>Der Bundesrat erhöht den BVG-Mindestzinssatz per 2027 von 1,25 auf 2 Prozent und geht damit über die Empfehlung der BVG-Kommission (1,75 Prozent) hinaus. Er begründet das mit gestiegenen Kapitalmarktrenditen und der guten Lage der Vorsorgeeinrichtungen.</p>
+    <div className="leg">
+      <span><span className="dot" style={{ background: C1 }}></span>früher</span>
+      <span><span className="dot" style={{ background: C2 }}></span>später</span>
+    </div>
+    <div role="img" aria-label="Hantelgrafik: Mindestzinssatz steigt von 1,25 auf 2 Prozent; Rendite 10-jährige Bundesanleihe von 0,33 auf 0,59 Prozent; Rendite der Pensionskassen 6,1 Prozent im Jahr 2025 und 5,4 Prozent bis August 2026; Swiss Performance Index plus 17,8 Prozent 2025 und plus 7,6 Prozent bis September 2026." style={{ width: "100%", height: 300 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <ScatterChart margin={{ top: 10, right: 30, left: 10, bottom: 25 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} vertical={true} horizontal={false} />
+          <XAxis type="number" dataKey="x" domain={[0, 20]} ticks={[0, 5, 10, 15, 20]} stroke="currentColor" tick={{ fill: "currentColor" }} tickFormatter={fmtv} label={{ value: "Prozent", position: "insideBottom", offset: -12, fill: "currentColor", fontSize: 12 }} />
+          <YAxis type="number" dataKey="y" domain={[0.5, 4.5]} ticks={[1, 2, 3, 4]} width={190} stroke="currentColor" interval={0} tick={{ fill: "currentColor", fontSize: 12 }} tickFormatter={(v) => (rows.find((r) => r.y === v) || {}).name} />
+          <Tooltip content={<Tip />} cursor={false} />
+          {rows.map((r) => (
+            <Scatter key={r.y} data={[{ x: r.a, y: r.y, name: r.name, per: r.la }, { x: r.b, y: r.y, name: r.name, per: r.lb }]} line={{ stroke: "currentColor", strokeOpacity: 0.45, strokeWidth: 2 }} lineType="joint" shape={() => null} legendType="none" isAnimationActive={false} />
+          ))}
+          <Scatter name="früher" data={pa} fill={C1} isAnimationActive={false}>
+            <LabelList dataKey="x" position="top" formatter={fmt} fill="currentColor" fontSize={11} />
+          </Scatter>
+          <Scatter name="später" data={pb} fill={C2} isAnimationActive={false}>
+            <LabelList dataKey="x" position="bottom" formatter={fmt} fill="currentColor" fontSize={11} />
+          </Scatter>
+        </ScatterChart>
+      </ResponsiveContainer>
+    </div>
+    <p className="src" style={{ opacity: 0.9 }}>Kurz: Mindestzins 1,25 % → 2 % (Kommission: 1,75 %); 10-jährige Bundesanleihe 0,33 % → 0,59 %; Pensionskassen-Rendite 6,1 % (2025), 5,4 % (bis Aug. 2026); SPI +17,8 % (2025), +7,6 % (bis Sep. 2026). Zeiträume der Vergleichswerte unterscheiden sich je Zeile.</p>
+    <div className="src">Quelle: <a href="https://www.admin.ch/de/newnsb/8DF8zxcfvu7l" target="_blank" rel="noopener">Der Bundesrat, Medienmitteilung vom 4. November 2026</a>; <a href="https://www.admin.ch/de/newnsb/0OLsO33MmzIC" target="_blank" rel="noopener">BVG-Kommission, Empfehlung vom 31. August 2026</a>; abgerufen am 5. November 2026. Hinweis: Die Medienmitteilungen nennen für die Kommissionsempfehlung unterschiedliche Daten (31. August bzw. 4. September).</div>
+  </div>
+);
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
