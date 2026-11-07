@@ -1852,5 +1852,24 @@
       "https://www.admin.ch/de/newnsb/0OLsO33MmzIC"
     ],
     "file": "days/2026-11-05.html"
+  },
+  {
+    "date": "2026-11-07",
+    "title": "US-Arbeitsmarkt: 165'000 neue Stellen im Oktober, getragen von Unternehmensdiensten",
+    "lead": "Die US-Wirtschaft hat im Oktober 2026 laut vorläufigen Zahlen 165'000 Stellen geschaffen, die Arbeitslosenquote lag bei 4,1 Prozent. Unternehmensdienste und Bildung/Gesundheit steuerten drei Viertel des Zuwachses bei.",
+    "category": "International",
+    "keywords": [
+      "us-arbeitsmarkt",
+      "beschäftigung",
+      "arbeitslosenquote",
+      "bls",
+      "stellenaufbau"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.bls.gov/news.release/empsit.nr0.htm",
+      "https://www.bls.gov/news.release/empsit.t17.htm"
+    ],
+    "file": "days/2026-11-07.html"
   }
 ]

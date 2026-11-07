@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>US-Arbeitsmarkt: 165'000 neue Stellen im Oktober, getragen von Unternehmensdiensten</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit}
+  h1{font-size:1.4rem;margin:0 0 8px;line-height:1.25}
+  p{margin:0 0 12px;line-height:1.45}
+  .src{font-size:.8rem;opacity:.8;margin-top:8px}
+  .src a{color:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Cell, LabelList, ReferenceLine } = Recharts;
+// Seasonally adjusted change Sept.-Oct. 2026, in thousands (BLS Table B-1)
+const data = [
+  { name: "Unternehmensdienste", v: 70 },
+  { name: "Bildung und Gesundheit (privat)", v: 53 },
+  { name: "Handel, Transport, Versorger", v: 22 },
+  { name: "Industrie", v: 19 },
+  { name: "Staat", v: 6 },
+  { name: "Finanzen", v: 7 },
+  { name: "Übrige Dienstleistungen", v: 6 },
+  { name: "Bau", v: -3 },
+  { name: "Information", v: -1 },
+  { name: "Bergbau", v: -1 },
+  { name: "Gastgewerbe und Freizeit", v: -13 },
+].sort((a, b) => b.v - a.v);
+const fmt = (n) => (n > 0 ? "+" : n < 0 ? "−" : "") + Math.abs(n) + "k";
+const App = () => (
+  <div>
+    <h1>US-Arbeitsmarkt: 165'000 neue Stellen im Oktober, getragen von Unternehmensdiensten</h1>
+    <p>Die US-Wirtschaft hat im Oktober 2026 laut vorläufigen Zahlen 165'000 Stellen geschaffen, die Arbeitslosenquote lag bei 4,1 Prozent. Allein Unternehmensdienste (+70'000) und Bildung/Gesundheit (+53'000) steuerten drei Viertel des Zuwachses bei; das Gastgewerbe verlor 13'000 Stellen.</p>
+    <div role="img" aria-label="Balkendiagramm: Veränderung der Beschäftigung in den USA von September auf Oktober 2026 nach Branche, in Tausend. Unternehmensdienste plus 70, Bildung und Gesundheit plus 53, Handel plus 22, Industrie plus 19, Gastgewerbe minus 13." style={{ width: "100%", height: 420 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} layout="vertical" margin={{ top: 10, right: 50, left: 10, bottom: 25 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} horizontal={false} />
+          <XAxis type="number" domain={[-20, 80]} stroke="currentColor" tick={{ fill: "currentColor" }} label={{ value: "Veränderung gegenüber September (in Tausend Stellen, saisonbereinigt)", position: "insideBottom", offset: -12, fill: "currentColor", fontSize: 12 }} />
+          <YAxis type="category" dataKey="name" width={190} stroke="currentColor" tick={{ fill: "currentColor", fontSize: 12 }} />
+          <ReferenceLine x={0} stroke="currentColor" />
+          <Tooltip formatter={(v) => [fmt(v), "Veränderung"]} />
+          <Bar dataKey="v" name="Veränderung">
+            {data.map((d) => <Cell key={d.name} fill={d.v < 0 ? "#D55E00" : "#0072B2"} />)}
+            <LabelList dataKey="v" position="right" formatter={fmt} fill="currentColor" fontSize={12} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+    <p className="src" style={{ opacity: 0.9 }}>Kurz: Oktober 2026 – Beschäftigung gesamt +165'000, Arbeitslosenquote 4,1 %; Unternehmensdienste +70'000, Bildung/Gesundheit +53'000, Gastgewerbe −13'000. Der Wert ist vorläufig; August (+186'000) und September (+60'000) wurden revidiert.</p>
+    <div className="src">Quelle: <a href="https://www.bls.gov/news.release/empsit.nr0.htm" target="_blank" rel="noopener">U.S. Bureau of Labor Statistics, Employment Situation October 2026</a> und <a href="https://www.bls.gov/news.release/empsit.t17.htm" target="_blank" rel="noopener">Tabelle B-1</a>, veröffentlicht am 6. November 2026; abgerufen am 7. November 2026.</div>
+  </div>
+);
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
