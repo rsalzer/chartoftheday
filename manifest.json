@@ -1871,5 +1871,24 @@
       "https://www.bls.gov/news.release/empsit.t17.htm"
     ],
     "file": "days/2026-11-07.html"
+  },
+  {
+    "date": "2026-11-08",
+    "title": "Abstimmung 29. November: Feuerwerksverbot klar vorne, AHV-Finanzierung knapp im Nein",
+    "lead": "Laut der ersten SRG-Trendumfrage haben drei der vier Vorlagen eine Ja-Mehrheit; nur die Mehrwertsteuer-Finanzierung der AHV liegt mit 46 zu 49 Prozent knapp im Nein.",
+    "category": "Politik",
+    "keywords": [
+      "abstimmung",
+      "srg-umfrage",
+      "feuerwerksinitiative",
+      "ahv-finanzierung",
+      "kriegsmaterialgesetz"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.gfsbern.ch/en/news/1st-srg-trend-survey-on-the-federal-vote-of-29-november-2026/",
+      "https://cockpit.gfsbern.ch/de/cockpit/trend_w1_29112026/"
+    ],
+    "file": "days/2026-11-08.html"
   }
 ]
