@@ -1890,5 +1890,23 @@
       "https://cockpit.gfsbern.ch/de/cockpit/trend_w1_29112026/"
     ],
     "file": "days/2026-11-08.html"
+  },
+  {
+    "date": "2026-11-09",
+    "title": "Wärmster Oktober seit Messbeginn: 1,75 Grad über vorindustriellem Niveau",
+    "lead": "Laut Copernicus war der Oktober 2026 global der wärmste Oktober seit Messbeginn; 2026 dürfte mit rund 80 Prozent Wahrscheinlichkeit das zweitwärmste Jahr werden.",
+    "category": "Klima",
+    "keywords": [
+      "oktober-rekord",
+      "copernicus",
+      "globaltemperatur",
+      "1,5-grad",
+      "el niño"
+    ],
+    "chartType": "dotPlot",
+    "sourceUrls": [
+      "https://climate.copernicus.eu/surface-air-temperature-october-2026"
+    ],
+    "file": "days/2026-11-09.html"
   }
 ]
