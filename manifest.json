@@ -1908,5 +1908,23 @@
       "https://climate.copernicus.eu/surface-air-temperature-october-2026"
     ],
     "file": "days/2026-11-09.html"
+  },
+  {
+    "date": "2026-11-10",
+    "title": "Syrer in Deutschland: Zuzüge und Fortzüge halten sich die Waage",
+    "lead": "Von Januar bis September 2026 zogen rund 23’800 Syrerinnen und Syrer nach Deutschland, 41 Prozent weniger als im Vorjahr; mit rund 23’700 Fortzügen liegt der Saldo bei etwa 100.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "migration",
+      "syrer",
+      "deutschland",
+      "destatis",
+      "wanderungssaldo"
+    ],
+    "chartType": "groupedBar",
+    "sourceUrls": [
+      "https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/11/PD25_N077_12.html"
+    ],
+    "file": "days/2026-11-10.html"
   }
 ]

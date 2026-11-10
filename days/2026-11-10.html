@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Syrer in Deutschland: Zuzüge und Fortzüge halten sich die Waage</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit}
+  h1{font-size:1.4rem;margin:0 0 8px;line-height:1.25}
+  p{margin:0 0 12px;line-height:1.45}
+  .src{font-size:.8rem;opacity:.8;margin-top:8px}
+  .src a{color:inherit}
+  .leg{font-size:.85rem;display:flex;gap:16px;margin:0 0 4px}
+  .sw{display:inline-block;width:10px;height:10px;margin-right:5px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, LabelList } = Recharts;
+const C1 = "#E69F00", C2 = "#0072B2";
+// Syrian nationals, Germany, January-September, rounded values from Destatis.
+const data = [
+  { jahr: "Jan.–Sep. 2024", zu: 74600, fort: 16100, netto: 58500 },
+  { jahr: "Jan.–Sep. 2025", zu: 40100, fort: 22000, netto: 18100 },
+  { jahr: "Jan.–Sep. 2026", zu: 23800, fort: 23700, netto: 100 },
+];
+const fmt = (n) => n.toLocaleString("de-CH").replace(/’/g, "’");
+const Tip = ({ active, payload, label }) => {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: "#fff", color: "#111", border: "1px solid #999", padding: "6px 8px", fontSize: 13 }}>
+      <b>{label}</b><br />Zuzüge: {fmt(d.zu)}<br />Fortzüge: {fmt(d.fort)}<br />Saldo: {fmt(d.netto)}
+    </div>
+  );
+};
+const App = () => (
+  <div>
+    <h1>Syrer in Deutschland: Zuzüge und Fortzüge halten sich die Waage</h1>
+    <p>Von Januar bis September 2026 zogen rund 23’800 syrische Staatsangehörige nach Deutschland, 41 Prozent weniger als im Vorjahreszeitraum. Weil gleichzeitig rund 23’700 wegzogen, liegt der Wanderungssaldo nur noch bei etwa 100 Personen.</p>
+    <div className="leg">
+      <span><span className="sw" style={{ background: C1 }}></span>Zuzüge</span>
+      <span><span className="sw" style={{ background: C2 }}></span>Fortzüge</span>
+    </div>
+    <div role="img" aria-label="Gruppiertes Balkendiagramm: Zuzüge und Fortzüge syrischer Staatsangehöriger in Deutschland, jeweils Januar bis September. 2024: rund 74’600 Zuzüge, 16’100 Fortzüge. 2025: 40’100 Zuzüge, 22’000 Fortzüge. 2026: 23’800 Zuzüge, 23’700 Fortzüge." style={{ width: "100%", height: 340 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} margin={{ top: 20, right: 20, left: 10, bottom: 10 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} vertical={false} />
+          <XAxis dataKey="jahr" stroke="currentColor" tick={{ fill: "currentColor", fontSize: 12 }} />
+          <YAxis stroke="currentColor" tick={{ fill: "currentColor", fontSize: 12 }} tickFormatter={fmt} width={60} domain={[0, 80000]} label={{ value: "Personen", angle: -90, position: "insideLeft", fill: "currentColor", fontSize: 12 }} />
+          <Tooltip content={<Tip />} cursor={{ fill: "currentColor", fillOpacity: 0.08 }} />
+          <Bar dataKey="zu" name="Zuzüge" fill={C1} isAnimationActive={false}>
+            <LabelList dataKey="zu" position="top" formatter={fmt} fill="currentColor" fontSize={11} />
+          </Bar>
+          <Bar dataKey="fort" name="Fortzüge" fill={C2} isAnimationActive={false}>
+            <LabelList dataKey="fort" position="top" formatter={fmt} fill="currentColor" fontSize={11} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+    <p className="src" style={{ opacity: 0.9 }}>Kurz: Zuzüge 74’600 (2024), 40’100 (2025), 23’800 (2026); Fortzüge 16’100, 22’000, 23’700; Saldo 58’500, 18’100, 100. Jeweils Januar bis September, gerundet; Werte für September 2026 vorläufig.</p>
+    <div className="src">Quelle: <a href="https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/11/PD25_N077_12.html" target="_blank" rel="noopener">Statistisches Bundesamt (Destatis), Pressemitteilung vom 9. November 2026</a>; abgerufen am 10. November 2026. Erfasst nach Staatsangehörigkeit gemäss Meldebehörden, nicht nach Aufenthaltsstatus.</div>
+  </div>
+);
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
