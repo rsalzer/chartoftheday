@@ -1926,5 +1926,23 @@
       "https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/11/PD25_N077_12.html"
     ],
     "file": "days/2026-11-10.html"
+  },
+  {
+    "date": "2026-11-11",
+    "title": "Eurozone wächst im Sommer um 0,4 Prozent – Frankreich schrumpft",
+    "lead": "Das BIP der Eurozone stieg im dritten Quartal 2026 um 0,4 Prozent zum Vorquartal; Deutschland +0,2, Frankreich −0,1 Prozent.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "bip",
+      "eurozone",
+      "eurostat",
+      "konjunktur",
+      "quartalswachstum"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://ec.europa.eu/eurostat/product?code=2-30102026-ap"
+    ],
+    "file": "days/2026-11-11.html"
   }
 ]

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BIP Eurozone Q3 2026</title>
+<style>body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit}
+h1{font-size:1.4rem;margin:0 0 8px}p{margin:0 0 12px;line-height:1.4}.src{font-size:.8rem;opacity:.8;margin-top:8px}a{color:inherit}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+</head><body><div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const {BarChart,Bar,XAxis,YAxis,Tooltip,ResponsiveContainer,Cell,CartesianGrid,LabelList,ReferenceLine}=Recharts;
+const data=[
+{l:"Spanien",v:0.6},{l:"Niederlande",v:0.6},{l:"Estland",v:0.6},{l:"Tschechien",v:0.5},{l:"Finnland",v:0.5},
+{l:"Schweden",v:0.4},{l:"Belgien",v:0.3},{l:"Deutschland",v:0.2},{l:"Österreich",v:0.2},{l:"Portugal",v:0.2},
+{l:"Ungarn",v:0.1},{l:"Italien",v:0.0},{l:"Frankreich",v:-0.1},{l:"Litauen",v:-1.0}];
+const fmt=v=>(v>0?"+":"")+v.toFixed(1).replace(".",",")+" %";
+function App(){
+ return (<div>
+ <h1>Eurozone wächst im Sommer um 0,4 Prozent – Frankreich schrumpft</h1>
+ <p>Das Bruttoinlandprodukt der Eurozone stieg im dritten Quartal 2026 gegenüber dem Vorquartal um 0,4 Prozent (EU: 0,5 Prozent). Deutschland kommt auf 0,2 Prozent, Frankreich verzeichnet ein Minus von 0,1 Prozent. Irland (+5,5 Prozent, experimentelle Schätzung) ist nicht dargestellt; die Werte sind vorläufig.</p>
+ <div role="img" aria-label="Balkendiagramm: BIP-Veränderung im dritten Quartal 2026 gegenüber dem Vorquartal in ausgewählten Eurostat-Ländern, von Spanien +0,6 Prozent bis Litauen minus 1,0 Prozent" style={{height:460}}>
+ <ResponsiveContainer width="100%" height="100%">
+ <BarChart data={data} layout="vertical" margin={{left:10,right:40}}>
+ <CartesianGrid strokeDasharray="3 3" opacity={0.3}/>
+ <XAxis type="number" domain={[-1.2,0.8]} tickFormatter={fmt} label={{value:"BIP-Veränderung zum Vorquartal (saisonbereinigt)",position:"insideBottom",offset:-2,fontSize:12}} height={50}/>
+ <YAxis type="category" dataKey="l" width={95}/>
+ <Tooltip formatter={v=>fmt(v)}/>
+ <ReferenceLine x={0} stroke="currentColor"/>
+ <Bar dataKey="v">
+  {data.map((d,i)=><Cell key={i} fill={d.v<0?"#D55E00":"#0072B2"}/>)}
+  <LabelList dataKey="v" position="right" formatter={fmt} fontSize={12}/>
+ </Bar>
+ </BarChart></ResponsiveContainer></div>
+ <p className="src">Kurzfassung: Euroraum +0,4 %, EU +0,5 %, Spanien +0,6 %, Deutschland +0,2 %, Frankreich −0,1 %, Litauen −1,0 %.</p>
+ <p className="src">Quelle: <a href="https://ec.europa.eu/eurostat/product?code=2-30102026-ap" target="_blank" rel="noopener">Eurostat, vorläufige Schnellschätzung vom 30. Oktober 2026</a>, abgerufen am 11. November 2026. Eine Aktualisierung folgt am 13. November.</p>
+ </div>);}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script></body></html>
