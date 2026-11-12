@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CO2-Anstieg in der Atmosphäre</title>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:transparent;color:CanvasText;color-scheme:light dark}
+  h1{font-size:1.4rem;line-height:1.25;margin:0 0 8px}
+  p.lead{margin:0 0 12px;font-size:1rem;line-height:1.45}
+  p.fallback{font-size:.85rem;opacity:.8;margin:8px 0}
+  p.source{font-size:.8rem;opacity:.85;margin:8px 0 0}
+  a{color:#3b82f6}
+</style>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ResponsiveContainer, ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, LabelList } = Recharts;
+
+// Annual CO2 growth in ppm per year (WMO Greenhouse Gas Bulletins No. 21 and 22)
+const data = [
+  { label: "1960er (Schnitt)", ppm: 0.8 },
+  { label: "2011–2020 (Schnitt)", ppm: 2.4 },
+  { label: "2023→2024", ppm: 3.5 },
+  { label: "2024→2025", ppm: 2.8 },
+];
+const COLOR = "#3b82f6";
+
+function App() {
+  return (
+    <div>
+      <h1>CO2 in der Atmosphäre steigt weiter: 2,8 ppm mehr im Jahr 2025</h1>
+      <p className="lead">Die WMO misst für 2025 einen globalen CO2-Mittelwert von 426,8 ppm, ein neuer Rekord. Der Zuwachs liegt unter dem Rekordsprung des Vorjahres (3,5 ppm), aber weit über dem Schnitt der 1960er-Jahre (0,8 ppm pro Jahr). Zum Start der Klimakonferenz COP31 in Antalya.</p>
+      <div role="img" aria-label="Punktdiagramm: Jährlicher Anstieg der CO2-Konzentration in ppm. 1960er-Jahre 0,8, 2011 bis 2020 2,4, 2023 auf 2024 3,5, 2024 auf 2025 2,8." style={{ width: "100%", height: 340 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={data} margin={{ top: 24, right: 24, bottom: 8, left: 8 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} />
+            <XAxis dataKey="label" tick={{ fill: "currentColor", fontSize: 12 }} />
+            <YAxis domain={[0, 4]} tick={{ fill: "currentColor", fontSize: 12 }} label={{ value: "Anstieg in ppm pro Jahr", angle: -90, position: "insideLeft", fill: "currentColor", fontSize: 12, style: { textAnchor: "middle" } }} />
+            <Tooltip formatter={(v) => [String(v).replace(".", ",") + " ppm", "Anstieg"]} contentStyle={{ background: "Canvas", color: "CanvasText" }} />
+            <Bar dataKey="ppm" barSize={3} fill={COLOR} isAnimationActive={false} />
+            <Line dataKey="ppm" stroke="none" isAnimationActive={false} dot={{ r: 8, fill: COLOR, stroke: COLOR }} activeDot={{ r: 9 }}>
+              <LabelList dataKey="ppm" position="top" formatter={(v) => String(v).replace(".", ",")} fill="currentColor" fontSize={13} />
+            </Line>
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Jährlicher CO2-Anstieg: 1960er-Jahre 0,8 ppm, 2011–2020 2,4 ppm, 2023→2024 3,5 ppm, 2024→2025 2,8 ppm; Stand 2025: 426,8 ppm.</p>
+      <p className="source">Quelle: WMO, <a href="https://wmo.int/news/media-centre/greenhouse-gas-levels-once-again-reach-record-high" target="_blank" rel="noopener">Greenhouse Gas Bulletin Nr. 22 (27. Oktober 2026)</a> und <a href="https://wmo.int/news/media-centre/carbon-dioxide-levels-increase-record-amount-new-highs-2024" target="_blank" rel="noopener">Bulletin Nr. 21 (15. Oktober 2025)</a>. Abgerufen am 12. November 2026. Anmerkung: Die Jahresanstiege 2023→2024 und 2024→2025 sind von der WMO angegebene Werte; die 1960er-Rate stammt aus dem Bulletin Nr. 22.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

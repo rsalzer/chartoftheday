@@ -1944,5 +1944,23 @@
       "https://ec.europa.eu/eurostat/product?code=2-30102026-ap"
     ],
     "file": "days/2026-11-11.html"
+  },
+  {
+    "date": "2026-11-12",
+    "title": "CO2 in der Atmosphäre steigt weiter: 2,8 ppm mehr im Jahr 2025",
+    "lead": "Die WMO misst für 2025 einen globalen CO2-Mittelwert von 426,8 ppm, ein neuer Rekord. Der Zuwachs liegt unter dem Rekordsprung des Vorjahres (3,5 ppm), aber weit über dem Schnitt der 1960er-Jahre.",
+    "category": "Klima",
+    "keywords": [
+      "co2",
+      "wmo",
+      "treibhausgase",
+      "cop31"
+    ],
+    "chartType": "lollipop",
+    "sourceUrls": [
+      "https://wmo.int/news/media-centre/greenhouse-gas-levels-once-again-reach-record-high",
+      "https://wmo.int/news/media-centre/carbon-dioxide-levels-increase-record-amount-new-highs-2024"
+    ],
+    "file": "days/2026-11-12.html"
   }
 ]
