@@ -1962,5 +1962,22 @@
       "https://wmo.int/news/media-centre/carbon-dioxide-levels-increase-record-amount-new-highs-2024"
     ],
     "file": "days/2026-11-12.html"
+  },
+  {
+    "date": "2026-11-13",
+    "title": "Sozialhilfe: Ausländer und Kinder am häufigsten betroffen",
+    "lead": "2025 bezogen rund 267 300 Personen Sozialhilfe, die Quote liegt bei 2,9 Prozent. Je nach Gruppe reicht sie von 0,8 bis 5,4 Prozent.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "sozialhilfe",
+      "sozialhilfequote",
+      "bfs",
+      "armut"
+    ],
+    "chartType": "dotPlot",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/de/newnsb/oEA748pQVJJl"
+    ],
+    "file": "days/2026-11-13.html"
   }
 ]
