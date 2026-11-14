@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>US-Teuerung: Energiepreise treiben die Monatswerte</title>
+<style>
+  html,body{margin:0;background:transparent;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:inherit;color-scheme:light dark}
+  #root{padding:16px;max-width:900px;margin:0 auto}
+  h1{font-size:1.5rem;line-height:1.2;margin:0 0 8px}
+  p.lead{margin:0 0 16px;font-size:1rem;line-height:1.45}
+  p.fallback{font-size:.85rem;opacity:.8;margin:8px 0}
+  p.source{font-size:.8rem;opacity:.85;margin:12px 0 0}
+  a{color:#3b82c4}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceLine } = Recharts;
+
+// US CPI-U, seasonally adjusted monthly change in %, BLS release of 10 Nov 2026 (Table A)
+const data = [
+  { m: "Apr", gesamt: 0.6, energie: 3.8, kern: 0.4 },
+  { m: "Mai", gesamt: 0.5, energie: 3.9, kern: 0.2 },
+  { m: "Jun", gesamt: -0.4, energie: -5.7, kern: 0.0 },
+  { m: "Jul", gesamt: 0.1, energie: -1.5, kern: 0.2 },
+  { m: "Aug", gesamt: 0.4, energie: 2.1, kern: 0.3 },
+  { m: "Sep", gesamt: 0.6, energie: 5.2, kern: 0.3 },
+  { m: "Okt", gesamt: 0.4, energie: 0.7, kern: 0.3 },
+];
+const fmt = (v) => v.toFixed(1).replace("-", "−") + " %";
+
+function App() {
+  return (
+    <div>
+      <h1>US-Teuerung: Energiepreise schwanken, die Kernrate bleibt ruhig</h1>
+      <p className="lead">Die US-Konsumentenpreise stiegen im Oktober 2026 saisonbereinigt um 0,4 Prozent gegenüber dem Vormonat. Während Energie zwischen −5,7 und +5,2 Prozent pendelte, lag die Kerninflation seit April bei 0,0 bis 0,4 Prozent. Jahresraten fehlen, weil die Erhebung im Oktober 2025 wegen eines Budgetstillstands ausfiel.</p>
+      <div role="img" aria-label="Gruppierte Balken: monatliche Preisänderung in den USA von April bis Oktober 2026 für Gesamtindex, Energie und Kernrate. Energie schwankt stark, die Kernrate liegt zwischen 0,0 und 0,4 Prozent." style={{ width: "100%", height: 400 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#8a8f98" strokeOpacity={0.35} />
+            <XAxis dataKey="m" stroke="#8a8f98" tick={{ fill: "currentColor" }} />
+            <YAxis stroke="#8a8f98" tick={{ fill: "currentColor" }} tickFormatter={(v) => String(v).replace("-", "−")} unit=" %" label={{ value: "Veränderung zum Vormonat", angle: -90, position: "insideLeft", fill: "currentColor", style: { textAnchor: "middle" } }} />
+            <Tooltip formatter={(v) => fmt(v)} contentStyle={{ background: "rgba(30,30,30,.92)", color: "#fff", border: "none" }} />
+            <Legend />
+            <ReferenceLine y={0} stroke="#8a8f98" />
+            <Bar dataKey="gesamt" name="Gesamtindex" fill="#3b82c4" />
+            <Bar dataKey="energie" name="Energie" fill="#e0803a" />
+            <Bar dataKey="kern" name="Kernrate (ohne Nahrung und Energie)" fill="#8a8f98" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Oktober 2026: Gesamtindex +0,4 %, Energie +0,7 %, Kernrate +0,3 % (Vormonat; saisonbereinigt). September: Energie +5,2 %.</p>
+      <p className="source">Quelle: <a href="https://www.bls.gov/news.release/cpi.nr0.htm" target="_blank" rel="noopener">U.S. Bureau of Labor Statistics, Consumer Price Index – October 2026</a> (veröffentlicht am 10. November 2026), Stand: 14. November 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
