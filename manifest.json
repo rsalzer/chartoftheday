@@ -1997,5 +1997,27 @@
       "https://www.bls.gov/news.release/cpi.nr0.htm"
     ],
     "file": "days/2026-11-14.html"
+  },
+  {
+    "date": "2026-11-15",
+    "title": "Abstimmung vom 29. November: Nur die AHV-Finanzierung liegt im Nein",
+    "lead": "In der ersten SRG-Umfrage von gfs.bern führt die Feuerwerksinitiative klar. Bei der Finanzierung der 13. AHV-Rente liegt das Nein knapp vorn, innerhalb der Fehlermarge von ±2,8 Prozentpunkten.",
+    "category": "Politik",
+    "keywords": [
+      "abstimmung",
+      "srg-umfrage",
+      "gfs.bern",
+      "feuerwerksinitiative",
+      "heiratsstrafe",
+      "13. ahv-rente"
+    ],
+    "chartType": "stackedBar",
+    "sourceUrls": [
+      "https://www.srf.ch/news/erste-srg-umfrage-ja-vorteil-fuer-feuerwerksinitiative-meinungen-fast-gemacht",
+      "https://www.srf.ch/news/erste-srg-umfrage-knappes-ja-bei-der-initiative-gegen-die-heiratsstrafe",
+      "https://www.srf.ch/news/erste-srg-umfrage-beim-kriegsmaterialgesetz-ist-noch-alles-offen",
+      "https://www.srf.ch/news/erste-srg-umfrage-finanzierung-13-ahv-pattsituation-mit-leichtem-nein-vorsprung"
+    ],
+    "file": "days/2026-11-15.html"
   }
 ]
