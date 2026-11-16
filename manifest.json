@@ -2019,5 +2019,24 @@
       "https://www.srf.ch/news/erste-srg-umfrage-finanzierung-13-ahv-pattsituation-mit-leichtem-nein-vorsprung"
     ],
     "file": "days/2026-11-15.html"
+  },
+  {
+    "date": "2026-11-16",
+    "title": "Jede vierte Jugendliche liest nur die KI-Antwort",
+    "lead": "Laut JIM-Studie 2026 liest ein Viertel der befragten Jugendlichen in Deutschland bei Suchergebnissen ausschliesslich die KI-generierte Antwort. Knapp die Hälfte (47 Prozent) nutzt KI inzwischen regelmässig zur Informationssuche, 8 Prozentpunkte mehr als 2025.",
+    "category": "Tech",
+    "keywords": [
+      "jim-studie",
+      "jugendliche",
+      "ki-suche",
+      "mpfs",
+      "suchmaschinen"
+    ],
+    "chartType": "donut",
+    "sourceUrls": [
+      "https://mpfs.de/app/uploads/2026/11/PM_JIM-2026.pdf",
+      "https://mpfs.de/studie/jim-studie-2026/"
+    ],
+    "file": "days/2026-11-16.html"
   }
 ]

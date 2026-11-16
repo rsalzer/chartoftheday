@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jede vierte Jugendliche liest nur die KI-Antwort</title>
+<style>
+  html,body{margin:0;background:transparent;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:inherit;color-scheme:light dark}
+  #root{padding:16px;max-width:900px;margin:0 auto}
+  h1{font-size:1.5rem;line-height:1.2;margin:0 0 8px}
+  p.lead{margin:0 0 16px;font-size:1rem;line-height:1.45}
+  p.fallback{font-size:.85rem;opacity:.8;margin:8px 0}
+  p.source{font-size:.8rem;opacity:.85;margin:12px 0 0}
+  a{color:#3b82c4}
+  ul.legend{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px;font-size:.95rem}
+  ul.legend li{display:flex;align-items:center;gap:8px}
+  ul.legend i{width:14px;height:14px;border-radius:3px;flex:none}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } = Recharts;
+
+// JIM-Studie 2026 (mpfs), Pressemitteilung PM 2/2026 vom 11. November 2026.
+// Anteile in %, Jugendliche (12-19 J., n=1200, Deutschland) bei Suchmaschinen-Ergebnissen mit KI-Antwort.
+const data = [
+  { name: "Berücksichtigen KI-Antwort und weitere Suchergebnisse", value: 49, fill: "#3b82c4" },
+  { name: "Lesen nur die KI-Antwort", value: 25, fill: "#e0803a" },
+  { name: "Lesen die KI-Antwort und klicken mindestens eine Quelle an", value: 19, fill: "#2a9d8f" },
+  { name: "Ignorieren die KI-Antwort vollständig", value: 7, fill: "#8a8f98" },
+];
+
+function App() {
+  return (
+    <div>
+      <h1>Jede vierte Jugendliche liest nur die KI-Antwort</h1>
+      <p className="lead">Laut JIM-Studie 2026 liest ein Viertel der befragten Jugendlichen in Deutschland bei Suchergebnissen ausschliesslich die KI-generierte Antwort. Knapp die Hälfte (47 Prozent) nutzt KI inzwischen regelmässig zur Informationssuche, 8 Prozentpunkte mehr als 2025.</p>
+      <div role="img" aria-label="Ringdiagramm: Umgang Jugendlicher mit KI-Antworten in Suchmaschinen. 49 Prozent berücksichtigen KI-Antwort und weitere Ergebnisse, 25 Prozent lesen nur die KI-Antwort, 19 Prozent klicken zusätzlich eine Quelle an, 7 Prozent ignorieren die KI-Antwort." style={{ width: "100%", height: 320 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie data={data} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="90%" startAngle={90} endAngle={-270} stroke="none" label={({ value }) => value + " %"}>
+              {data.map((d) => <Cell key={d.name} fill={d.fill} />)}
+            </Pie>
+            <Tooltip formatter={(v) => v + " %"} contentStyle={{ background: "rgba(30,30,30,.92)", color: "#fff", border: "none" }} itemStyle={{ color: "#fff" }} />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+      <ul className="legend">
+        {data.map((d) => <li key={d.name}><i style={{ background: d.fill }}></i><span><b>{d.value} %</b> {d.name}</span></li>)}
+      </ul>
+      <p className="fallback">49 % berücksichtigen KI-Antwort und weitere Ergebnisse, 25 % lesen nur die KI-Antwort, 19 % klicken zusätzlich eine Quelle an, 7 % ignorieren die KI-Antwort. Befragt: 1200 Jugendliche (12 bis 19 Jahre), 27. Mai bis 6. Juli 2026.</p>
+      <p className="source">Quelle: <a href="https://mpfs.de/app/uploads/2026/11/PM_JIM-2026.pdf" target="_blank" rel="noopener">Medienpädagogischer Forschungsverbund Südwest (mpfs), JIM-Studie 2026, Pressemitteilung</a> und <a href="https://mpfs.de/studie/jim-studie-2026/" target="_blank" rel="noopener">Studienseite</a>, Stand: 16. November 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
