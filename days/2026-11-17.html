@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SNB: Neun-Monats-Gewinn von 44,2 Milliarden – was ihn trägt</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit;line-height:1.4}
+  h1{font-size:1.4rem;margin:0 0 8px}
+  p.lead{margin:0 0 12px;font-size:1rem}
+  .src{font-size:.8rem;margin-top:10px;opacity:.85}
+  .src a{color:inherit}
+  .fb{font-size:.85rem;margin:8px 0 0}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const {BarChart,Bar,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,Cell,ReferenceLine,LabelList} = Recharts;
+
+// Figures in CHF billion, SNB interim results as at 30 Sept 2026 (foreign currency positions)
+const items = [
+  {name:"Zinserträge", v:10.7},
+  {name:"Dividenden", v:2.3},
+  {name:"Zinsaufwand", v:-0.7},
+  {name:"Kursverluste Anleihen", v:-22.6},
+  {name:"Kursgewinne Aktien", v:23.7},
+  {name:"Wechselkurse", v:29.8},
+];
+let cum = 0;
+const data = items.map(d => {
+  const start = cum; cum = Math.round((cum + d.v)*10)/10;
+  return {name:d.name, v:d.v, range:[Math.min(start,cum), Math.max(start,cum)], total:false};
+});
+data.push({name:"Summe Posten", v:cum, range:[0,cum], total:true});
+
+const fmt = n => (n>0?"+":"")+n.toFixed(1).replace("-","−").replace(".",",");
+const color = d => d.total ? "#4b5563" : d.v>=0 ? "#2a7ab9" : "#d95f02";
+
+function Tip({active,payload}){
+  if(!active||!payload||!payload.length) return null;
+  const d = payload[0].payload;
+  return (<div style={{background:"#fff",color:"#111",border:"1px solid #ccc",padding:"6px 10px",fontSize:13}}>
+    <b>{d.name}</b><br/>{d.total?"Summe: ":"Beitrag: "}{fmt(d.v)} Mrd. CHF</div>);
+}
+
+function App(){
+  return (<>
+    <h1>SNB-Gewinn: Wechselkurse und Aktien tragen, Anleihen bremsen</h1>
+    <p className="lead">Die Nationalbank weist für die ersten neun Monate 2026 einen Gewinn von 44,2 Milliarden Franken aus. Fast alles stammt aus den Fremdwährungspositionen (43,3 Mrd.): Hohen Wechselkurs- und Aktiengewinnen stehen Kursverluste bei Anleihen gegenüber.</p>
+    <div role="img" aria-label="Wasserfalldiagramm: Beiträge zum Ergebnis der SNB-Fremdwährungspositionen in den ersten neun Monaten 2026 in Milliarden Franken. Zinserträge plus 10,7, Dividenden plus 2,3, Zinsaufwand minus 0,7, Kursverluste Anleihen minus 22,6, Kursgewinne Aktien plus 23,7, Wechselkurse plus 29,8." style={{width:"100%",height:380}}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} margin={{top:24,right:10,left:0,bottom:10}}>
+          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} vertical={false}/>
+          <XAxis dataKey="name" interval={0} tick={{fill:"currentColor",fontSize:11}} height={50}/>
+          <YAxis tick={{fill:"currentColor",fontSize:11}} unit=" Mrd." width={62}/>
+          <ReferenceLine y={0} stroke="currentColor" strokeOpacity={0.6}/>
+          <Tooltip content={<Tip/>} cursor={{fill:"rgba(128,128,128,0.15)"}}/>
+          <Bar dataKey="range" isAnimationActive={false}>
+            {data.map((d,i)=><Cell key={i} fill={color(d)}/>)}
+            <LabelList dataKey="v" position="top" formatter={v=>fmt(v)} fill="currentColor" fontSize={12}/>
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+    <p className="fb">Kernzahlen (Mrd. CHF): Zinserträge +10,7; Dividenden +2,3; Zinsaufwand −0,7; Kursverluste Anleihen −22,6; Kursgewinne Aktien +23,7; Wechselkurse +29,8. Summe der Posten 43,2 – die SNB nennt 43,3 (Rundung). Gold +1,2, Frankenpositionen +0,1; Gesamtgewinn 44,2 vor Zuweisung an die Währungsreserven-Rückstellungen.</p>
+    <div className="src">Quelle: <a href="https://www.snb.ch/en/publications/communication/press-releases/2026/pre_20261030" target="_blank" rel="noopener">Schweizerische Nationalbank, Zwischenergebnis per 30. September 2026</a> (Medienmitteilung vom 30. Oktober 2026). Abgerufen am 17. November 2026. Das Jahresergebnis ist stark von Gold-, Devisen- und Kapitalmärkten abhängig.</div>
+  </>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

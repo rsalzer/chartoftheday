@@ -2038,5 +2038,23 @@
       "https://mpfs.de/studie/jim-studie-2026/"
     ],
     "file": "days/2026-11-16.html"
+  },
+  {
+    "date": "2026-11-17",
+    "title": "SNB-Gewinn: Wechselkurse und Aktien tragen, Anleihen bremsen",
+    "lead": "Die Nationalbank weist für die ersten neun Monate 2026 einen Gewinn von 44,2 Milliarden Franken aus. Fast alles stammt aus den Fremdwährungspositionen: Hohen Wechselkurs- und Aktiengewinnen stehen Kursverluste bei Anleihen gegenüber.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "snb",
+      "nationalbank",
+      "neunmonatsergebnis",
+      "fremdwährungspositionen",
+      "gewinn"
+    ],
+    "chartType": "waterfall",
+    "sourceUrls": [
+      "https://www.snb.ch/en/publications/communication/press-releases/2026/pre_20261030"
+    ],
+    "file": "days/2026-11-17.html"
   }
 ]
