@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wärmster Oktober seit Messbeginn – 2026 liegt auf Rekordkurs</title>
+<style>
+  html,body{margin:0;background:transparent;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:inherit;color-scheme:light dark}
+  #root{padding:16px;max-width:900px;margin:0 auto}
+  h1{font-size:1.5rem;line-height:1.2;margin:0 0 8px}
+  p.lead{margin:0 0 16px;font-size:1rem;line-height:1.45}
+  p.fallback{font-size:.85rem;opacity:.8;margin:8px 0}
+  p.source{font-size:.8rem;opacity:.85;margin:12px 0 0}
+  a{color:#3b82c4}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList } = Recharts;
+
+// Copernicus Climate Change Service (ERA5), Surface air temperature for October 2026.
+// Globale Anomalie in °C gegenüber 1991-2020.
+// Oktober: 2026 = +0.90, 2023 (bisheriger Rekord) = +0.85.
+// Januar-Oktober: 2026 = +0.64; laut Copernicus 0.07 unter 2024 und 0.05 über 2023,
+// daraus abgeleitet: 2024 = +0.71, 2023 = +0.59.
+const data = [
+  { name: "Oktober", y2023: 0.85, y2026: 0.90 },
+  { name: "Januar bis Oktober", y2023: 0.59, y2024: 0.71, y2026: 0.64 },
+];
+const fmt = (v) => (v == null ? "" : "+" + v.toFixed(2).replace(".", ",") + " °C");
+
+function App() {
+  return (
+    <div>
+      <h1>Wärmster Oktober seit Messbeginn – 2026 liegt auf Rekordkurs</h1>
+      <p className="lead">Der Oktober 2026 war laut Copernicus global 0,90 °C wärmer als der Durchschnitt 1991–2020 und übertraf den bisherigen Rekord von 2023 (0,85 °C). Über die ersten zehn Monate liegt 2026 auf Rang zwei, knapp hinter 2024; die Werte für 2023 und 2024 sind aus den Differenzangaben von Copernicus abgeleitet.</p>
+      <div role="img" aria-label="Balkendiagramm: globale Temperaturabweichung gegenüber 1991 bis 2020. Oktober: 2023 plus 0,85 Grad, 2026 plus 0,90 Grad. Januar bis Oktober: 2023 plus 0,59, 2024 plus 0,71, 2026 plus 0,64 Grad." style={{ width: "100%", height: 360 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} margin={{ top: 20, right: 8, left: 0, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} vertical={false} />
+            <XAxis dataKey="name" stroke="currentColor" tick={{ fill: "currentColor" }} />
+            <YAxis domain={[0, 1]} tickFormatter={(v) => String(v).replace(".", ",")} stroke="currentColor" tick={{ fill: "currentColor" }} label={{ value: "Abweichung in °C (vs. 1991–2020)", angle: -90, position: "insideLeft", fill: "currentColor", style: { textAnchor: "middle" } }} />
+            <Tooltip formatter={fmt} contentStyle={{ background: "rgba(30,30,30,.92)", color: "#fff", border: "none" }} itemStyle={{ color: "#fff" }} />
+            <Legend />
+            <Bar dataKey="y2023" name="2023" fill="#8a8f98"><LabelList dataKey="y2023" formatter={fmt} fill="currentColor" position="top" style={{ fontSize: 12 }} /></Bar>
+            <Bar dataKey="y2024" name="2024" fill="#2a9d8f"><LabelList dataKey="y2024" formatter={fmt} fill="currentColor" position="top" style={{ fontSize: 12 }} /></Bar>
+            <Bar dataKey="y2026" name="2026" fill="#e0803a"><LabelList dataKey="y2026" formatter={fmt} fill="currentColor" position="top" style={{ fontSize: 12 }} /></Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="fallback">Oktober: 2026 +0,90 °C, 2023 +0,85 °C. Januar bis Oktober: 2026 +0,64 °C (abgeleitet: 2024 +0,71 °C, 2023 +0,59 °C). Europa: zweitwärmster Oktober (+1,49 °C).</p>
+      <p className="source">Quelle: <a href="https://climate.copernicus.eu/surface-air-temperature-october-2026" target="_blank" rel="noopener">Copernicus Climate Change Service (C3S), Surface air temperature for October 2026</a>, Stand: 18. November 2026.</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

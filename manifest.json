@@ -2056,5 +2056,23 @@
       "https://www.snb.ch/en/publications/communication/press-releases/2026/pre_20261030"
     ],
     "file": "days/2026-11-17.html"
+  },
+  {
+    "date": "2026-11-18",
+    "title": "Wärmster Oktober seit Messbeginn – 2026 liegt auf Rekordkurs",
+    "lead": "Der Oktober 2026 war laut Copernicus global 0,90 °C wärmer als der Durchschnitt 1991–2020 und übertraf den bisherigen Rekord von 2023 (0,85 °C). Über die ersten zehn Monate liegt 2026 auf Rang zwei, knapp hinter 2024.",
+    "category": "Klima",
+    "keywords": [
+      "copernicus",
+      "oktober-rekord",
+      "globaltemperatur",
+      "era5",
+      "el niño"
+    ],
+    "chartType": "groupedBar",
+    "sourceUrls": [
+      "https://climate.copernicus.eu/surface-air-temperature-october-2026"
+    ],
+    "file": "days/2026-11-18.html"
   }
 ]
