@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Erwerbslosigkeit: Schweiz holt auf</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit}
+h1{font-size:1.4rem;margin:0 0 8px}
+p.lead{margin:0 0 16px;line-height:1.45}
+.src{font-size:.8rem;margin-top:12px;opacity:.8}
+.src a{color:inherit}
+.leg{display:flex;gap:16px;font-size:.85rem;margin-bottom:4px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const {ComposedChart,Scatter,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,ErrorBar,Cell}=Recharts;
+const C25="#9aa0a6",C26="#d95f02";
+// ILO unemployment rate, Q3 2025 -> Q3 2026 (%), source: BFS SAKE, 12.11.2026
+const raw=[
+ {land:"Italien",a:5.6,b:6.5},
+ {land:"EU",a:6.0,b:6.2},
+ {land:"Schweiz",a:5.1,b:5.6},
+ {land:"Frankreich",a:7.9,b:8.4},
+ {land:"Österreich",a:5.5,b:6.1},
+ {land:"Deutschland",a:3.9,b:4.2},
+];
+const data=raw.map((d,i)=>({...d,y:i,diff:+(d.b-d.a).toFixed(1)}));
+const Dumbbell=(props)=>{
+  const {cx,cy,payload}=props;
+  return null;
+};
+function Chart(){
+  return (
+    <ResponsiveContainer width="100%" height={380}>
+      <ComposedChart layout="vertical" data={data} margin={{top:10,right:30,bottom:10,left:20}}>
+        <CartesianGrid strokeDasharray="3 3" opacity={0.3}/>
+        <XAxis type="number" domain={[3,7]} tickFormatter={v=>v+"%"} />
+        <YAxis type="category" dataKey="land" width={90}/>
+        <Tooltip formatter={(v,n)=>[v+"%",n]} />
+        <Scatter name="Q3 2025" dataKey="a" fill={C25} shape="circle">
+          <ErrorBar dataKey="a" width={0} stroke="#888" />
+        </Scatter>
+        <Scatter name="Q3 2026" dataKey="b" fill={C26} shape="circle"/>
+      </ComposedChart>
+    </ResponsiveContainer>
+  );
+}
+function App(){
+  return (
+    <div>
+      <h1>Erwerbslosigkeit steigt in der Schweiz stärker als in der EU</h1>
+      <p className="lead">Die ILO-Erwerbslosenquote der Schweiz stieg im 3. Quartal 2026 gegenüber dem Vorjahr von 5,1 auf 5,6 Prozent – ein Plus von 0,5 Punkten, in der EU waren es 0,2 Punkte. Im Nachbarland Deutschland liegt die Quote mit 4,2 Prozent weiterhin tiefer.</p>
+      <div className="leg"><span><span className="dot" style={{background:C25}}></span>3. Quartal 2025</span><span><span className="dot" style={{background:C26}}></span>3. Quartal 2026</span></div>
+      <div role="img" aria-label="Punktdiagramm der ILO-Erwerbslosenquote im 3. Quartal 2025 und 2026 für Schweiz, EU, Deutschland, Frankreich, Italien und Österreich. Überall ist die Quote gestiegen.">
+        <Chart/>
+      </div>
+      <p style={{fontSize:".9rem"}}>Schweiz 5,1 % → 5,6 %; EU 6,0 % → 6,2 %; Deutschland 3,9 % → 4,2 %; Frankreich 7,9 % → 8,4 %; Italien 5,6 % → 6,5 %; Österreich 5,5 % → 6,1 %.</p>
+      <div className="src">Quelle: Bundesamt für Statistik, <a href="https://www.bfs.admin.ch/de/newnsb/CXwrzhzqrnVn" target="_blank" rel="noopener">Schweizerische Arbeitskräfteerhebung im 3. Quartal 2026</a> (veröffentlicht 12.11.2026). Stand: 19.11.2026.</div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

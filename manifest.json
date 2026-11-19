@@ -2074,5 +2074,23 @@
       "https://climate.copernicus.eu/surface-air-temperature-october-2026"
     ],
     "file": "days/2026-11-18.html"
+  },
+  {
+    "date": "2026-11-19",
+    "title": "Erwerbslosigkeit steigt in der Schweiz stärker als in der EU",
+    "lead": "Die ILO-Erwerbslosenquote der Schweiz stieg im 3. Quartal 2026 gegenüber dem Vorjahr von 5,1 auf 5,6 Prozent – in der EU von 6,0 auf 6,2 Prozent. Auch in Deutschland, Frankreich, Italien und Österreich nahm sie zu.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "erwerbslosigkeit",
+      "arbeitskräfteerhebung",
+      "ilo",
+      "arbeitsmarkt",
+      "sake"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/de/newnsb/CXwrzhzqrnVn"
+    ],
+    "file": "days/2026-11-19.html"
   }
 ]
