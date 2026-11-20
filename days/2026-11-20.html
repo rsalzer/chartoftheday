@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Krankenkassenprämien 2026: Grundversicherung +4,3 Prozent, Zusatzversicherungen stabil</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit;line-height:1.4}
+  h1{font-size:1.4rem;margin:0 0 8px}
+  p.lead{margin:0 0 12px;font-size:1rem}
+  .src{font-size:.8rem;margin-top:10px;opacity:.85}
+  .src a{color:inherit}
+  .fb{font-size:.85rem;margin:8px 0 0}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const {BarChart,Bar,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,Cell,ReferenceLine,LabelList} = Recharts;
+
+// Change of premium year 2026 vs. 2025 in %, BFS Krankenversicherungsprämien-Index (1999 = 100)
+const data = [
+  {name:"Grundversicherung", v:4.3, idx:"282,0"},
+  {name:"Alle Prämien (KVPI)", v:3.3, idx:"230,3"},
+  {name:"Zusatz: halbprivat", v:0.6, idx:null},
+  {name:"Zusatzversicherungen gesamt", v:0.0, idx:"127,4"},
+  {name:"Zusatz: privat", v:-0.5, idx:null},
+  {name:"Zusatz: allgemein", v:-1.2, idx:null},
+];
+const fmt = n => (n>0?"+":"")+n.toFixed(1).replace("-","−").replace(".",",")+" %";
+const color = d => d.v>=3 ? "#d95f02" : d.v>=0 ? "#4b5563" : "#2a7ab9";
+
+function Tip({active,payload}){
+  if(!active||!payload||!payload.length) return null;
+  const d = payload[0].payload;
+  return (<div style={{background:"#fff",color:"#111",border:"1px solid #ccc",padding:"6px 10px",fontSize:13}}>
+    <b>{d.name}</b><br/>Veränderung 2026: {fmt(d.v)}{d.idx?<><br/>Index: {d.idx}</>:null}</div>);
+}
+
+function App(){
+  return (<>
+    <h1>Krankenkassenprämien 2026: Grundversicherung wird 4,3 Prozent teurer</h1>
+    <p className="lead">Der Krankenversicherungsprämien-Index stieg im Prämienjahr 2026 um 3,3 Prozent auf 230,3 Punkte. Die Zusatzversicherungen blieben insgesamt stabil; das Prämienwachstum bremst das verfügbare Durchschnittseinkommen laut BFS-Modell um 0,2 Prozentpunkte.</p>
+    <div role="img" aria-label="Balkendiagramm: Veränderung der Krankenversicherungsprämien 2026 gegenüber 2025. Grundversicherung plus 4,3 Prozent, alle Prämien plus 3,3, Zusatz halbprivat plus 0,6, Zusatzversicherungen gesamt 0,0, Zusatz privat minus 0,5, Zusatz allgemein minus 1,2 Prozent." style={{width:"100%",height:340}}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} layout="vertical" margin={{top:10,right:50,left:0,bottom:10}}>
+          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} horizontal={false}/>
+          <XAxis type="number" domain={[-2,5]} tick={{fill:"currentColor",fontSize:11}} tickFormatter={v=>String(v).replace("-","−")+" %"}/>
+          <YAxis type="category" dataKey="name" width={170} tick={{fill:"currentColor",fontSize:12}}/>
+          <ReferenceLine x={0} stroke="currentColor" strokeOpacity={0.6}/>
+          <Tooltip content={<Tip/>} cursor={{fill:"rgba(128,128,128,0.15)"}}/>
+          <Bar dataKey="v" isAnimationActive={false}>
+            {data.map((d,i)=><Cell key={i} fill={color(d)}/>)}
+            <LabelList dataKey="v" position="right" formatter={fmt} fill="currentColor" fontSize={12}/>
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+    <p className="fb">Kernzahlen (Veränderung 2026 ggü. Vorjahr): Grundversicherung +4,3 % (Index 282,0); alle Prämien +3,3 % (230,3); Zusatzversicherungen 0,0 % (127,4); Zusatz allgemein −1,2 %, privat −0,5 %, halbprivat +0,6 %. Basis 1999 = 100.</p>
+    <div className="src">Quelle: <a href="https://www.bfs.admin.ch/de/newnsb/qAbDPn4NMLOe" target="_blank" rel="noopener">Bundesamt für Statistik, Krankenversicherungsprämien-Index</a> (Medienmitteilung vom 20. November 2026). Abgerufen am 20. November 2026.</div>
+  </>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

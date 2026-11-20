@@ -2092,5 +2092,23 @@
       "https://www.bfs.admin.ch/de/newnsb/CXwrzhzqrnVn"
     ],
     "file": "days/2026-11-19.html"
+  },
+  {
+    "date": "2026-11-20",
+    "title": "Krankenkassenprämien 2026: Grundversicherung wird 4,3 Prozent teurer",
+    "lead": "Der Krankenversicherungsprämien-Index stieg im Prämienjahr 2026 um 3,3 Prozent auf 230,3 Punkte. Die Zusatzversicherungen blieben insgesamt stabil; das Prämienwachstum bremst das verfügbare Durchschnittseinkommen um 0,2 Prozentpunkte.",
+    "category": "Gesundheit",
+    "keywords": [
+      "krankenkassenprämien",
+      "kvpi",
+      "grundversicherung",
+      "zusatzversicherung",
+      "verfügbares einkommen"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/de/newnsb/qAbDPn4NMLOe"
+    ],
+    "file": "days/2026-11-20.html"
   }
 ]
