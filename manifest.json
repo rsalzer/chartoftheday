@@ -2110,5 +2110,22 @@
       "https://www.bfs.admin.ch/de/newnsb/qAbDPn4NMLOe"
     ],
     "file": "days/2026-11-20.html"
+  },
+  {
+    "date": "2026-11-21",
+    "title": "KMU: 99,7 Prozent der Firmen, aber nur ein Drittel des Aussenhandels",
+    "lead": "Kleine und mittlere Unternehmen stellen 2024 laut BFS 65,9 Prozent der Beschäftigten, am Güteraussenhandel haben sie aber nur rund einen Drittel Anteil. Unabhängige KMU sind für 49,7 Prozent der Beschäftigten, aber nur 5,8 Prozent des Aussenhandelsvolumens verantwortlich.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "kmu",
+      "grossunternehmen",
+      "aussenhandel",
+      "beschäftigung"
+    ],
+    "chartType": "stackedBar",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/de/newnsb/9ZWzuJGAbDn0"
+    ],
+    "file": "days/2026-11-21.html"
   }
 ]

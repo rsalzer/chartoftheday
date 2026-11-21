@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KMU: 99,7 Prozent der Firmen, aber nur ein Drittel des Aussenhandels</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit;line-height:1.4}
+  h1{font-size:1.4rem;margin:0 0 8px}
+  p.lead{margin:0 0 12px;font-size:1rem}
+  .src{font-size:.8rem;margin-top:10px;opacity:.85}
+  .src a{color:inherit}
+  .fb{font-size:.85rem;margin:8px 0 0}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const {BarChart,Bar,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,Legend,LabelList} = Recharts;
+
+// BFS KMU-Portraet, Referenzjahr 2024. Anteile in %.
+// Aussenhandel: BFS nennt "ein Drittel" (KMU) bzw. "zwei Drittel" (Grossunternehmen) - ungefaehre Angaben.
+const data = [
+  {name:"Unternehmen", kmu:99.7, gross:0.3, lk:"99,7 %", lg:"0,3 %"},
+  {name:"Beschäftigte", kmu:65.9, gross:34.1, lk:"65,9 %", lg:"34,1 %"},
+  {name:"Aussenhandelsvolumen (Güter)", kmu:100/3, gross:200/3, lk:"rund ⅓", lg:"rund ⅔"},
+];
+const C1="#2a7ab9", C2="#d95f02";
+const lab = key => ({x,y,width,height,index}) => {
+  const d=data[index], t=d[key], w=width;
+  if(w<40) return null;
+  return <text x={x+width/2} y={y+height/2} textAnchor="middle" dominantBaseline="central" fill="#fff" fontSize={13} fontWeight="600">{t}</text>;
+};
+function Tip({active,payload}){
+  if(!active||!payload||!payload.length) return null;
+  const d = payload[0].payload;
+  return (<div style={{background:"#fff",color:"#111",border:"1px solid #ccc",padding:"6px 10px",fontSize:13}}>
+    <b>{d.name}</b><br/>KMU: {d.lk}<br/>Grossunternehmen: {d.lg}</div>);
+}
+function App(){
+  return (<>
+    <h1>KMU: 99,7 Prozent der Firmen, aber nur ein Drittel des Aussenhandels</h1>
+    <p className="lead">Kleine und mittlere Unternehmen stellen 2024 laut BFS 65,9 Prozent der Beschäftigten, am Güteraussenhandel haben sie aber nur rund einen Drittel Anteil. Unabhängige KMU sind für 49,7 Prozent der Beschäftigten, aber nur 5,8 Prozent des Aussenhandelsvolumens verantwortlich.</p>
+    <div role="img" aria-label="Gestapeltes Balkendiagramm: Anteil von KMU und Grossunternehmen 2024. Unternehmen: KMU 99,7 Prozent. Beschäftigte: KMU 65,9 Prozent. Aussenhandelsvolumen: KMU rund ein Drittel." style={{width:"100%",height:280}}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} layout="vertical" stackOffset="expand" margin={{top:10,right:20,left:0,bottom:10}}>
+          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} horizontal={false}/>
+          <XAxis type="number" tick={{fill:"currentColor",fontSize:11}} tickFormatter={v=>Math.round(v*100)+" %"}/>
+          <YAxis type="category" dataKey="name" width={130} tick={{fill:"currentColor",fontSize:12}}/>
+          <Tooltip content={<Tip/>} cursor={{fill:"rgba(128,128,128,0.15)"}}/>
+          <Legend/>
+          <Bar dataKey="kmu" name="KMU (unter 250 Beschäftigte)" stackId="a" fill={C1} isAnimationActive={false}><LabelList content={lab("lk")}/></Bar>
+          <Bar dataKey="gross" name="Grossunternehmen" stackId="a" fill={C2} isAnimationActive={false}><LabelList content={lab("lg")}/></Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+    <p className="fb">Kernzahlen 2024: rund 630 000 Unternehmen, davon 99,7 % KMU; rund 4,84 Mio. Beschäftigte, 65,9 % in KMU; Aussenhandel: KMU rund ein Drittel, Grossunternehmen rund zwei Drittel. Beschäftigungswachstum 2023–24: KMU +0,2 %, Grossunternehmen +0,4 %.</p>
+    <div className="src">Quelle: <a href="https://www.bfs.admin.ch/de/newnsb/9ZWzuJGAbDn0" target="_blank" rel="noopener">Bundesamt für Statistik, KMU-Porträt</a> (Medienmitteilung vom 5. November 2026). Abgerufen am 21. November 2026.</div>
+  </>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
