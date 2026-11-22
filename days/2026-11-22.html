@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trockenheit 2026: Zuckerrüben und Kartoffeln brechen ein</title>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,-apple-system,sans-serif;background:transparent;color:inherit}
+  h1{font-size:1.4rem;margin:0 0 8px;line-height:1.25}
+  p.lead{margin:0 0 12px;font-size:1rem;line-height:1.45}
+  p.fallback{font-size:.85rem;opacity:.8;margin:8px 0}
+  p.source{font-size:.8rem;opacity:.85;margin:8px 0 0}
+  a{color:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prop-types@15/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ReferenceLine, ErrorBar, Tooltip, Cell } = Recharts;
+
+// Change in production value 2026 vs 2025, % (BFS, first estimate, 17.11.2026)
+const raw = [
+  ["Rindvieh", 10.6],
+  ["Eier", 4.1],
+  ["Milch", -4.8],
+  ["Obst", -8.3],
+  ["Wein", -8.8],
+  ["Futtermittel", -19.2],
+  ["Kartoffeln", -24.8],
+  ["Schweine", -30.8],
+  ["Zuckerrüben", -33.0],
+];
+const data = raw.map(([name, v], i) => ({
+  name, v, y: raw.length - i,
+  err: [v > 0 ? v : 0, v < 0 ? -v : 0],
+}));
+const labels = Object.fromEntries(data.map(d => [d.y, d.name]));
+const fmt = v => (v > 0 ? "+" : "") + v.toFixed(1).replace(".", ",").replace("-", "−") + " %";
+const POS = "#1b7f5c", NEG = "#c2410c";
+
+function Tip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+  return <div style={{background:"#fff",color:"#111",border:"1px solid #ccc",padding:"6px 10px",fontSize:13}}>
+    <b>{d.name}</b>: {fmt(d.v)}
+  </div>;
+}
+function Label({ cx, cy, payload }) {
+  const left = payload.v < 0;
+  return <text x={left ? cx - 10 : cx + 10} y={cy + 4} textAnchor={left ? "end" : "start"} fontSize="12" fill="currentColor">{fmt(payload.v)}</text>;
+}
+
+function App() {
+  return <div>
+    <h1>Trockenheit 2026: Zuckerrüben und Kartoffeln brechen ein</h1>
+    <p className="lead">Die Landwirtschaft verliert 2026 laut erster BFS-Schätzung 5,1 Prozent Produktionswert, das Nettounternehmenseinkommen sinkt um 17 Prozent. Bei Zuckerrüben und Kartoffeln fällt die Produktion auf den tiefsten Stand seit 30 Jahren, Rindvieh legt dagegen zu.</p>
+    <div role="img" aria-label="Punktdiagramm: Veränderung des Produktionswerts der Schweizer Landwirtschaft 2026 gegenüber 2025 nach Produkt, von minus 33,0 Prozent bei Zuckerrüben bis plus 10,6 Prozent bei Rindvieh." style={{width:"100%",height:380}}>
+      <ResponsiveContainer width="100%" height="100%">
+        <ScatterChart margin={{top:10,right:30,bottom:30,left:10}}>
+          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.15} />
+          <XAxis type="number" dataKey="v" domain={[-40, 20]} ticks={[-40,-30,-20,-10,0,10,20]} tickFormatter={t => t + " %"} tick={{fill:"currentColor",fontSize:12}} stroke="currentColor"
+            label={{value:"Veränderung des Produktionswerts 2026 gegenüber 2025", position:"insideBottom", offset:-15, fill:"currentColor", fontSize:12}} />
+          <YAxis type="number" dataKey="y" domain={[0, raw.length + 1]} ticks={data.map(d => d.y)} tickFormatter={t => labels[t] || ""} width={100} tick={{fill:"currentColor",fontSize:12}} stroke="currentColor" interval={0} />
+          <ReferenceLine x={0} stroke="currentColor" strokeOpacity={0.6} />
+          <Tooltip content={<Tip />} cursor={false} />
+          <Scatter data={data} shape={<circle r={7} />} label={<Label />} isAnimationActive={false}>
+            {data.map((d, i) => <Cell key={i} fill={d.v >= 0 ? POS : NEG} />)}
+            <ErrorBar dataKey="err" direction="x" width={0} stroke="currentColor" strokeOpacity={0.5} />
+          </Scatter>
+        </ScatterChart>
+      </ResponsiveContainer>
+    </div>
+    <p className="fallback">Kernzahlen: Zuckerrüben −33,0 %, Schweine −30,8 %, Kartoffeln −24,8 %, Futtermittel −19,2 %, Milch −4,8 %, Eier +4,1 %, Rindvieh +10,6 %; Total −5,1 % (12,0 Mrd. Franken).</p>
+    <p className="source">Quelle: <a href="https://www.bfs.admin.ch/de/newnsb/MMadk29ey8pJ" target="_blank" rel="noopener">Bundesamt für Statistik, Landwirtschaftliche Gesamtrechnung (erste Schätzung), 17.11.2026</a>. Abgerufen am 22.11.2026. Veränderungen des Produktionswerts zu laufenden Preisen.</p>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
