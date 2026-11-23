@@ -2145,5 +2145,23 @@
       "https://www.bfs.admin.ch/de/newnsb/MMadk29ey8pJ"
     ],
     "file": "days/2026-11-22.html"
+  },
+  {
+    "date": "2026-11-23",
+    "title": "Deutschland: Strom wird teurer, der Importüberschuss schmilzt",
+    "lead": "In den ersten drei Quartalen 2026 kostete importierter Strom im Schnitt 116 Euro pro MWh (+38,9 %), exportierter 87 Euro (+20,6 %). Der Importüberschuss sank von 17,9 auf 0,4 TWh.",
+    "category": "Klima",
+    "keywords": [
+      "strom",
+      "stromhandel",
+      "deutschland",
+      "destatis",
+      "energiepreise"
+    ],
+    "chartType": "groupedBar",
+    "sourceUrls": [
+      "https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/11/PD26_406_51.html"
+    ],
+    "file": "days/2026-11-23.html"
   }
 ]

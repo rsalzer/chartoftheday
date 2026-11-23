@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deutschland: Strom wird teurer, der Importüberschuss schmilzt</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit;line-height:1.4}
+  h1{font-size:1.4rem;margin:0 0 8px}
+  p.lead{margin:0 0 12px;font-size:1rem}
+  .src{font-size:.8rem;margin-top:10px;opacity:.85}
+  .src a{color:inherit}
+  .fb{font-size:.85rem;margin:8px 0 0}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const {BarChart,Bar,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,Legend,LabelList} = Recharts;
+
+// Destatis, Pressemitteilung Nr. 406 vom 20.11.2026: Durchschnittspreise Strom, Januar-September, EUR/MWh.
+const data = [
+  {name:"Stromimporte", y2025:84, y2026:116},
+  {name:"Stromexporte", y2025:72, y2026:87},
+];
+const C1="#2a7ab9", C2="#d95f02";
+function Tip({active,payload,label}){
+  if(!active||!payload||!payload.length) return null;
+  return (<div style={{background:"#fff",color:"#111",border:"1px solid #ccc",padding:"6px 10px",fontSize:13}}>
+    <b>{label}</b><br/>{payload.map(p=><div key={p.dataKey}>{p.name}: {p.value} Euro/MWh</div>)}</div>);
+}
+function App(){
+  return (<>
+    <h1>Deutschland: Strom wird teurer, der Importüberschuss schmilzt</h1>
+    <p className="lead">In den ersten drei Quartalen 2026 kostete importierter Strom im Schnitt 116 Euro pro MWh (+38,9 %), exportierter 87 Euro (+20,6 %). Der Importüberschuss sank von 17,9 auf 0,4 TWh: 49,2 TWh Import standen 48,8 TWh Export gegenüber.</p>
+    <div role="img" aria-label="Gruppiertes Balkendiagramm: Durchschnittspreise im deutschen Stromaussenhandel, Januar bis September, 2025 und 2026. Importe 84 auf 116 Euro pro MWh, Exporte 72 auf 87 Euro pro MWh." style={{width:"100%",height:300}}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} margin={{top:20,right:20,left:0,bottom:10}}>
+          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} vertical={false}/>
+          <XAxis dataKey="name" tick={{fill:"currentColor",fontSize:12}}/>
+          <YAxis tick={{fill:"currentColor",fontSize:11}} label={{value:"Euro pro MWh",angle:-90,position:"insideLeft",fill:"currentColor",fontSize:11}}/>
+          <Tooltip content={<Tip/>} cursor={{fill:"rgba(128,128,128,0.15)"}}/>
+          <Legend/>
+          <Bar dataKey="y2025" name="Januar–September 2025" fill={C1}><LabelList dataKey="y2025" position="top" fill="currentColor" fontSize={12}/></Bar>
+          <Bar dataKey="y2026" name="Januar–September 2026" fill={C2}><LabelList dataKey="y2026" position="top" fill="currentColor" fontSize={12}/></Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+    <p className="fb">Kennzahlen: Durchschnittspreis Import 84 → 116 Euro/MWh, Export 72 → 87 Euro/MWh (Januar–September 2025 → 2026); Exportmenge 48,8 TWh (+25,5 %), Importmenge 49,2 TWh (−13,3 %).</p>
+    <p className="src">Quelle: <a href="https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/11/PD26_406_51.html" target="_blank" rel="noopener">Statistisches Bundesamt (Destatis), Pressemitteilung Nr. 406 vom 20.11.2026</a>. Stand: 23.11.2026.</p>
+  </>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
