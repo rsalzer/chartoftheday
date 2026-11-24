@@ -2163,5 +2163,23 @@
       "https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/11/PD26_406_51.html"
     ],
     "file": "days/2026-11-23.html"
+  },
+  {
+    "date": "2026-11-24",
+    "title": "Abstimmung 29. November: Nur die Feuerwerksinitiative hat klar Rückenwind",
+    "lead": "Laut dem letzten YouGov-Stimmungsbarometer liegt die Feuerwerksinitiative bei 59 % Ja, die AHV-Zusatzfinanzierung bei 54 % Nein. Die Fairness-Initiative fiel von 57 % Ja im Oktober auf 45 %; beim Kriegsmaterialgesetz ist das Rennen offen.",
+    "category": "Politik",
+    "keywords": [
+      "abstimmung",
+      "umfrage",
+      "feuerwerksinitiative",
+      "fairness-initiative",
+      "kriegsmaterialgesetz"
+    ],
+    "chartType": "stackedBar",
+    "sourceUrls": [
+      "https://yougov.com/de-de/artikel/56001-fairness-initiative-bricht-ein-kriegsmaterialgesetz-bleibt-offen-wie-will-die-schweiz-am-29-november-abstimmen"
+    ],
+    "file": "days/2026-11-24.html"
   }
 ]
