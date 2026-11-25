@@ -2181,5 +2181,23 @@
       "https://yougov.com/de-de/artikel/56001-fairness-initiative-bricht-ein-kriegsmaterialgesetz-bleibt-offen-wie-will-die-schweiz-am-29-november-abstimmen"
     ],
     "file": "days/2026-11-24.html"
+  },
+  {
+    "date": "2026-11-25",
+    "title": "Kapitalbezug aus der 2. Säule fast verdoppelt",
+    "lead": "Der Median der Kapitalleistungen aus der Pensionskasse stieg zwischen 2015 und 2025 von rund 81 500 auf 150 000 Franken. Frauen beziehen mit 87 100 Franken deutlich weniger als Männer mit 216 800 Franken.",
+    "category": "Gesellschaft",
+    "keywords": [
+      "pensionskasse",
+      "2. säule",
+      "kapitalbezug",
+      "neurentenstatistik",
+      "altersvorsorge"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/de/newnsb/Oo4HssBK3PDd"
+    ],
+    "file": "days/2026-11-25.html"
   }
 ]

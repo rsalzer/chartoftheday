@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitalbezug aus der 2. Säule fast verdoppelt</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit}
+h1{font-size:1.4rem;margin:0 0 8px}
+p{margin:0 0 12px;line-height:1.45}
+.src{font-size:.8rem;opacity:.8;margin-top:10px}
+.fb{font-size:.85rem;margin-top:6px}
+a{color:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const { ResponsiveContainer, ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList } = Recharts;
+const C15 = "#8a8a8a", C25 = "#2a7fbf";
+const data = [
+  { name: "2. Säule, alle", a: 81500, b: 150000 },
+  { name: "Säule 3a, Männer", a: 49700, b: 50800 },
+  { name: "Säule 3a, Frauen", a: 41400, b: 43300 },
+].map(d => ({ ...d, range: [d.a, d.b] }));
+const fmt = v => v.toLocaleString("de-CH").replace(/'/g, "’");
+const Dumbbell = (p) => {
+  const { x, y, width, height, payload } = p;
+  const cy = y + height / 2;
+  return (
+    <g>
+      <line x1={x} x2={x + width} y1={cy} y2={cy} stroke="#999" strokeWidth={3} />
+      <circle cx={x} cy={cy} r={8} fill={C15} />
+      <circle cx={x + width} cy={cy} r={8} fill={C25} />
+      <text x={x} y={cy - 14} textAnchor="middle" fontSize="12" fill="currentColor">{fmt(payload.a)}</text>
+      <text x={x + width} y={cy - 14} textAnchor="middle" fontSize="12" fill="currentColor">{fmt(payload.b)}</text>
+    </g>
+  );
+};
+function App() {
+  return (
+    <div>
+      <h1>Kapitalbezug aus der 2. Säule fast verdoppelt</h1>
+      <p>Der Median der Kapitalleistungen aus der Pensionskasse stieg zwischen 2015 und 2025 von rund 81 500 auf 150 000 Franken. Frauen beziehen mit 87 100 Franken deutlich weniger als Männer mit 216 800 Franken.</p>
+      <div role="img" aria-label="Hantelgrafik: Mediane der Kapitalbezüge 2015 und 2025. 2. Säule von 81 500 auf 150 000 Franken, Säule 3a Männer von 49 700 auf 50 800, Säule 3a Frauen von 41 400 auf 43 300." style={{ height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart layout="vertical" data={data} margin={{ top: 20, right: 30, left: 10, bottom: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+            <XAxis type="number" domain={[0, 175000]} tickFormatter={fmt} label={{ value: "Median pro Person (CHF)", position: "insideBottom", offset: -12, fill: "currentColor", fontSize: 12 }} tick={{ fill: "currentColor", fontSize: 12 }} />
+            <YAxis type="category" dataKey="name" width={120} tick={{ fill: "currentColor", fontSize: 12 }} />
+            <Tooltip formatter={(v, n, p) => `2015: ${fmt(p.payload.a)} · 2025: ${fmt(p.payload.b)} CHF`} />
+            <Bar dataKey="range" shape={<Dumbbell />} isAnimationActive={false} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="fb"><span style={{ color: C15 }}>●</span> 2015 &nbsp; <span style={{ color: C25 }}>●</span> 2025</div>
+      <div className="fb">Kernzahlen: Bezüger von Kapitalleistungen aus der 2. Säule 46 000 (2015) → 73 700 (2025); Median 81 500 → 150 000 CHF.</div>
+      <div className="src">Quelle: <a href="https://www.bfs.admin.ch/de/newnsb/Oo4HssBK3PDd" target="_blank" rel="noopener">Bundesamt für Statistik, Neurentenstatistik</a>, Medienmitteilung vom 24. November 2026; Stand: 25. November 2026. Zahlen gerundet wie vom BFS publiziert; Momentaufnahme des jeweiligen Jahres.</div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
