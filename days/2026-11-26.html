@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schienenanteil im Güterverkehr so tief wie noch nie</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit;line-height:1.4}
+  h1{font-size:1.4rem;margin:0 0 8px}
+  p.lead{margin:0 0 12px;font-size:1rem}
+  .src{font-size:.8rem;margin-top:10px;opacity:.85}
+  .src a{color:inherit}
+  .fb{font-size:.85rem;margin:8px 0 0}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const {BarChart,Bar,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,Legend,LabelList,ReferenceLine} = Recharts;
+
+// BFS, Medienmitteilung vom 26.11.2026: Veränderung der Transportleistung 2025 gegenüber 2024, in %.
+// Schiene: nach Verkehrsart und gesamt. Strasse: schwere Güterfahrzeuge (>3,5 t) nach Verkehrsart; "Gesamt" = alle Güterfahrzeuge.
+const data = [
+  {name:"Binnen", rail:0.3, road:4.1},
+  {name:"Import", rail:1.0, road:-1.2},
+  {name:"Export", rail:7.9, road:0.4},
+  {name:"Transit", rail:-8.7, road:0.6},
+  {name:"Gesamt", rail:-5.5, road:2.7},
+];
+const C1="#2a7ab9", C2="#d95f02";
+const fmt=v=>(v>0?"+":v<0?"−":"")+Math.abs(v).toFixed(1).replace(".",",")+" %";
+function Tip({active,payload,label}){
+  if(!active||!payload||!payload.length) return null;
+  return (<div style={{background:"#fff",color:"#111",border:"1px solid #ccc",padding:"6px 10px",fontSize:13}}>
+    <b>{label}</b><br/>{payload.map(p=><div key={p.dataKey}>{p.name}: {fmt(p.value)}</div>)}</div>);
+}
+function App(){
+  return (<>
+    <h1>Schienenanteil im Güterverkehr so tief wie noch nie</h1>
+    <p className="lead">Die Transportleistung der Bahn sank 2025 um 5,5 %, vor allem im Transit (−8,7 %, u. a. wegen Baustellen auf der Rheintalstrecke); auf der Strasse stieg sie um 2,7 %. Der Schienenanteil am Landverkehr fiel auf 35 % – ein Tiefstand.</p>
+    <div role="img" aria-label="Gruppiertes Balkendiagramm: Veränderung der Transportleistung 2025 gegenüber 2024 nach Verkehrsart, Schiene und Strasse. Schiene: Binnen +0,3, Import +1,0, Export +7,9, Transit −8,7, gesamt −5,5 Prozent. Strasse: Binnen +4,1, Import −1,2, Export +0,4, Transit +0,6, gesamt +2,7 Prozent." style={{width:"100%",height:320}}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} margin={{top:20,right:20,left:0,bottom:10}}>
+          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} vertical={false}/>
+          <XAxis dataKey="name" tick={{fill:"currentColor",fontSize:12}}/>
+          <YAxis tick={{fill:"currentColor",fontSize:11}} unit=" %" label={{value:"Veränderung 2025 gegenüber 2024",angle:-90,position:"insideLeft",fill:"currentColor",fontSize:11,dy:80}}/>
+          <ReferenceLine y={0} stroke="currentColor" strokeOpacity={0.6}/>
+          <Tooltip content={<Tip/>} cursor={{fill:"rgba(128,128,128,0.15)"}}/>
+          <Legend/>
+          <Bar dataKey="rail" name="Schiene" fill={C1}><LabelList dataKey="rail" position="top" formatter={fmt} fill="currentColor" fontSize={11}/></Bar>
+          <Bar dataKey="road" name="Strasse" fill={C2}><LabelList dataKey="road" position="top" formatter={fmt} fill="currentColor" fontSize={11}/></Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+    <p className="fb">Kennzahlen 2025: Schiene 9,1 Mrd. Tonnenkilometer, Strasse 16,9 Mrd., total 26,0 Mrd. (−0,4 %); Schienenanteil 35 % (−2 Prozentpunkte), EU-27 2024: 18 %. Strasse nach Verkehrsart: schwere Güterfahrzeuge (&gt;3,5 t, 95 % der Strassenleistung); «Gesamt» umfasst alle Güterfahrzeuge.</p>
+    <p className="src">Quelle: <a href="https://www.bfs.admin.ch/de/newnsb/Du6Jes6gQfon" target="_blank" rel="noopener">Bundesamt für Statistik (BFS), Medienmitteilung vom 26.11.2026</a>. Stand: 26.11.2026.</p>
+  </>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

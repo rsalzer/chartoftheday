@@ -2199,5 +2199,23 @@
       "https://www.bfs.admin.ch/de/newnsb/Oo4HssBK3PDd"
     ],
     "file": "days/2026-11-25.html"
+  },
+  {
+    "date": "2026-11-26",
+    "title": "Schienenanteil im Güterverkehr so tief wie noch nie",
+    "lead": "Die Transportleistung der Bahn sank 2025 um 5,5 %, vor allem im Transit (−8,7 %); auf der Strasse stieg sie um 2,7 %. Der Schienenanteil am Landverkehr fiel auf 35 %, einen Tiefstand.",
+    "category": "Wirtschaft",
+    "keywords": [
+      "güterverkehr",
+      "schiene",
+      "strasse",
+      "modalsplit",
+      "transit"
+    ],
+    "chartType": "bar",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/de/newnsb/Du6Jes6gQfon"
+    ],
+    "file": "days/2026-11-26.html"
   }
 ]
