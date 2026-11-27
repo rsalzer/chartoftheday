@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Streaming: Serien dominieren bei den Abos, Filme verlieren an Boden</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit;line-height:1.4}
+  h1{font-size:1.4rem;margin:0 0 8px}
+  p.lead{margin:0 0 12px;font-size:1rem}
+  .grid{display:flex;flex-wrap:wrap;gap:16px}
+  .cell{flex:1 1 280px;min-width:0}
+  h2{font-size:1rem;margin:0;text-align:center}
+  .src{font-size:.8rem;margin-top:10px;opacity:.85}
+  .src a{color:inherit}
+  .fb{font-size:.85rem;margin:8px 0 0}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const {PieChart,Pie,Cell,Tooltip,Legend,ResponsiveContainer} = Recharts;
+
+// BFS, VoD-Nutzung 2025 (Medienmitteilung 27.11.2026). Anteile in Prozent, wie publiziert.
+const subs = [
+  {name:"Serienepisoden", value:87},
+  {name:"Filme", value:13},
+];
+const genres = [
+  {name:"Spielfilme", value:88},
+  {name:"Animationsfilme", value:11},
+  {name:"Dokumentarfilme", value:2},
+];
+const COL = ["#2a7ab9","#d95f02","#9a9a9a"];
+function Tip({active,payload}){
+  if(!active||!payload||!payload.length) return null;
+  const p=payload[0];
+  return (<div style={{background:"#fff",color:"#111",border:"1px solid #ccc",padding:"6px 10px",fontSize:13}}>{p.name}: {p.value} %</div>);
+}
+const label = ({name,value,cx,x,y,textAnchor}) => (
+  <text x={x} y={y} textAnchor={x>cx?"start":"end"} fill="currentColor" fontSize={12} dominantBaseline="central">{value} %</text>
+);
+function Donut({data,aria}){
+  return (<div role="img" aria-label={aria} style={{width:"100%",height:280}}>
+    <ResponsiveContainer width="100%" height="100%">
+      <PieChart>
+        <Pie data={data} dataKey="value" nameKey="name" innerRadius="45%" outerRadius="70%" startAngle={90} endAngle={-270} label={label} stroke="none" minAngle={4}>
+          {data.map((d,i)=><Cell key={d.name} fill={COL[i]}/>)}
+        </Pie>
+        <Tooltip content={<Tip/>}/>
+        <Legend/>
+      </PieChart>
+    </ResponsiveContainer>
+  </div>);
+}
+function App(){
+  return (<>
+    <h1>Streaming: Serien dominieren bei den Abos, Filme verlieren an Boden</h1>
+    <p className="lead">Auf Abo-Plattformen waren 2025 rund 87 % der Abrufe Serienepisoden, nur 13 % Filme; die Filmabrufe sanken gegenüber 2024 um 7 %. Bei den Filmen sind fast neun von zehn Abrufen Spielfilme.</p>
+    <div className="grid">
+      <div className="cell">
+        <h2>Abrufe auf Abo-Diensten</h2>
+        <Donut data={subs} aria="Ringdiagramm: Abrufe auf Abo-Diensten in der Schweiz 2025. Serienepisoden 87 Prozent, Filme 13 Prozent."/>
+      </div>
+      <div className="cell">
+        <h2>Filmabrufe nach Genre (alle Zugangsarten)</h2>
+        <Donut data={genres} aria="Ringdiagramm: Filmabrufe nach Genre 2025. Spielfilme 88 Prozent, Animationsfilme 11 Prozent, Dokumentarfilme 2 Prozent."/>
+      </div>
+    </div>
+    <p className="fb">Kennzahlen 2025: Abo-Abrufe 87 % Serienepisoden / 13 % Filme; Filmabrufe 88 % Spielfilme, 11 % Animation, 2 % Dokumentarfilme (Rundungsdifferenz, Summe 101 %). Serienzahlen sind provisorische Erstergebnisse; Serien wurden erstmals erfasst, 18 der 24 Plattformen boten 2025 Serien an.</p>
+    <p className="src">Quelle: <a href="https://www.bfs.admin.ch/de/newnsb/lZeyO76TUZh5" target="_blank" rel="noopener">Bundesamt für Statistik, VoD-Nutzung im Jahr 2025</a>. Stand: 27.11.2026.</p>
+  </>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
