@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spitex: Gewinnorientierte Anbieter wachsen am stärksten</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>
+  body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:transparent;color:inherit;line-height:1.4}
+  h1{font-size:1.4rem;margin:0 0 8px}
+  p.lead{margin:0 0 12px;font-size:1rem}
+  .src{font-size:.8rem;margin-top:10px;opacity:.85}
+  .src a{color:inherit}
+  .fb{font-size:.85rem;margin:8px 0 0}
+  .lg{display:flex;gap:16px;font-size:.85rem;margin-bottom:4px}
+  .lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/** @jsx React.createElement */
+/** @jsxFrag React.Fragment */
+const {ScatterChart,Scatter,XAxis,YAxis,Tooltip,ResponsiveContainer,CartesianGrid} = Recharts;
+const C24="#e8833a", C25="#2a6fdb";
+// 2025 values and growth rates as reported by BFS; 2024 values derived (2025 / (1 + growth)).
+const rows=[
+  {name:"Gewinnorientierte Firmen",y:2,h25:12.2,h24:8.9,g:"+37.6 %"},
+  {name:"Gemeinnützige Organisationen",y:1,h25:15.5,h24:15.1,g:"+2.8 %"},
+  {name:"Selbständige Pflegefachpersonen",y:0,h25:1.9,h24:1.7,g:"+10.8 %"}
+];
+const labels={2:rows[0].name,1:rows[1].name,0:rows[2].name};
+const Tip=({active,payload})=>{
+  if(!active||!payload||!payload.length)return null;
+  const r=payload[0].payload.row;
+  return <div style={{background:"#fff",color:"#222",border:"1px solid #ccc",padding:"6px 10px",fontSize:13}}>
+    <b>{r.name}</b><br/>2024 (berechnet): {r.h24.toFixed(1)} Mio. h<br/>2025: {r.h25.toFixed(1)} Mio. h<br/>Veränderung: {r.g}</div>;
+};
+const Dot=(c)=>({cx,cy})=><circle cx={cx} cy={cy} r={7} fill={c}/>;
+function App(){
+  return <div>
+    <h1>Spitex: Gewinnorientierte Anbieter wachsen am stärksten</h1>
+    <p className="lead">Die Spitex-Dienste leisteten 2025 mit 29,6 Millionen Pflegestunden 15,3 % mehr als im Vorjahr. Den Zuwachs trugen vor allem gewinnorientierte Firmen (+37,6 %); gemeinnützige Organisationen leisten aber weiterhin am meisten Stunden.</p>
+    <div className="lg"><span><i style={{background:C24}}/>2024 (berechnet)</span><span><i style={{background:C25}}/>2025</span></div>
+    <div role="img" aria-label="Hantelgrafik: Pflegestunden der Spitex 2024 und 2025 nach Anbietertyp. Gewinnorientierte Firmen von 8,9 auf 12,2 Millionen, gemeinnützige von 15,1 auf 15,5 Millionen, selbständige Pflegefachpersonen von 1,7 auf 1,9 Millionen." style={{height:300}}>
+    <ResponsiveContainer width="100%" height="100%">
+      <ScatterChart margin={{top:10,right:30,bottom:30,left:10}}>
+        <CartesianGrid strokeDasharray="3 3" opacity={0.3}/>
+        <XAxis type="number" dataKey="x" domain={[0,18]} tickFormatter={v=>v+""} stroke="currentColor" label={{value:"Pflegestunden in Millionen",position:"insideBottom",offset:-15,fill:"currentColor",fontSize:12}}/>
+        <YAxis type="number" dataKey="y" domain={[-0.5,2.5]} ticks={[0,1,2]} tickFormatter={v=>labels[v]} width={170} stroke="currentColor" tick={{fontSize:12}}/>
+        <Tooltip content={<Tip/>} cursor={false}/>
+        {rows.map(r=><Scatter key={r.name} data={[{x:r.h24,y:r.y,row:r},{x:r.h25,y:r.y,row:r}]} line={{stroke:"#888",strokeWidth:3}} shape={()=>null} legendType="none" isAnimationActive={false}/>)}
+        <Scatter data={rows.map(r=>({x:r.h24,y:r.y,row:r}))} shape={Dot(C24)} isAnimationActive={false}/>
+        <Scatter data={rows.map(r=>({x:r.h25,y:r.y,row:r}))} shape={Dot(C25)} isAnimationActive={false}/>
+      </ScatterChart>
+    </ResponsiveContainer>
+    </div>
+    <p className="fb">Kennzahlen: Pflegestunden 2025 – gewinnorientiert 12,2 Mio. (+37,6 %), gemeinnützig 15,5 Mio. (+2,8 %), selbständig 1,9 Mio. (+10,8 %); total 29,6 Mio. (+15,3 %).</p>
+    <p className="src">Quelle: <a href="https://www.bfs.admin.ch/de/newnsb/xsLqZQ654tIy" target="_blank" rel="noopener">Bundesamt für Statistik, Medienmitteilung vom 23.11.2026</a> (<a href="https://statistik.admin.ch/de/news/2026-0482" target="_blank" rel="noopener">Details</a>). Die Werte für 2024 sind aus den publizierten Wachstumsraten zurückgerechnet und gerundet. Stand: 28.11.2026.</p>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

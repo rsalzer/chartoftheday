@@ -2235,5 +2235,23 @@
       "https://www.bfs.admin.ch/de/newnsb/lZeyO76TUZh5"
     ],
     "file": "days/2026-11-27.html"
+  },
+  {
+    "date": "2026-11-28",
+    "title": "Spitex: Gewinnorientierte Anbieter wachsen am stärksten",
+    "lead": "Die Spitex-Dienste leisteten 2025 mit 29,6 Millionen Pflegestunden 15,3 % mehr als im Vorjahr. Den Zuwachs trugen vor allem gewinnorientierte Firmen (+37,6 %).",
+    "category": "Gesundheit",
+    "keywords": [
+      "spitex",
+      "pflegestunden",
+      "gewinnorientiert",
+      "hauspflege"
+    ],
+    "chartType": "dumbbell",
+    "sourceUrls": [
+      "https://www.bfs.admin.ch/de/newnsb/xsLqZQ654tIy",
+      "https://statistik.admin.ch/de/news/2026-0482"
+    ],
+    "file": "days/2026-11-28.html"
   }
 ]
